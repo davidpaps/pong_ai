@@ -1,6 +1,5 @@
 language: python
-dist:
-  - trusty
+dist: trusty
 python:
   - '2.6'
   - '2.7'

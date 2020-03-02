@@ -1,1 +1,1 @@
-web: gunicorn net-positive --log-file-
+web: gunicorn net-positive --log-file -

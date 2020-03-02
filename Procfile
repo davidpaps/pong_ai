@@ -1,1 +1,1 @@
-web: gunicorn net_positive:app --log-file -
+web: gunicorn net_postive/pong:views --log-file -

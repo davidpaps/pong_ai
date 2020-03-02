@@ -8,13 +8,12 @@ cache: pip
 # services:
 # -
 install:
-  # - pip install -r requirements.txt
-# before_script:
-# -
-# -
+  - pip install -r requirements.txt
+
 script:
-  # - python tests.py
+  - python spec/tests_net.py
   # - py.test --cov-report term-missing --cov app -v
+
 # deploy:
 #   provider: heroku
 #   app: Net-Positve

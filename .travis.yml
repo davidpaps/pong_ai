@@ -9,11 +9,10 @@ cache: pip
 # services:
 # -
 install:
-  # - pip install -r requirements.txt
+  - pip install -r requirements.txt
 # before_script:
 # -
-# -
-script:
+# script:
   # - python tests.py
   # - py.test --cov-report term-missing --cov app -v
 # deploy:

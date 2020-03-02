@@ -1,1 +1,1 @@
-web: gunicorn net_positive:urls --log-file -
+web: gunicorn net_positive.wsgi --log-file -

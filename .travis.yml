@@ -1,0 +1,18 @@
+# language:
+# dist:
+#
+# cache:
+#
+# services:
+# -
+# before_script:
+# -
+# -
+# script:
+# -
+# -
+# deploy:
+#   provider: heroku
+#   app: Net-Positve
+#   api_key:
+#     secure:

@@ -1,4 +1,5 @@
 language: python
+dist: trusty
 python:
   - '2.6'
   - '2.7'
@@ -8,13 +9,13 @@ cache: pip
 # services:
 # -
 install:
-  - pip install -r requirements.txt
+  # - pip install -r requirements.txt
 # before_script:
 # -
 # -
 script:
-  - python tests.py
-  - py.test --cov-report term-missing --cov app -v
+  # - python tests.py
+  # - py.test --cov-report term-missing --cov app -v
 # deploy:
 #   provider: heroku
 #   app: Net-Positve

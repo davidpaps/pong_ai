@@ -1,1 +1,1 @@
-web: gunicorn net_positive/net_positive:urls.py --log-file -
+web: python3 net_positive/manage.py runserver

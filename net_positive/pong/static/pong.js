@@ -54,11 +54,12 @@ class Pong
     this.ball.position.x = 100;
     this.ball.position.y = 50;
 
-    this.ball.velocity.x = 100;
-    this.ball.velocity.y = 100;
+    this.ball.velocity.x = 3000;
+    this.ball.velocity.y = 3000;
 
    let lastTime;
    const callback = (milliseconds) => {
+     console.log(milliseconds)
       if (lastTime) {
         this.update((milliseconds - lastTime) / 1000);
       }
@@ -67,6 +68,19 @@ class Pong
     }
     callback();
   }
+
+  draw() {
+    this._context.fillStyle = '#000';
+    this._context.fillRect(0, 0, this._canvas.width, this._canvas.height);
+
+    this.drawRectangle(this.ball);
+  }
+
+  drawRectangle(rectangle) {
+    this._context.fillStyle = '#fff';
+    this._context.fillRect(rectangle.position.x, rectangle.position.y, rectangle.size.x, rectangle.size.y);
+  }
+
   update(deltatime) {
     this.ball.position.x += this.ball.velocity.x * deltatime;
     this.ball.position.y += this.ball.velocity.y * deltatime;
@@ -78,13 +92,9 @@ class Pong
     if (this.ball.top < 0 || this.ball.bottom > this._canvas.height) {
       this.ball.velocity.y = -this.ball.velocity.y
     }
-  
-    this._context.fillStyle = '#000';
-    this._context.fillRect(0, 0, this._canvas.width, this._canvas.height);
-  
-    this._context.fillStyle = '#fff';
-    this._context.fillRect(this.ball.position.x, this.ball.position.y, this.ball.size.x, this.ball.size.y);
-  
+
+    this.draw();
+
   }
 }
 

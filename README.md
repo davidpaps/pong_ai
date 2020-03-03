@@ -6,3 +6,4 @@ Makers final project - lets build a neural net
 
 ## How to run
 
+python3 manage.py runserver

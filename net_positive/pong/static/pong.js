@@ -43,6 +43,16 @@ class Ball extends Rectangle
   }
 }
 
+class Player extends Rectangle 
+{
+  constructor()
+  {
+    super(20 , 100);
+    this.score = 0
+    this.velocity = new Vector;
+  }
+}
+
 class Pong
 {
   constructor(canvas)
@@ -57,6 +67,16 @@ class Pong
     this.ball.velocity.x = 100;
     this.ball.velocity.y = 100;
 
+    this.players = [
+      new Player,
+      new Player,
+    ];
+
+    this.players[0].position.x = 20;
+    this.players[1].position.x = this._canvas.width - 20;
+    this.players.forEach( player => { player.position.y = this._canvas.height /2 });
+
+
    let lastTime;
    const callback = (milliseconds) => {
       if (lastTime) {
@@ -67,9 +87,31 @@ class Pong
     }
     callback();
   }
+
+  collide(player, ball) {
+    if (player.left < ball.right && player.right > ball.left && player.top < ball.bottom && player.bottom > ball.top) {
+      ball.velocity.x = -ball.velocity.x;
+    }
+  }
+
+  draw() {
+    this._context.fillStyle = '#000';
+    this._context.fillRect(0, 0, this._canvas.width, this._canvas.height);
+
+    this.drawRectangle(this.ball);
+    this.players.forEach(player => this.drawRectangle(player))
+  }
+
+  drawRectangle(rectangle) {
+    this._context.fillStyle = '#fff';
+    this._context.fillRect(rectangle.left, rectangle.top, rectangle.size.x, rectangle.size.y);
+  }
+
   update(deltatime) {
+
     this.ball.position.x += this.ball.velocity.x * deltatime;
     this.ball.position.y += this.ball.velocity.y * deltatime;
+ 
   
     if (this.ball.left < 0 || this.ball.right > this._canvas.width) {
       this.ball.velocity.x = -this.ball.velocity.x
@@ -78,15 +120,26 @@ class Pong
     if (this.ball.top < 0 || this.ball.bottom > this._canvas.height) {
       this.ball.velocity.y = -this.ball.velocity.y
     }
-  
-    this._context.fillStyle = '#000';
-    this._context.fillRect(0, 0, this._canvas.width, this._canvas.height);
-  
-    this._context.fillStyle = '#fff';
-    this._context.fillRect(this.ball.position.x, this.ball.position.y, this.ball.size.x, this.ball.size.y);
-  
+
+    this.players[1].position.y = this.ball.position.y
+
+    this.players.forEach(player => this.collide(player, this.ball))
+
+    this.draw();
+
   }
 }
 
 const canvas = document.getElementById('pong');
 const pong = new Pong(canvas);
+
+canvas.addEventListener('mousemove', event => {
+  pong.players[0].position.y = event.offsetY;
+})
+
+
+// window.addEventListener('keydown', keyboardHandlerFunction);  
+
+// function keyboardHandlerFunction() {
+//     pong.players[0].velocity.y += 10
+// }

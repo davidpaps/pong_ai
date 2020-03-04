@@ -54,7 +54,6 @@ class Player extends Rectangle
   }
 }
 
-
 class Pong
 {
   constructor(canvas)

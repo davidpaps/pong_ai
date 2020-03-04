@@ -3,10 +3,8 @@
 describe('Pong', function() {
   var pong;
   var testCanvas;
-  var fakeDocument;
   var ball;
-  var rectangle;
-  var player;           
+  var player;        
 
 
   beforeEach(function() {
@@ -14,12 +12,12 @@ describe('Pong', function() {
       height: 150,
       width: 150,
       getContext: function() {
-        
+       
       }
     }
   
     pong = new Pong(testCanvas);
-    rectangle = new Rectangle()
+    ball = new Ball()
     player = new Player()
   })
 
@@ -34,7 +32,6 @@ describe('Pong', function() {
 
   describe("ball", function() {
     it("renders in the correct size", function() {
-      ball = new Ball()
       expect(ball.size.x).toEqual(10)
       expect(ball.size.y).toEqual(10)
     })
@@ -45,6 +42,16 @@ describe('Pong', function() {
       player = new Player()
       expect(player.size.x).toEqual(20)
       expect(player.size.y).toEqual(100)
+    })
+
+    it("renders the players in the correct x position", function() {
+      expect(pong.players[0].position.x).toEqual(20)
+      expect(pong.players[1].position.x).toEqual(130)
+    })
+
+    it("renders the players in the correct y position", function() {
+      expect(pong.players[0].position.y).toEqual(75)
+      expect(pong.players[1].position.y).toEqual(75)
     })
   })
 

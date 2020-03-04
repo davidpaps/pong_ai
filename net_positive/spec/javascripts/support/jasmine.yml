@@ -13,7 +13,6 @@
     #
     src_files:
         - ./pong/static/pong.js
-        - ./pong/__src__/static/pong.js
 
     # stylesheets
     #

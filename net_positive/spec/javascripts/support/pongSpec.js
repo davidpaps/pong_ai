@@ -2,24 +2,29 @@
 
 describe('Pong', function() {
   var pong;
-  var fakeCanvas;
-  var fakeDocument
+  var testCanvas;
+  var fakeDocument;
+
 
   beforeEach(function() {
-    fakeCanvas = {
-      width: 100,
-      height: 100,
+    testCanvas = {
+      height: 150,
+      width: 150,
       getContext: function() {
-        return ''
+        return ""
       }
     }
-    fakeDocument = {
-      getElementById: function() {
-        return fakeCanvas
-      }
-    } 
   
-    pong = new Pong(canvas);
+    pong = new Pong(testCanvas);
+  })
+
+  describe("canvas dimensions", function() {
+    it("draws the correct height", function() {
+      expect(pong._canvas.height).toEqual(150)
+    })
+    it("draws the correct width", function() {
+      expect(pong._canvas.width).toEqual(150)
+    })
   })
 
 

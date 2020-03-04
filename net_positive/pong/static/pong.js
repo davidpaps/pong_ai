@@ -54,7 +54,6 @@ class Player extends Rectangle
   }
 }
 
-const canvas = document.getElementById('pong');
 
 class Pong
 {
@@ -132,7 +131,7 @@ class Pong
 
   }
 }
-
+const canvas = document.getElementById('pong');
 const pong = new Pong(canvas);
 
 canvas.addEventListener('mousemove', event => {

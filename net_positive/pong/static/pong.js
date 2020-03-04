@@ -97,7 +97,12 @@ class Pong
 
   collide(player, ball) {
     if (player.left < ball.right && player.right > ball.left && player.top < ball.bottom && player.bottom > ball.top) {
+      const length = ball.velocity.length
       ball.velocity.x = -ball.velocity.x;
+      // change the vertical velocity of the ball
+      ball.velocity.y += 250 * (Math.random() - .5);
+      // change the return velocity of the ball
+      ball.velocity.length = length * 1.00; 
     }
   }
 
@@ -125,6 +130,7 @@ class Pong
     if (this.ball.velocity.x === 0 && this.ball.velocity.y === 0) {
       this.ball.velocity.x = 300 * (Math.random() > .5 ? 1 : -1);
       this.ball.velocity.y = 300 * (Math.random() * 2 -1);
+      // normalise the ball speed on restart
       this.ball.velocity.length = 300
     }
   }

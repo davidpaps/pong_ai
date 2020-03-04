@@ -133,13 +133,19 @@ class Pong
 const canvas = document.getElementById('pong');
 const pong = new Pong(canvas);
 
-canvas.addEventListener('mousemove', event => {
-  pong.players[0].position.y = event.offsetY;
-})
+// canvas.addEventListener('mousemove', event => {
+//   pong.players[0].position.y = event.offsetY;
+// })
 
 
-// window.addEventListener('keydown', keyboardHandlerFunction);  
+window.addEventListener('keydown', keyboardHandlerFunction);  
 
-// function keyboardHandlerFunction() {
-//     pong.players[0].velocity.y += 10
-// }
+function keyboardHandlerFunction(e) {
+  if(e.keyCode === 40) {
+    pong.players[0].position.y += 15
+  }
+  else if(e.keyCode === 38) {
+    pong.players[0].position.y -= 15
+  }
+    
+}

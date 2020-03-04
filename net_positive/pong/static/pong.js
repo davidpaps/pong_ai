@@ -60,6 +60,7 @@ class Player extends Rectangle
   {
     super(20 , 100);
     this.score = 0
+    this.game = 0
     this.velocity = new Vector;
   }
 }
@@ -125,14 +126,25 @@ class Pong
     this.players[0].position.y = this._canvas.height / 2;
     this.players[1].position.y = this._canvas.height / 2;
 
-    console.log(`Player 1 = ${this.players[0].score}`)
-    console.log(`Player 2 = ${this.players[1].score}`)
-    
+    console.log(`Player 1 Score = ${this.players[0].score}`)
+    console.log(`Player 2 Score = ${this.players[1].score}`)
+
       if (this.players[0].score < 21 && this.players[1].score < 21){
         this.start()    
       } else {
         this.restartGame(); 
+
+        var playerId
+        if (this.players[1].score === 21) {
+          playerId = 1
+        } else {
+          playerId = 0
+        }
+
+        this.players[playerId].game += 1
         console.log(true)
+        console.log(`Player 1 Game = ${this.players[0].game}`)
+        console.log(`Player 2 Game = ${this.players[1].game}`)
 
       }
     

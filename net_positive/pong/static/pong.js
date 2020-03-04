@@ -1,5 +1,6 @@
 'use strict';
 
+
 class Vector
 {
   constructor(x = 0, y = 0)
@@ -52,6 +53,8 @@ class Player extends Rectangle
     this.velocity = new Vector;
   }
 }
+
+const canvas = document.getElementById('pong');
 
 class Pong
 {
@@ -130,7 +133,6 @@ class Pong
   }
 }
 
-const canvas = document.getElementById('pong');
 const pong = new Pong(canvas);
 
 canvas.addEventListener('mousemove', event => {

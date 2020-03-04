@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'pong',
+    'django_jasmine',
 ]
 
 MIDDLEWARE = [

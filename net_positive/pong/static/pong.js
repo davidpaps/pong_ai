@@ -100,7 +100,7 @@ class Pong
       const length = ball.velocity.length
       ball.velocity.x = -ball.velocity.x;
       ball.velocity.y += 300 * (Math.random() - .5);
-      ball.velocity.length = length * 1.0; 
+      ball.velocity.length = length * 2; 
     }
   }
 
@@ -124,7 +124,18 @@ class Pong
     this.ball.velocity.y = 0;
     this.players[0].position.y = this._canvas.height / 2;
     this.players[1].position.y = this._canvas.height / 2;
-    this.start();
+
+    console.log(`Player 1 = ${this.players[0].score}`)
+    console.log(`Player 2 = ${this.players[1].score}`)
+    
+      if (this.players[0].score < 21 && this.players[1].score < 21){
+        this.start()    
+      } else {
+        this.restartGame(); 
+        console.log(true)
+
+      }
+    
   }
 
   start() {
@@ -134,6 +145,14 @@ class Pong
       this.ball.velocity.length = 300
     }
   }
+
+  restartGame() {
+      this.players[0].score = 0
+      this.players[1].score = 0
+      this.start();
+      
+  
+}
   update(deltatime) {
 
     this.ball.position.x += this.ball.velocity.x * deltatime;
@@ -177,10 +196,10 @@ window.addEventListener('keydown', keyboardHandlerFunction);
 
 function keyboardHandlerFunction(e) {
   if(e.keyCode === 40 && pong.players[0].position.y < (pong._canvas.height - 50) ) {
-    pong.players[0].position.y += 15
+    pong.players[0].position.y += 25
   }
   else if(e.keyCode === 38 && pong.players[0].position.y > 50) {
-      pong.players[0].position.y -= 15
+      pong.players[0].position.y -= 25
   }  
   // else if(e.keyCode === 32) {
   //   pong.start();

@@ -7,8 +7,17 @@ class Vector
     this.x = x;
     this.y = y;
   }
+  get length()
+  {
+    return Math.sqrt(this.x * this.x + this.y * this.y)
+  }
 
-  
+  set length(value)
+  {
+    const factor = value / this.length;
+    this.x *= factor;
+    this.y *= factor;
+  }
 }
 
 class Rectangle
@@ -116,6 +125,7 @@ class Pong
     if (this.ball.velocity.x === 0 && this.ball.velocity.y === 0) {
       this.ball.velocity.x = 300 * (Math.random() > .5 ? 1 : -1);
       this.ball.velocity.y = 300 * (Math.random() * 2 -1);
+      this.ball.velocity.length = 300
     }
   }
   update(deltatime) {

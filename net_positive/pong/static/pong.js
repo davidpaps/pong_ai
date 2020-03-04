@@ -99,9 +99,7 @@ class Pong
     if (player.left < ball.right && player.right > ball.left && player.top < ball.bottom && player.bottom > ball.top) {
       const length = ball.velocity.length
       ball.velocity.x = -ball.velocity.x;
-      // change the vertical velocity of the ball dependant on angle of paddle
       ball.velocity.y += 300 * (Math.random() - .5);
-      // change the return velocity of the ball
       ball.velocity.length = length * 1.0; 
     }
   }
@@ -124,13 +122,15 @@ class Pong
     this.ball.position.y = this._canvas.height / 2;
     this.ball.velocity.x = 0;
     this.ball.velocity.y = 0;
+    this.players[0].position.y = this._canvas.height / 2;
+    this.players[1].position.y = this._canvas.height / 2;
+    this.start();
   }
 
   start() {
     if (this.ball.velocity.x === 0 && this.ball.velocity.y === 0) {
       this.ball.velocity.x = 300 * (Math.random() > .5 ? 1 : -1);
       this.ball.velocity.y = 300 * (Math.random() * 2 -1);
-      // normalise the ball speed on restart
       this.ball.velocity.length = 300
     }
   }
@@ -155,8 +155,9 @@ class Pong
       this.ball.velocity.y = -this.ball.velocity.y
     }
 
+    // Bot lvl 10
     this.players[1].position.y = this.ball.position.y
-
+    
     this.players.forEach(player => this.collide(player, this.ball))
 
     this.draw();
@@ -181,7 +182,7 @@ function keyboardHandlerFunction(e) {
   else if(e.keyCode === 38 && pong.players[0].position.y > 50) {
       pong.players[0].position.y -= 15
   }  
-  else if(e.keyCode === 32) {
-    pong.start();
-  }
+  // else if(e.keyCode === 32) {
+  //   pong.start();
+  // }
 }

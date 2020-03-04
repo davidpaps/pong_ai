@@ -7,6 +7,8 @@ class Vector
     this.x = x;
     this.y = y;
   }
+
+  
 }
 
 class Rectangle
@@ -112,8 +114,8 @@ class Pong
 
   start() {
     if (this.ball.velocity.x === 0 && this.ball.velocity.y === 0) {
-      this.ball.velocity.x = 300;
-      this.ball.velocity.y = 300;
+      this.ball.velocity.x = 300 * (Math.random() > .5 ? 1 : -1);
+      this.ball.velocity.y = 300 * (Math.random() * 2 -1);
     }
   }
   update(deltatime) {
@@ -131,7 +133,6 @@ class Pong
       }
       this.players[playerId].score++;
       this.reset();
-      // this.ball.velocity.x = -this.ball.velocity.x
     }
   
     if (this.ball.top < 0 || this.ball.bottom > this._canvas.height) {

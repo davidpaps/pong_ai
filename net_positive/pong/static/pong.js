@@ -155,7 +155,7 @@ class Pong
       this.ball.velocity.y = -this.ball.velocity.y
     }
 
-    // this.players[1].position.y = this.ball.position.y
+    this.players[1].position.y = this.ball.position.y
 
     this.players.forEach(player => this.collide(player, this.ball))
 
@@ -167,19 +167,19 @@ class Pong
 const canvas = document.getElementById('pong');
 const pong = new Pong(canvas);
 
-canvas.addEventListener('mousemove', event => {
-  pong.players[0].position.y = event.offsetY;
-})
+// canvas.addEventListener('mousemove', event => {
+//   pong.players[0].position.y = event.offsetY;
+// })
 
 
 window.addEventListener('keydown', keyboardHandlerFunction);  
 
 function keyboardHandlerFunction(e) {
-  if(e.keyCode === 40) {
+  if(e.keyCode === 40 && pong.players[0].position.y < (pong._canvas.height - 50) ) {
     pong.players[0].position.y += 15
   }
-  else if(e.keyCode === 38) {
-    pong.players[0].position.y -= 15
+  else if(e.keyCode === 38 && pong.players[0].position.y > 50) {
+      pong.players[0].position.y -= 15
   }  
   else if(e.keyCode === 32) {
     pong.start();

@@ -61,11 +61,6 @@ class Pong
     this._context = canvas.getContext('2d');
 
     this.ball = new Ball;
-    this.ball.position.x = 100;
-    this.ball.position.y = 50;
-
-    this.ball.velocity.x = 100;
-    this.ball.velocity.y = 100;
 
     this.players = [
       new Player,
@@ -86,6 +81,7 @@ class Pong
       requestAnimationFrame(callback);
     }
     callback();
+    this.reset();
   }
 
   collide(player, ball) {
@@ -107,6 +103,19 @@ class Pong
     this._context.fillRect(rectangle.left, rectangle.top, rectangle.size.x, rectangle.size.y);
   }
 
+  reset() {
+    this.ball.position.x = this._canvas.width / 2;
+    this.ball.position.y = this._canvas.height / 2;
+    this.ball.velocity.x = 0;
+    this.ball.velocity.y = 0;
+  }
+
+  start() {
+    if (this.ball.velocity.x === 0 && this.ball.velocity.y === 0) {
+      this.ball.velocity.x = 300;
+      this.ball.velocity.y = 300;
+    }
+  }
   update(deltatime) {
 
     this.ball.position.x += this.ball.velocity.x * deltatime;
@@ -114,7 +123,15 @@ class Pong
  
   
     if (this.ball.left < 0 || this.ball.right > this._canvas.width) {
-      this.ball.velocity.x = -this.ball.velocity.x
+      var playerId;
+      if (this.ball.velocity.x < 0) {
+        playerId = 1;
+      } else {
+        playerId = 0;
+      }
+      this.players[playerId].score++;
+      this.reset();
+      // this.ball.velocity.x = -this.ball.velocity.x
     }
   
     if (this.ball.top < 0 || this.ball.bottom > this._canvas.height) {
@@ -147,4 +164,7 @@ function keyboardHandlerFunction(e) {
   else if(e.keyCode === 38) {
     pong.players[0].position.y -= 15
   }  
+  else if(e.keyCode === 32) {
+    pong.start();
+  }
 }

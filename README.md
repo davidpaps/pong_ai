@@ -33,3 +33,6 @@ Six neural nets were provisioned with different batch size parameters and allowe
 | 10           |                                            | 
 | 12           |                                            |
 | 15           |                                            | 
+
+- added to heroku using git push heroku master will turn on auto deploy in the next hour
+

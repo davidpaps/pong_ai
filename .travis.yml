@@ -1,21 +1,14 @@
 language: python
 dist: trusty
 python:
-  - '3.6'
-
+- '3.6'
 cache: pip
-
-# services:
-# -
 install:
-  - pip install -r requirements.txt
-
+- pip install -r requirements.txt
 script:
-  - python spec/tests_net.py
-  # - py.test --cov-report term-missing --cov app -v
-
-# deploy:
-#   provider: heroku
-#   app: Net-Positve
-#   api_key:
-#     secure:
+- python spec/tests_net.py
+deploy:
+  provider: heroku
+  app: net-positive
+  api_key:
+    secure: Du11KhQev+RuH5BOm43wCzlDAbMCdu3MQcE6TlmFs6ZjcmkjOb+5Ky2Zeg/93vhsAKToe2flECgnr0NK/gQCsfAKj4YuqnMqEdo4AAhLj5A+BI9dsBA/JyqXqXK/zqKvSDRGLQCVIIr4WlNOg6dNN54NrUnA7+Xbb1s71s81pgvkoG3/K6eypOpWvgi90cQ+JQZ1JZLQYyGBnOOoZxVosN7tWKSg5xAv5n3mqGaNAHfkB+6xw6G0uOL/1qr1bLrSAuhYczXtUOqum38rdWCet+UdvZ5hgxVqwoaXkrBiBZNblr184qUf0ClkeMq44zodJeyUoR+wqxGpFRN0IkZRYCjdbcAm+ZSv2+TvRqquy9NR2rOMVdW4ORuamiaCdzENTm54G2Tn3OoVtO5Dy/hagqBBsucZso1pGleq6CLUA3BbSVUNPZBlfYK2LdskDL/3aV0A39GSxWtSG3iM0L7Fh5DaJ1kodpScqdLFG1CIy38aXiaOf8sH25lmcUwA2DnO0iiu427iV52S+43b08VSOkpTY8/i0XDMruvDuCdZl11768FO25wXOI2QDDNA2Ae0iMt5ysSppSHngpcWMEWAbOoH66gpnbFiXcmMyZZYj3FWX8ekeCYNAtwWMq/9MqqGBNoRVF7vfhVj/i4QkjAsg6pBe9JMqSWjOFNphJ8YvIE=

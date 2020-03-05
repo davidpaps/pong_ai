@@ -114,7 +114,7 @@ class Pong
         that._move = myArr['up']
      }
     };
-    let url = 'http://localhost:8000/pong/bot'
+    let url = 'http://localhost:8000/pong/bot?ballx=' + toString(that.ball.position.x) + '&bally=' + toString(that.ball.position.y) + '&paddley=' + toString(that.players[1].position.y)
     xmlhttp.open('GET', url, true);
     xmlhttp.send();
   }

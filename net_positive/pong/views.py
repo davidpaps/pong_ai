@@ -7,9 +7,12 @@ def home(request, template='index.html'):
     return render(request, template, {})
 
 def bot(request):
-
+    ballx = request.GET.get('ballx')
+    bally = request.GET.get('bally')
+    paddley = request.GET.get('paddley')
+    court = {'ballx': ballx, 'bally': bally, 'paddley': paddley}
     data = {
-      'up': SimpleBot.simple_bot(),
+      'up': SimpleBot.simple_bot(court),
     }
     return JsonResponse(data)
 

@@ -76,7 +76,6 @@ class Pong
     this.pixelData = this._context.getImageData(0, 0, 600, 400);
     console.log(this.pixelData);
 
-
     this.ball = new Ball;
 
     this.done = false;
@@ -104,8 +103,8 @@ class Pong
     callback();
     this.reset();
   }
-
   getMove(){
+    let url = `http://localhost:8000/pong/bot?ballx=${this.ball.position.x}&bally=${this.ball.position.y}&paddley=${this.players[1].position.y}`
     var that = this
     var xmlhttp = new XMLHttpRequest()
     xmlhttp.onreadystatechange = function() {
@@ -114,7 +113,6 @@ class Pong
         that._move = myArr['up']
      }
     };
-    let url = 'http://localhost:8000/pong/bot?ballx=' + toString(that.ball.position.x) + '&bally=' + toString(that.ball.position.y) + '&paddley=' + toString(that.players[1].position.y)
     xmlhttp.open('GET', url, true);
     xmlhttp.send();
   }

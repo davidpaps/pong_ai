@@ -70,10 +70,11 @@ class Pong
 {
   constructor(canvas)
   {
+    this._move = "";
     this._canvas = canvas;
     this._context = canvas.getContext('2d');
-    this.pixelData = this._context.getImageData(0, 0, 600, 400)
-    console.log(this.pixelData)
+    this.pixelData = this._context.getImageData(0, 0, 600, 400);
+    console.log(this.pixelData);
 
 
     this.ball = new Ball;
@@ -102,6 +103,20 @@ class Pong
     }
     callback();
     this.reset();
+  }
+
+  getMove(){
+    var that = this
+    var xmlhttp = new XMLHttpRequest()
+    xmlhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        var myArr = JSON.parse(this.responseText);
+        that._move = myArr['up']
+     }
+    };
+    let url = 'http://localhost:8000/pong/bot'
+    xmlhttp.open('GET', url, true);
+    xmlhttp.send();
   }
 
   collide(player, ball) {

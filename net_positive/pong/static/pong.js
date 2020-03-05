@@ -199,12 +199,12 @@ class Pong
   // this.players[1].position.y = this.ball.position.y
 
   // bot lvl 5
-  // if (this.ball.position.y > this.players[1].position.y && pong.players[1].position.y < (pong._canvas.height - 50)) {
-  //   this.players[1].position.y += 10;
-  // } 
-  // if (this.ball.position.y < this.players[1].position.y && pong.players[0].position.y > 50) {
-  //   this.players[1].position.y -= 10;
-  // }
+  if (this.ball.position.y > this.players[1].position.y && pong.players[1].position.y < (pong._canvas.height - 50)) {
+    this.players[1].position.y += 10;
+  } 
+  if (this.ball.position.y < this.players[1].position.y && pong.players[0].position.y > 50) {
+    this.players[1].position.y -= 10;
+  }
     
   this.players.forEach(player => this.collide(player, this.ball))
 
@@ -218,34 +218,34 @@ const pong = new Pong(canvas);
 
 window.addEventListener('keydown', keyboardHandlerFunction);  
 
-// function keyboardHandlerFunction(e) {
-//   if(e.keyCode === 40 && pong.players[0].position.y < (pong._canvas.height - 50) ) {
-//     pong.players[0].position.y += 25
-//   }
-//   else if(e.keyCode === 38 && pong.players[0].position.y > 50) {
-//       pong.players[0].position.y -= 25
-//   }  
-//   else if(e.keyCode === 32) {
-//     pong.start();
-//   } 
-// }
-
-// player vs player controls
 function keyboardHandlerFunction(e) {
-
-  if(e.keyCode === 83 && pong.players[0].position.y < (pong._canvas.height - 50) ) {
+  if(e.keyCode === 40 && pong.players[0].position.y < (pong._canvas.height - 50) ) {
     pong.players[0].position.y += 25
   }
-  else if(e.keyCode === 87 && pong.players[0].position.y > 50) {
+  else if(e.keyCode === 38 && pong.players[0].position.y > 50) {
       pong.players[0].position.y -= 25
   }  
-  else if(e.keyCode === 40 && pong.players[1].position.y < (pong._canvas.height - 50)) {
-    pong.players[1].position.y += 25
-  }  
-  else if(e.keyCode === 38 && pong.players[1].position.y > 50) {
-    pong.players[1].position.y -= 25
-  }  
+  else if(e.keyCode === 32) {
+    pong.start();
+  } 
 }
+
+// player vs player controls
+// function keyboardHandlerFunction(e) {
+
+//   if(e.keyCode === 83 && pong.players[0].position.y < (pong._canvas.height - 50) ) {
+//     pong.players[0].position.y += 25
+//   }
+//   else if(e.keyCode === 87 && pong.players[0].position.y > 50) {
+//       pong.players[0].position.y -= 25
+//   }  
+//   else if(e.keyCode === 40 && pong.players[1].position.y < (pong._canvas.height - 50)) {
+//     pong.players[1].position.y += 25
+//   }  
+//   else if(e.keyCode === 38 && pong.players[1].position.y > 50) {
+//     pong.players[1].position.y -= 25
+//   }  
+// }
 
 // mouse controls
 // canvas.addEventListener('mousemove', event => {

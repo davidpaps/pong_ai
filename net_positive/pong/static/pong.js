@@ -25,7 +25,7 @@ class Rectangle
   constructor(w, h)
   {
     this.position = new Vector;
-    this.size = new Vector(w, h)
+    this.size = new Vector(w, h);
   }
   get left()
   {
@@ -49,7 +49,7 @@ class Ball extends Rectangle
 {
   constructor()
   {
-    super(10, 10)
+    super(10, 10);
     this.velocity = new Vector;
   }
 }
@@ -59,8 +59,8 @@ class Player extends Rectangle
   constructor()
   {
     super(20 , 100);
-    this.score = 0
-    this.game = 0
+    this.score = 0;
+    this.game = 0;
     this.velocity = new Vector;
   }
 }
@@ -73,6 +73,8 @@ class Pong
     this._context = canvas.getContext('2d');
 
     this.ball = new Ball;
+
+    this.done = false;
 
     this.players = [
       new Player,
@@ -101,7 +103,7 @@ class Pong
       const length = ball.velocity.length
       ball.velocity.x = -ball.velocity.x;
       ball.velocity.y += 300 * (Math.random() - .5);
-      ball.velocity.length = length * 1; 
+      ball.velocity.length = length * 3; 
     }
   }
 
@@ -131,20 +133,10 @@ class Pong
       if (this.players[0].score < 21 && this.players[1].score < 21){
         this.start()    
       } else {
+        this.done = true
+        console.log(this.done)
         this.restartGame(); 
-
-        var playerId
-        if (this.players[1].score === 21) {
-          playerId = 1
-        } else {
-          playerId = 0
-        }
-
-        this.players[playerId].game += 1
-        console.log(true)
-        console.log(`Player 1 Game: ${this.players[0].game} Player 2 Game: ${this.players[1].game}`)
       }
-    
   }
 
   start() {
@@ -156,12 +148,20 @@ class Pong
   }
 
   restartGame() {
-      this.players[0].score = 0
-      this.players[1].score = 0
+      var playerId
+      if (this.players[1].score === 21) {
+        playerId = 1
+      } else {
+        playerId = 0
+      }
+      this.players[playerId].game += 1
+      console.log(`Player 1 Game: ${this.players[0].game} Player 2 Game: ${this.players[1].game}`)
+      this.players[0].score = 0;
+      this.players[1].score = 0;
+      this.done = false;
       this.start();
-      
-  
-}
+  }
+
   update(deltatime) {
 
     this.ball.position.x += this.ball.velocity.x * deltatime;
@@ -196,12 +196,6 @@ class Pong
 const canvas = document.getElementById('pong');
 const pong = new Pong(canvas);
 
-// Mouse controls
-// canvas.addEventListener('mousemove', event => {
-//   pong.players[0].position.y = event.offsetY;
-// })
-
-
 window.addEventListener('keydown', keyboardHandlerFunction);  
 
 function keyboardHandlerFunction(e) {
@@ -232,3 +226,8 @@ function keyboardHandlerFunction(e) {
 //     pong.players[1].position.y -= 25
 //   }  
 // }
+
+// Mouse controls
+// canvas.addEventListener('mousemove', event => {
+//   pong.players[0].position.y = event.offsetY;
+// })

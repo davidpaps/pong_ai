@@ -70,15 +70,18 @@ class Pong
 {
   constructor(canvas)
   {
+    this._move = "";
     this._canvas = canvas;
     this._context = canvas.getContext('2d');
-    this.pixelData = this._context.getImageData(0, 0, 600, 400)
-    console.log(this.pixelData)
+    this.pixelData = this._context.getImageData(0, 0, 600, 400);
+    console.log(this.pixelData);
 
 
     this.ball = new Ball;
 
     this.done = false;
+
+    this.reward = 0;
 
     this.players = [
       new Player,
@@ -102,12 +105,26 @@ class Pong
     this.reset();
   }
 
+  getMove(){
+    var that = this
+    var xmlhttp = new XMLHttpRequest()
+    xmlhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        var myArr = JSON.parse(this.responseText);
+        that._move = myArr['up']
+     }
+    };
+    let url = 'http://localhost:8000/pong/bot'
+    xmlhttp.open('GET', url, true);
+    xmlhttp.send();
+  }
+
   collide(player, ball) {
     if (player.left < ball.right && player.right > ball.left && player.top < ball.bottom && player.bottom > ball.top) {
       const length = ball.velocity.length
       ball.velocity.x = -ball.velocity.x;
       ball.velocity.y += 300 * (Math.random() - .5);
-      ball.velocity.length = length * 3; 
+      ball.velocity.length = length * 1.1; 
     }
   }
 
@@ -131,6 +148,7 @@ class Pong
     this.ball.velocity.y = 0;
     this.players[0].position.y = this._canvas.height / 2;
     this.players[1].position.y = this._canvas.height / 2;
+    this.reward = 0;
 
     console.log(`Player 1 Score: ${this.players[0].score} Player 2 Score: ${this.players[1].score}`)
 
@@ -177,10 +195,14 @@ class Pong
       var playerId;
       if (this.ball.velocity.x < 0) {
         playerId = 1;
+        this.reward = 1;
       } else {
         playerId = 0;
+        this.reward = -1;
       }
+      
       this.players[playerId].score++;
+      console.log(this.reward)
       this.reset();
     }
   
@@ -188,11 +210,20 @@ class Pong
       this.ball.velocity.y = -this.ball.velocity.y
     }
 
-  // Bot lvl 10
-  this.players[1].position.y = this.ball.position.y
+  // bot lvl 10
+  // this.players[1].position.y = this.ball.position.y
+
+  // bot lvl 5
+  if (this.ball.position.y > this.players[1].position.y && pong.players[1].position.y < (pong._canvas.height - 50)) {
+    this.players[1].position.y += 10;
+  } 
+  if (this.ball.position.y < this.players[1].position.y && pong.players[0].position.y > 50) {
+    this.players[1].position.y -= 10;
+  }
     
   this.players.forEach(player => this.collide(player, this.ball))
 
+  console.log(this.reward)
   this.draw();
 
   }
@@ -214,7 +245,7 @@ function keyboardHandlerFunction(e) {
   } 
 }
 
-//player vs player controls
+// player vs player controls
 // function keyboardHandlerFunction(e) {
 
 //   if(e.keyCode === 83 && pong.players[0].position.y < (pong._canvas.height - 50) ) {
@@ -231,7 +262,7 @@ function keyboardHandlerFunction(e) {
 //   }  
 // }
 
-// Mouse controls
+// mouse controls
 // canvas.addEventListener('mousemove', event => {
 //   pong.players[0].position.y = event.offsetY;
 // })

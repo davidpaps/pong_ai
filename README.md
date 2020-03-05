@@ -8,3 +8,5 @@ Makers final project - lets build a neural net
 ## How to run
 
 * python3 manage.py runserver
+
+- added to heroku using git push heroku master will turn on auto deploy in the next hour

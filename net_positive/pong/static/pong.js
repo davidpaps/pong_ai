@@ -1,5 +1,6 @@
 'use strict';
 
+
 class Vector
 {
   constructor(x = 0, y = 0)
@@ -196,7 +197,6 @@ class Pong
 
   }
 }
-
 const canvas = document.getElementById('pong');
 const pong = new Pong(canvas);
 

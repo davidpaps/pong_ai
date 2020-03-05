@@ -80,6 +80,8 @@ class Pong
 
     this.done = false;
 
+    this.reward = 0;
+
     this.players = [
       new Player,
       new Player,
@@ -107,7 +109,7 @@ class Pong
       const length = ball.velocity.length
       ball.velocity.x = -ball.velocity.x;
       ball.velocity.y += 300 * (Math.random() - .5);
-      ball.velocity.length = length * 3; 
+      ball.velocity.length = length * 1; 
     }
   }
 
@@ -131,6 +133,7 @@ class Pong
     this.ball.velocity.y = 0;
     this.players[0].position.y = this._canvas.height / 2;
     this.players[1].position.y = this._canvas.height / 2;
+    this.reward = 0;
 
     console.log(`Player 1 Score: ${this.players[0].score} Player 2 Score: ${this.players[1].score}`)
 
@@ -177,10 +180,14 @@ class Pong
       var playerId;
       if (this.ball.velocity.x < 0) {
         playerId = 1;
+        this.reward = 1;
       } else {
         playerId = 0;
+        this.reward = -1;
       }
+      
       this.players[playerId].score++;
+      console.log(this.reward)
       this.reset();
     }
   
@@ -193,6 +200,7 @@ class Pong
     
   this.players.forEach(player => this.collide(player, this.ball))
 
+  console.log(this.reward)
   this.draw();
 
   }

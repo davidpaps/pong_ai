@@ -21,6 +21,7 @@
     #
     # EXAMPLE:
     # 
+    #
     # stylesheets:
     #   - css/style.css
     #   - stylesheets/*.css

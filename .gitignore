@@ -1,0 +1,5 @@
+.vscode
+db.sqlite3
+./net_positive/pong/__pycache__
+./net_positive/pong/migrations/__pycache__
+./net_positive/net_positive/__pycache__

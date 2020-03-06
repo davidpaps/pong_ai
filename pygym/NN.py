@@ -96,7 +96,6 @@ def Relu_derivative(Z):
     Z[Z <= 0] = 0 
     return Z
 
-
 # After move step environment forward
 def true_y(action): 
   ''' function for randomly generating true y ''' 
@@ -107,32 +106,27 @@ def true_y(action):
   return y 
 
 # states from forward prop need to be saved for backprop
-
 def compute_grad(y,A3): 
   loss_grad.append(y - A3) # this value needs to be appended into an array
 
-def dC_da(dC_da2, da2_dz, A1):
-  dC_da = np.dot(A1, (dC_da2 * da2_dz))
-  
-
 def back_prop(ep_input, ep_Z1, ep_A1, ep_Z2, ep_A2, ep_end_grad):
-  dW3 = np.dot(ep_A2.T, ep_end_grad).ravel()
+  dW3 = 1/batch_size * np.dot(ep_A2.T, ep_end_grad).ravel()
 
   dC_dA2 = np.outer(ep_end_grad, model['W3'])
   dA2_dZ2 = Relu_derivative(ep_Z2)
   dC_dZ2 = dC_dA2 * dA2_dZ2
 
-  dW2 = np.dot(dC_dZ2.T, ep_A1)
-  dB2 = np.sum(dC_dZ2, axis = 0, keepdims = True).T
+  dW2 = 1/batch_size * np.dot(dC_dZ2.T, ep_A1)
+  dB2 = 1/batch_size * np.sum(dC_dZ2, axis = 0, keepdims = True).T
 
   dC_dZ2 = np.sum(dC_dZ2, axis = 0, keepdims = True)
   dC_dA1 = np.dot(dC_dZ2, model['W2'])
   dA1_dZ1 = Relu_derivative(ep_Z1)
   dC_dZ1 = dC_dA1 * dA1_dZ1
 
-  dW1 = np.dot(dC_dZ1.T, ep_input)
+  dW1 = 1/batch_size * np.dot(dC_dZ1.T, ep_input)
   dB1 = np.sum(dC_dZ1, axis = 0, keepdims = True)
-  dB1 = dB1.T
+  dB1 = 1/batch_size * dB1.T
   
   print("---------------")
   print("dW1", dW1.shape)

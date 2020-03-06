@@ -93,30 +93,45 @@ class Pong
 
 
    let lastTime;
+   let count;
+   count = 99;
    const callback = (milliseconds) => {
+     console.log("callback")
       if (lastTime) {
         this.update((milliseconds - lastTime) / 1000);
       }
       lastTime = milliseconds;
       requestAnimationFrame(callback);
-      this.getMove()
-      console.log(this._move)
+      count += 1;
+      if(count % 10 === 0) {
+        console.log("api called")
+        this.getMove()
+      }
+
+      
     }
     callback();
+    
     this.reset();
   }
   getMove(){
-    let url = `http://localhost:8000/pong/bot?ballx=${this.ball.position.x}&bally=${this.ball.position.y}&paddley=${this.players[1].position.y}`
+    let url = `http://localhost:8000/pong/bot?&bally=${this.ball.position.y}&paddley=${this.players[1].position.y}`
     var that = this
     var xmlhttp = new XMLHttpRequest()
+    console.log("getMove")
     xmlhttp.onreadystatechange = function() {
+      console.log("onreadystate")
       if (this.readyState == 4 && this.status == 200) {
         var myArr = JSON.parse(this.responseText);
-        that._move = myArr['up']
+        that._move = myArr['up'];
+        that.botUpdate(that._move);
+        console.log("botUpdate called")
+        // that.bottest();
      }
     };
     xmlhttp.open('GET', url, true);
     xmlhttp.send();
+    
   }
 
   collide(player, ball) {
@@ -124,7 +139,7 @@ class Pong
       const length = ball.velocity.length
       ball.velocity.x = -ball.velocity.x;
       ball.velocity.y += 300 * (Math.random() - .5);
-      ball.velocity.length = length * 1.1; 
+      ball.velocity.length = length * 1.05; 
     }
   }
 
@@ -166,7 +181,7 @@ class Pong
     if (this.ball.velocity.x === 0 && this.ball.velocity.y === 0) {
       this.ball.velocity.x = 300 * (Math.random() > .5 ? 1 : -1);
       this.ball.velocity.y = 300 * (Math.random() * 2 -1);
-      this.ball.velocity.length = 300
+      this.ball.velocity.length = 150
     }
   }
 
@@ -211,13 +226,37 @@ class Pong
     }
     // bot
     // this.players[1].position.y = this.ball.position.y
+
     
     this.players.forEach(player => this.collide(player, this.ball))
 
     // console.log(this.reward)
     this.draw();
   }
+
+  bottest() {
+    if (this.ball.position.y <= this.players[1].position.y) {
+      this.players[1].position.y -= 20
+    } else  {
+      this.players[1].position.y += 20
+    }
+  }
+
+  botUpdate(moveUp) {
+    if(moveUp === true) {
+        if (this.ball.position.y < 20) {
+          this.players[1].position.y <= this.players[1].position.y + 20
+        }
+        else {
+        this.players[1].position.y -= 20
+        }
+      } else {
+        this.players[1].position.y += 20
+      }
+  }
+
 }
+
 
 const canvas = document.getElementById('pong');
 const pong = new Pong(canvas);
@@ -227,8 +266,8 @@ class Game {
   constructor(pong) 
   {
     this.pong = pong;
-    this.playerVsAi = false;
-    this.playerVsPlayer = true;
+    this.playerVsAi = true;
+    this.playerVsPlayer = false;
     this.player1Mouse = false;
     this.player2Mouse = false;
   }
@@ -286,7 +325,7 @@ class Game {
       else if(e.keyCode === 87 && pong.players[0].position.y > 50) {
           pong.players[0].position.y -= 25
       }  
-    }
+    } // }
   }
 }
 

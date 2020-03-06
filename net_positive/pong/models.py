@@ -4,7 +4,14 @@ class SimpleBot(models.Model):
     
     @classmethod
     def simple_bot(request, court):
-        return court["bally"] > court["paddley"]
+        print(court)
+        if court["bally"] <= court["paddley"]:
+            print(True)
+            return True
+        else:
+            print(False)
+            return False
+
 
 
 

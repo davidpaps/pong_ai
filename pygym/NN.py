@@ -8,7 +8,7 @@ import csv
 from pathlib import Path
 
 
-render = True
+render = False
 benchmark = False
 batch_size = 2
 learning_rate = 1e-4
@@ -239,7 +239,7 @@ while True:
     #print('resetting env. episode reward total was %f. running mean: %f' % (reward_sum, running_reward))
     #removed print for performance purposes
     
-    if episode_number % 2 == 0: 
+    if episode_number % 100 == 0: 
       pickle.dump(model, open('save.p', 'wb'))
       #takes 15-20ms on macbook pro
     if episode_number % batch_size == 0: 

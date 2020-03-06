@@ -117,7 +117,8 @@ def back_prop(ep_input, ep_Z1, ep_A1, ep_Z2, ep_A2, ep_end_grad):
   dC_dZ2 = dC_dA2 * dA2_dZ2
 
   dW2 = 1/batch_size * np.dot(dC_dZ2.T, ep_A1)
-  dB2 = 1/batch_size * np.sum(dC_dZ2, axis = 0, keepdims = True).T
+  dB2 = 1/batch_size * np.sum(dC_dZ2, axis = 0, keepdims = True)
+  dB2 = dB2[0]
 
   dC_dZ2 = np.sum(dC_dZ2, axis = 0, keepdims = True)
   dC_dA1 = np.dot(dC_dZ2, model['W2'])
@@ -126,14 +127,7 @@ def back_prop(ep_input, ep_Z1, ep_A1, ep_Z2, ep_A2, ep_end_grad):
 
   dW1 = 1/batch_size * np.dot(dC_dZ1.T, ep_input)
   dB1 = np.sum(dC_dZ1, axis = 0, keepdims = True)
-  dB1 = 1/batch_size * dB1.T
-  
-  print("---------------")
-  print("dW1", dW1.shape)
-  print("dB1", dB1.shape)
-  print("dW2", dW2.shape)
-  print("dB2", dB2.shape)
-  print("dW3", dW3.shape)
+  dB1 = 1/batch_size * dB1[0]
 
   derivatives = {}
   derivatives['W1'] = dW1
@@ -204,14 +198,13 @@ while True:
     episode_loss_grad *= discounted_ep_rewards
     grad = back_prop(episode_input, episode_z1 ,episode_h1, episode_z2, episode_h2, episode_loss_grad)
     
-    for k in model: print(k, grad[k].shape)
     for k in model: grad_buffer[k] += grad[k] # accumulate grad over the batch
 
     if episode_number % batch_size == 0: 
       for k,v in model.items():
         g = grad_buffer[k]
         rmsprop_cache[k] = decay_rate * rmsprop_cache[k] + (1-decay_rate) * g**2
-        model[k] += learning_rate * g / (np.sprt(rmsprop_cache[k]) + 1e-5)
+        model[k] += learning_rate * g / (np.sqrt(rmsprop_cache[k]) + 1e-5)
         grad_buffer[k] = np.zeros_like(v)
 
     if episode_number % (batch_size) == 0: 

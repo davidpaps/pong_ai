@@ -43,7 +43,9 @@ dimension = 80 * 80
 
 model = {}
 model['W1'] = np.random.randn(200,dimension)/np.sqrt(dimension)
+model['B1'] = np.random.randn(200)/np.sqrt(200)
 model['W2'] = np.random.randn(50,200)/np.sqrt(200)
+model['B2'] = np.random.randn(50)/np.sqrt(50)
 model['W3'] = np.random.randn(50)/np.sqrt(50)
 
 grad_buffer = { k : np.zeros_like(v) for k,v in model.items() } # update buffers that add up gradients over a batch
@@ -70,13 +72,15 @@ def relu(Z):
   return np.maximum(0.0,Z)
 
 def forward_prop(input_array, weights_dict): 
-  Z1 = np.dot(weights_dict['W1'], input_array)
+  Z1 = np.dot(weights_dict['W1'], input_array) + weights_dict["B1"]
   A1 = relu(Z1)
-  Z2 = np.dot(weights_dict['W2'], A1)
+  Z2 = np.dot(weights_dict['W2'], A1) + weights_dict["B2"]
   A2 = relu(Z2)
   Z3 = np.dot(weights_dict['W3'], A2)
   A3 = 1.0 / (1.0 + np.exp(-Z3))
-  return A3, A2, A1
+  forward_output = {"X": input_array, "Z1": Z1, "A1": A1,
+   "Z2": Z2, "A2": A2, "A3": A3}
+  return forward_output
 
 def make_move(A3):
   if A3 > 0.8:
@@ -107,25 +111,50 @@ def true_y(action):
 def compute_grad(y,A3): 
   loss_grad.append(y - A3) # this value needs to be appended into an array
 
+def dC_da(dC_da2, da2_dz, A1):
+  dC_da = np.dot(A1, (dC_da2 * da2_dz))
+  
 
-def back_prop(episode_A2, episode_A1, episode_input, episode_end_grad):
-  dW3 = np.dot(episode_A2.T, episode_end_grad).ravel()
-  dA2 = np.outer(episode_end_grad, model['W3'])
-  dZ2 = Relu_derivative(episode_A2)
-  dW2 = np.dot(dZ2.T, episode_A1).ravel()
-  dB2 = dZ2 
-  dA1 = np.outer(dZ2, model['W2'])
-  dZ1 = Relu_derivative(episode_A1)
-  dW1 = np.dot(dZ1.T, episode_input)
-  dB1 = dZ1
-  derivatives = { 'W1': dW1,'W2': dW2, 'W3': dW3 }
+def back_prop(ep_input, ep_Z1, ep_A1, ep_Z2, ep_A2, ep_end_grad):
+  dW3 = np.dot(ep_A2.T, ep_end_grad).ravel()
+
+  dC_dA2 = np.outer(ep_end_grad, model['W3'])
+  dA2_dZ2 = Relu_derivative(ep_Z2)
+  dC_dZ2 = dC_dA2 * dA2_dZ2
+
+  dW2 = np.dot(dC_dZ2.T, ep_A1)
+  dB2 = np.sum(dC_dZ2, axis = 0, keepdims = True).T
+
+  dC_dZ2 = np.sum(dC_dZ2, axis = 0, keepdims = True)
+  dC_dA1 = np.dot(dC_dZ2, model['W2'])
+  dA1_dZ1 = Relu_derivative(ep_Z1)
+  dC_dZ1 = dC_dA1 * dA1_dZ1
+
+  dW1 = np.dot(dC_dZ1.T, ep_input)
+  dB1 = np.sum(dC_dZ1, axis = 0, keepdims = True)
+  dB1 = dB1.T
+  
+  print("---------------")
+  print("dW1", dW1.shape)
+  print("dB1", dB1.shape)
+  print("dW2", dW2.shape)
+  print("dB2", dB2.shape)
+  print("dW3", dW3.shape)
+
+  derivatives = {}
+  derivatives['W1'] = dW1
+  derivatives['B1'] = dB1
+  derivatives['W2'] = dW2
+  derivatives['B2'] = dB2
+  derivatives['W3'] = dW3
+
   return derivatives
 
 
 env = gym.make("Pong-v0")
 observation = env.reset()
 prev_frame = None
-state, h1, h2, h3, loss_grad, r = [], [], [], [], [], []
+state, z1, h1, z2, h2, h3, loss_grad, r = [], [], [], [], [], [], [], []
 running_reward = None
 reward_sum = 0 
 
@@ -142,16 +171,18 @@ while True:
   frame = prepro(observation)
   d_frame = frame - prev_frame if prev_frame is not None else np.zeros(dimension)
   prev_frame = frame
-  A3, A2, A1 = forward_prop(d_frame, model)
+
+  net_vals = forward_prop(d_frame, model)
 
   state.append(d_frame)
-  h1.append(A1)
-  h2.append(A2)
-  h3.append(A3)
+  h1.append(net_vals["A1"])
+  z1.append(net_vals["Z1"])
+  h2.append(net_vals["A2"])
+  z2.append(net_vals["Z2"])
 
-  action = make_move(A3)
+  action = make_move(net_vals["A3"])
   y = true_y(action)
-  loss_grad.append(y - A3)
+  loss_grad.append(y - net_vals["A3"])
 
   observation,reward,done,info = env.step(action)
   r.append(reward)
@@ -163,19 +194,24 @@ while True:
 
     episode_input = np.vstack(state)
     episode_h1 = np.vstack(h1)
+    episode_z1 = np.vstack(z1)
     episode_h2 = np.vstack(h2)
-    episode_h3 = np.vstack(h3)
+    episode_z2 = np.vstack(z2)
+ 
+
+
     episode_loss_grad = np.vstack(loss_grad)
     episode_reward = np.vstack(r)
 
-    state, h1, h2, h3, loss_grad, r = [], [], [], [], [], []
+    state, h1, z1, h2, z2, h3, loss_grad, r = [], [], [], [], [], [], [], []
 
     discounted_ep_rewards = discount_rewards(episode_reward)
 
     episode_loss_grad *= discounted_ep_rewards
-    grad = back_prop(episode_h1, episode_h2, episode_input, episode_loss_grad)
+    grad = back_prop(episode_input, episode_z1 ,episode_h1, episode_z2, episode_h2, episode_loss_grad)
     
-    for k in model: grad_buffer[k] += grad[k] # accumulate grad over batch
+    for k in model: print(k, grad[k].shape)
+    for k in model: grad_buffer[k] += grad[k] # accumulate grad over the batch
 
     if episode_number % batch_size == 0: 
       for k,v in model.items():

@@ -156,14 +156,14 @@ class Pong
 
     // console.log(`Player 1 Score: ${this.players[0].score} Player 2 Score: ${this.players[1].score}`)
 
-      if (this.players[0].score < 21 && this.players[1].score < 21){
-        this.start()    
-      } else {
-        this.done = true
-        // console.log(this.done)
-        // console.log(this.pixelData)
-        this.restartGame(); 
-      }
+    if (this.players[0].score < 21 && this.players[1].score < 21){
+      this.start()    
+    } else {
+      this.done = true
+      // console.log(this.done)
+      // console.log(this.pixelData)
+      this.restartGame(); 
+    }
   }
 
   start() {
@@ -216,11 +216,9 @@ class Pong
     if (this.ball.top < 0 || this.ball.bottom > this._canvas.height) {
       this.ball.velocity.y = -this.ball.velocity.y
     }
-
+    // bot
+    // this.players[1].position.y = this.ball.position.y
     
-    this.players[1].position.y = this.ball.position.y
-    
-      
     this.players.forEach(player => this.collide(player, this.ball))
 
     // console.log(this.reward)
@@ -232,10 +230,12 @@ const canvas = document.getElementById('pong');
 const pong = new Pong(canvas);
 
 class Game {
-  constructor(pong) {
+
+  constructor(pong) 
+  {
     this.pong = pong;
-    this.playerVsAi = true;
-    this.playerVsPlayer = false;
+    this.playerVsAi = false;
+    this.playerVsPlayer = true;
     this.player1Mouse = false;
     this.player2Mouse = false;
   }
@@ -255,6 +255,7 @@ class Game {
       this.mouse(0);
       this.keyboard(1);
     } else if (this.playerVsPlayer) {
+      this.keyboardPlayerPlayer();
       this.keyboard(1);
     }
   }
@@ -264,12 +265,6 @@ class Game {
     pong.players[player].position.y = event.offsetY;
     })
   }
-
-  // mousePlayerTwo(){
-  //   canvas.addEventListener('mousemove', event => {
-  //   pong.players[1].position.y = event.offsetY;
-  //   })
-  // }
 
   keyboard(player){
     window.addEventListener('keydown', keyboardHandlerFunction); 
@@ -287,7 +282,7 @@ class Game {
     }
   }
 
-  keyboardTwoPlayer(){
+  keyboardPlayerPlayer(){
     window.addEventListener('keydown', keyboardHandlerFunction); 
 
     function keyboardHandlerFunction(e) {
@@ -298,15 +293,6 @@ class Game {
       else if(e.keyCode === 87 && pong.players[0].position.y > 50) {
           pong.players[0].position.y -= 25
       }  
-      else if(e.keyCode === 40 && pong.players[1].position.y < (pong._canvas.height - 50)) {
-        pong.players[1].position.y += 25
-      }  
-      else if(e.keyCode === 38 && pong.players[1].position.y > 50) {
-        pong.players[1].position.y -= 25
-      }  
-      else if(e.keyCode === 32) {
-        pong.start();
-      } 
     }
   }
 }

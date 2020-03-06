@@ -1,16 +1,20 @@
+from datetime import datetime 
+import pickle
 import gym
 import random 
 import numpy as np
 import cv2
-from pathlib import Path
 import csv
+from pathlib import Path
+
 
 render = True
-resume = False
-batch_size = 10 # every how many episodes to do a param update?
+benchmark = False
+batch_size = 2
 learning_rate = 1e-4
 gamma = 0.99 # discount factor for reward
 decay_rate = 0.99
+dimension = 80 * 80
 
 # resume from previous checkpoint?
 
@@ -41,35 +45,6 @@ def prepro(I): # function for openai gym image conversion taken from a Deeplearn
   I[I != 0] = 1 # everything else (paddles, ball) just set to 1. this makes the image grayscale effectively
   return I.astype(np.float).ravel()
 
-dimension = 80 * 80
-
-model = {}
-model['W1'] = np.random.randn(200,dimension)/np.sqrt(dimension)
-model['B1'] = np.random.randn(200)/np.sqrt(200)
-model['W2'] = np.random.randn(50,200)/np.sqrt(200)
-model['B2'] = np.random.randn(50)/np.sqrt(50)
-model['W3'] = np.random.randn(50)/np.sqrt(50)
-
-grad_buffer = { k : np.zeros_like(v) for k,v in model.items() } # update buffers that add up gradients over a batch
-#updated .iteritems to .items
-rmsprop_cache = { k : np.zeros_like(v) for k,v in model.items() } 
-
-def discount_rewards(r):
-  """ take 1D float array of rewards and compute discounted reward """
-  discounted_r = np.zeros_like(r)
-  running_add = 0
-  for t in reversed(range(0, r.size)):
-    if r[t] != 0: running_add = 0 # reset the sum, since this was a game boundary (pong specific!)
-    running_add = running_add * gamma + r[t]
-    discounted_r[t] = running_add
-  discounted_r
-  # standardizing
-  discounted_r -= np.mean(discounted_r)
-  discounted_r /= np.std(discounted_r)
-  return discounted_r
-
-
-
 def relu(Z): 
   return np.maximum(0.0,Z)
 
@@ -87,18 +62,14 @@ def forward_prop(input_array, weights_dict):
 def make_move(A3):
   if A3 > 0.8:
     action = 2 
-  elif np.random.uniform() < A3:
+  elif A3 < 0.2:
+    action = 3
+  elif A3 > np.random.uniform():
     action = 2
   else:
     action = 3 
   return action 
 
-def Relu_derivative(Z):
-    Z[Z > 0 ] = 1
-    Z[Z <= 0] = 0 
-    return Z
-
-# After move step environment forward
 def true_y(action): 
   ''' function for randomly generating true y ''' 
   if action == 2:
@@ -110,6 +81,11 @@ def true_y(action):
 # states from forward prop need to be saved for backprop
 def compute_grad(y,A3): 
   loss_grad.append(y - A3) # this value needs to be appended into an array
+
+def Relu_derivative(Z):
+    Z[Z > 0 ] = 1
+    Z[Z <= 0] = 0 
+    return Z
 
 def back_prop(ep_input, ep_Z1, ep_A1, ep_Z2, ep_A2, ep_end_grad):
   dW3 = 1/batch_size * np.dot(ep_A2.T, ep_end_grad).ravel()
@@ -141,12 +117,28 @@ def back_prop(ep_input, ep_Z1, ep_A1, ep_Z2, ep_A2, ep_end_grad):
   return derivatives
 
 
-env = gym.make("Pong-v0")
-observation = env.reset()
-prev_frame = None
-state, z1, h1, z2, h2, h3, loss_grad, r = [], [], [], [], [], [], [], []
-running_reward = None
-reward_sum = 0 
+def discount_rewards(r):
+  """ take 1D float array of rewards and compute discounted reward """
+  discounted_r = np.zeros_like(r)
+  running_add = 0
+  for t in reversed(range(0, r.size)):
+    if r[t] != 0: running_add = 0 # reset the sum, since this was a game boundary (pong specific!)
+    running_add = running_add * gamma + r[t]
+    discounted_r[t] = running_add
+  discounted_r
+  # standardizing
+  discounted_r -= np.mean(discounted_r)
+  discounted_r /= np.std(discounted_r)
+  return discounted_r
+
+def import_csv(csvfilename):
+  data = []
+  row_index = 0
+  with open(csvfilename, "r", encoding="utf-8", errors="ignore") as scraped:
+    reader = csv.reader(scraped, delimiter=',')
+    for row in reader:
+      data.append(row[0])
+  return data
 
 if resume:
   data = import_csv('episode_file.csv')
@@ -154,15 +146,43 @@ if resume:
 else:
   episode_number = 0
 
+
+if resume:
+  model = pickle.load(open('save.p', 'rb'))
+  #takes 10-15 ms on macbook pro
+else:
+  model = {}
+  if benchmark:
+    np.random.seed(5) ; model['W1'] = np.random.randn(200,dimension)/np.sqrt(dimension)
+    np.random.seed(5) ; model['B1'] = np.random.randn(200)/np.sqrt(200)
+    np.random.seed(5) ; model['W2'] = np.random.randn(50,200)/np.sqrt(200)
+    np.random.seed(5) ; model['B2'] = np.random.randn(50)/np.sqrt(50)
+    np.random.seed(5) ; model['W3'] = np.random.randn(50)/np.sqrt(50)
+  else:
+    model['W1'] = np.random.randn(200,dimension)/np.sqrt(dimension)
+    model['B1'] = np.random.randn(200)/np.sqrt(200)
+    model['W2'] = np.random.randn(50,200)/np.sqrt(200)
+    model['B2'] = np.random.randn(50)/np.sqrt(50)
+    model['W3'] = np.random.randn(50)/np.sqrt(50)
+
+grad_buffer = { k : np.zeros_like(v) for k,v in model.items() } # update buffers that add up gradients over a batch
+#updated .iteritems to .items
+rmsprop_cache = { k : np.zeros_like(v) for k,v in model.items() } 
+
+
+env = gym.make("Pong-v0")
+observation = env.reset()
+prev_frame = None
+state, z1, h1, z2, h2, h3, loss_grad, r = [], [], [], [], [], [], [], []
+running_reward = None
+reward_sum = 0 
+cumulative_batch_rewards = 0
+
 while True:
   if render: env.render()
 
-
-  observation1 = pre_process_image(observation)
   # cv2.imwrite('color_img.jpg', observation1)
-  print(observation1.shape)
-  frame = observation1
-  # frame = prepro(observation)
+  frame = prepro(observation)
   d_frame = frame - prev_frame if prev_frame is not None else np.zeros(dimension)
   prev_frame = frame
 
@@ -206,26 +226,33 @@ while True:
     
     for k in model: grad_buffer[k] += grad[k] # accumulate grad over the batch
 
-    if episode_number % batch_size == 0: 
-      for k,v in model.items():
-        g = grad_buffer[k]
-        rmsprop_cache[k] = decay_rate * rmsprop_cache[k] + (1-decay_rate) * g**2
-        model[k] += learning_rate * g / (np.sqrt(rmsprop_cache[k]) + 1e-5)
-        grad_buffer[k] = np.zeros_like(v)
+    if episode_number % batch_size == 1:
+      cumulative_batch_rewards = reward_sum
+      batch_average = reward_sum
+    elif episode_number % batch_size == 0:
+      cumulative_batch_rewards += reward_sum
+      batch_average = cumulative_batch_rewards/batch_size
+    else:
+      cumulative_batch_rewards += reward_sum
+      batch_average = cumulative_batch_rewards/(episode_number % batch_size)
 
-    if episode_number % (batch_size) == 0: 
-      with open('performace_file.csv', mode='a') as performace_file:
-        performance_writer = csv.writer(performance_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        performance_writer.writerow([episode_number, reward_sum])
+    #print('resetting env. episode reward total was %f. running mean: %f' % (reward_sum, running_reward))
+    #removed print for performance purposes
+    
+    if episode_number % 2 == 0: 
+      pickle.dump(model, open('save.p', 'wb'))
+      #takes 15-20ms on macbook pro
+    if episode_number % batch_size == 0: 
       with open('episode_file.csv', mode='w') as episode_file: #store the last episode
         episode_writer = csv.writer(episode_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         episode_writer.writerow([episode_number])
+      with open('performance_file.csv', mode='a') as performance_file: #track performance over time
+        performance_writer = csv.writer(performance_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        performance_writer.writerow([datetime.now(), episode_number, batch_average])
 
     reward_sum = 0 
     observation = env.reset() # reset env
     prev_x = None
     
         
-# env.close()
-
-# The net in Numpy methods
+env.close()

@@ -70,7 +70,6 @@ class Pong
 {
   constructor(canvas)
   {
-    console.log("Constructor")
     this._move = "";
     this._canvas = canvas;
     this._context = canvas.getContext('2d');
@@ -95,12 +94,13 @@ class Pong
 
    let lastTime;
    const callback = (milliseconds) => {
-    console.log("callback")
       if (lastTime) {
         this.update((milliseconds - lastTime) / 1000);
       }
       lastTime = milliseconds;
       requestAnimationFrame(callback);
+      this.getMove()
+      console.log(this._move)
     }
     callback();
     this.reset();
@@ -120,7 +120,6 @@ class Pong
   }
 
   collide(player, ball) {
-    console.log("collide")
     if (player.left < ball.right && player.right > ball.left && player.top < ball.bottom && player.bottom > ball.top) {
       const length = ball.velocity.length
       ball.velocity.x = -ball.velocity.x;
@@ -130,7 +129,6 @@ class Pong
   }
 
   draw() {
-    console.log("draw")
     this._context.fillStyle = '#000';
     this._context.fillRect(0, 0, this._canvas.width, this._canvas.height);
 
@@ -139,13 +137,11 @@ class Pong
   }
 
   drawRectangle(rectangle) {
-    console.log("drawRectangle")
     this._context.fillStyle = '#fff';
     this._context.fillRect(rectangle.left, rectangle.top, rectangle.size.x, rectangle.size.y);
   }
 
   reset() {
-    console.log("reset")
     this.ball.position.x = this._canvas.width / 2;
     this.ball.position.y = this._canvas.height / 2;
     this.ball.velocity.x = 0;
@@ -167,7 +163,6 @@ class Pong
   }
 
   start() {
-    console.log("start")
     if (this.ball.velocity.x === 0 && this.ball.velocity.y === 0) {
       this.ball.velocity.x = 300 * (Math.random() > .5 ? 1 : -1);
       this.ball.velocity.y = 300 * (Math.random() * 2 -1);
@@ -176,7 +171,6 @@ class Pong
   }
 
   restartGame() {
-    console.log("restartGame")
       var playerId
       if (this.players[1].score === 21) {
         playerId = 1
@@ -192,7 +186,6 @@ class Pong
   }
 
   update(deltatime) {
-    console.log("update")
     this.ball.position.x += this.ball.velocity.x * deltatime;
     this.ball.position.y += this.ball.velocity.y * deltatime;
  

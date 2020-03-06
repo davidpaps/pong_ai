@@ -25,13 +25,13 @@ else:
 # below function used for balck and white game
 def pre_process_image(frame): # function for when we use the main pong on server
   """ prepro 210x160x3 uint8 frame into 6400 (80x80) 1D float vector """
-  frame = cv2.cvtColor(cv2.resize(frame,(75,80)), cv2.COLOR_BGR2GRAY)
+  frame = cv2.cvtColor(cv2.resize(frame,(80,80)), cv2.COLOR_BGR2GRAY)
   ret, frame = cv2.threshold(frame, 1, 255, cv2.THRESH_BINARY) # ret is useless
   frame = frame.ravel()
   return frame
 
 def prepro(I): # function for openai gym image conversion taken from a Deeplearning site
-  """ prepro 210x160x3 uint8 frame into 6000 (75x80) 1D float vector """
+  """ prepro 210x160x3 uint8 frame into 6000 (80x80) 1D float vector """
   I = I[35:195] # crop - remove 35px from start & 25px from end of image in x, to reduce redundant parts of image (i.e. after ball passes paddle)
   I = I[::2,::2,0] # downsample by factor of 2.
   I[I == 144] = 0 # erase background (background type 1)

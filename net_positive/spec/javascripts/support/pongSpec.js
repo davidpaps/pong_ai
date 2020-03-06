@@ -8,13 +8,11 @@ describe('Pong', function() {
 
 
   beforeEach(function() {
-    testCanvas = {
-      height: 150,
-      width: 150,
-      getContext: function() {
-       
-      }
-    }
+   
+    testCanvas = document.createElement('canvas')
+    testCanvas.width = 150
+    testCanvas.height = 150
+    testCanvas.id = 'pong'
   
     pong = new Pong(testCanvas);
     ball = new Ball()

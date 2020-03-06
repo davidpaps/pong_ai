@@ -70,11 +70,12 @@ class Pong
 {
   constructor(canvas)
   {
+    console.log("Constructor")
     this._move = "";
     this._canvas = canvas;
     this._context = canvas.getContext('2d');
     this.pixelData = this._context.getImageData(0, 0, 600, 400);
-    console.log(this.pixelData);
+    // console.log(this.pixelData);
 
     this.ball = new Ball;
 
@@ -94,6 +95,7 @@ class Pong
 
    let lastTime;
    const callback = (milliseconds) => {
+    console.log("callback")
       if (lastTime) {
         this.update((milliseconds - lastTime) / 1000);
       }
@@ -118,6 +120,7 @@ class Pong
   }
 
   collide(player, ball) {
+    console.log("collide")
     if (player.left < ball.right && player.right > ball.left && player.top < ball.bottom && player.bottom > ball.top) {
       const length = ball.velocity.length
       ball.velocity.x = -ball.velocity.x;
@@ -127,6 +130,7 @@ class Pong
   }
 
   draw() {
+    console.log("draw")
     this._context.fillStyle = '#000';
     this._context.fillRect(0, 0, this._canvas.width, this._canvas.height);
 
@@ -135,11 +139,13 @@ class Pong
   }
 
   drawRectangle(rectangle) {
+    console.log("drawRectangle")
     this._context.fillStyle = '#fff';
     this._context.fillRect(rectangle.left, rectangle.top, rectangle.size.x, rectangle.size.y);
   }
 
   reset() {
+    console.log("reset")
     this.ball.position.x = this._canvas.width / 2;
     this.ball.position.y = this._canvas.height / 2;
     this.ball.velocity.x = 0;
@@ -148,19 +154,20 @@ class Pong
     this.players[1].position.y = this._canvas.height / 2;
     this.reward = 0;
 
-    console.log(`Player 1 Score: ${this.players[0].score} Player 2 Score: ${this.players[1].score}`)
+    // console.log(`Player 1 Score: ${this.players[0].score} Player 2 Score: ${this.players[1].score}`)
 
-      if (this.players[0].score < 21 && this.players[1].score < 21){
-        this.start()    
-      } else {
-        this.done = true
-        console.log(this.done)
-        console.log(this.pixelData)
-        this.restartGame(); 
-      }
+    if (this.players[0].score < 21 && this.players[1].score < 21){
+      this.start()    
+    } else {
+      this.done = true
+      // console.log(this.done)
+      // console.log(this.pixelData)
+      this.restartGame(); 
+    }
   }
 
   start() {
+    console.log("start")
     if (this.ball.velocity.x === 0 && this.ball.velocity.y === 0) {
       this.ball.velocity.x = 300 * (Math.random() > .5 ? 1 : -1);
       this.ball.velocity.y = 300 * (Math.random() * 2 -1);
@@ -169,6 +176,7 @@ class Pong
   }
 
   restartGame() {
+    console.log("restartGame")
       var playerId
       if (this.players[1].score === 21) {
         playerId = 1
@@ -176,7 +184,7 @@ class Pong
         playerId = 0
       }
       this.players[playerId].game += 1
-      console.log(`Player 1 Game: ${this.players[0].game} Player 2 Game: ${this.players[1].game}`)
+      // console.log(`Player 1 Game: ${this.players[0].game} Player 2 Game: ${this.players[1].game}`)
       this.players[0].score = 0;
       this.players[1].score = 0;
       this.done = false;
@@ -184,7 +192,7 @@ class Pong
   }
 
   update(deltatime) {
-
+    console.log("update")
     this.ball.position.x += this.ball.velocity.x * deltatime;
     this.ball.position.y += this.ball.velocity.y * deltatime;
  
@@ -200,67 +208,94 @@ class Pong
       }
       
       this.players[playerId].score++;
-      console.log(this.reward)
+      // console.log(this.reward)
+      
       this.reset();
     }
   
     if (this.ball.top < 0 || this.ball.bottom > this._canvas.height) {
       this.ball.velocity.y = -this.ball.velocity.y
     }
-
-  // bot lvl 10
-  // this.players[1].position.y = this.ball.position.y
-
-  // bot lvl 5
-  if (this.ball.position.y > this.players[1].position.y && pong.players[1].position.y < (pong._canvas.height - 50)) {
-    this.players[1].position.y += 10;
-  } 
-  if (this.ball.position.y < this.players[1].position.y && pong.players[0].position.y > 50) {
-    this.players[1].position.y -= 10;
-  }
+    // bot
+    // this.players[1].position.y = this.ball.position.y
     
-  this.players.forEach(player => this.collide(player, this.ball))
+    this.players.forEach(player => this.collide(player, this.ball))
 
-  console.log(this.reward)
-  this.draw();
-
+    // console.log(this.reward)
+    this.draw();
   }
 }
+
 const canvas = document.getElementById('pong');
 const pong = new Pong(canvas);
 
-window.addEventListener('keydown', keyboardHandlerFunction);  
+class Game {
 
-function keyboardHandlerFunction(e) {
-  if(e.keyCode === 40 && pong.players[0].position.y < (pong._canvas.height - 50) ) {
-    pong.players[0].position.y += 25
+  constructor(pong) 
+  {
+    this.pong = pong;
+    this.playerVsAi = false;
+    this.playerVsPlayer = true;
+    this.player1Mouse = false;
+    this.player2Mouse = false;
   }
-  else if(e.keyCode === 38 && pong.players[0].position.y > 50) {
-      pong.players[0].position.y -= 25
-  }  
-  else if(e.keyCode === 32) {
-    pong.start();
-  } 
+
+  controls(){ 
+
+    if (this.playerVsAi && this.player1Mouse) {
+      this.mouse(0);
+      // bot
+    } else if (this.playerVsAi) {
+      this.keyboard(0);
+      // bot
+    } else if (this.playerVsPlayer && this.player2Mouse) {
+      this.mouse(1);
+      this.keyboard(0);
+    } else if (this.playerVsPlayer && this.player1Mouse) {
+      this.mouse(0);
+      this.keyboard(1);
+    } else if (this.playerVsPlayer) {
+      this.keyboardPlayerPlayer();
+      this.keyboard(1);
+    }
+  }
+
+  mouse(player){
+    canvas.addEventListener('mousemove', event => {
+    pong.players[player].position.y = event.offsetY;
+    })
+  }
+
+  keyboard(player){
+    window.addEventListener('keydown', keyboardHandlerFunction); 
+
+    function keyboardHandlerFunction(e) {
+      if(e.keyCode === 40 && pong.players[player].position.y < (pong._canvas.height - 50) ) {
+        pong.players[player].position.y += 25
+      }
+      else if(e.keyCode === 38 && pong.players[player].position.y > 50) {
+          pong.players[player].position.y -= 25
+      }  
+      else if(e.keyCode === 32) {
+        pong.start();
+      } 
+    }
+  }
+
+  keyboardPlayerPlayer(){
+    window.addEventListener('keydown', keyboardHandlerFunction); 
+
+    function keyboardHandlerFunction(e) {
+
+      if(e.keyCode === 83 && pong.players[0].position.y < (pong._canvas.height - 50) ) {
+        pong.players[0].position.y += 25
+      }
+      else if(e.keyCode === 87 && pong.players[0].position.y > 50) {
+          pong.players[0].position.y -= 25
+      }  
+    }
+  }
 }
 
-// player vs player controls
-// function keyboardHandlerFunction(e) {
-
-//   if(e.keyCode === 83 && pong.players[0].position.y < (pong._canvas.height - 50) ) {
-//     pong.players[0].position.y += 25
-//   }
-//   else if(e.keyCode === 87 && pong.players[0].position.y > 50) {
-//       pong.players[0].position.y -= 25
-//   }  
-//   else if(e.keyCode === 40 && pong.players[1].position.y < (pong._canvas.height - 50)) {
-//     pong.players[1].position.y += 25
-//   }  
-//   else if(e.keyCode === 38 && pong.players[1].position.y > 50) {
-//     pong.players[1].position.y -= 25
-//   }  
-// }
-
-// mouse controls
-// canvas.addEventListener('mousemove', event => {
-//   pong.players[0].position.y = event.offsetY;
-// })
+const game = new Game(pong);
+game.controls();

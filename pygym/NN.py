@@ -26,7 +26,9 @@ else:
 def pre_process_image(frame): # function for when we use the main pong on server
   """ prepro 210x160x3 uint8 frame into 6400 (80x80) 1D float vector """
   frame = cv2.cvtColor(cv2.resize(frame,(80,80)), cv2.COLOR_BGR2GRAY)
-  ret, frame = cv2.threshold(frame, 1, 255, cv2.THRESH_BINARY) # ret is useless
+
+  ret, frame = cv2.threshold(frame, 127, 255, cv2.THRESH_BINARY) # et is useless
+  frame[frame == 255] = 1
   frame = frame.ravel()
   return frame
 
@@ -155,8 +157,12 @@ else:
 while True:
   if render: env.render()
 
-  
-  frame = prepro(observation)
+
+  observation1 = pre_process_image(observation)
+  # cv2.imwrite('color_img.jpg', observation1)
+  print(observation1.shape)
+  frame = observation1
+  # frame = prepro(observation)
   d_frame = frame - prev_frame if prev_frame is not None else np.zeros(dimension)
   prev_frame = frame
 
@@ -220,6 +226,6 @@ while True:
     prev_x = None
     
         
-env.close()
+# env.close()
 
 # The net in Numpy methods

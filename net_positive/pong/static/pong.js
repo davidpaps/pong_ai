@@ -80,6 +80,7 @@ class Pong
 
 
     this.ball = new Ball;
+    this.throttle = 10;
 
     this.done = false;
 
@@ -101,8 +102,7 @@ class Pong
 
 
    let lastTime;
-  //  let count;
-  //  this.count = 99;
+   this.count = 99;
    const callback = (milliseconds) => {
       if (lastTime) {
         this.update((milliseconds - lastTime) / 1000);
@@ -116,9 +116,10 @@ class Pong
       lastTime = milliseconds;
       requestAnimationFrame(callback);
       
-      this.count += 1;
+    
+      this.count += 1
       console.log(this.responseReceived);
-      if (this.responseReceived === true){
+      if (this.responseReceived === true && this.count % this.throttle === 0) {
         this.responseReceived = false;
         this.getMove(this.count)
         if (this.isPointOver === true) {
@@ -135,8 +136,8 @@ class Pong
 
   getMove(){
     var image = 'placeholder'
-    // let url = `http://localhost:8000/pong/bot?&bally=${Math.round(this.ball.position.y)}&paddley=${this.players[1].position.y}&reward=${this.aggregateReward}&img=${image}`
-    let url = `http://net-positive.herokuapp.com/pong/bot?bally=${Math.round(this.ball.position.y)}&paddley=${this.players[1].position.y}&reward=${this.aggregateReward}&img=${image}`
+    let url = `http://localhost:8000/pong/bot?&bally=${Math.round(this.ball.position.y)}&paddley=${this.players[1].position.y}&reward=${this.aggregateReward}&img=${image}`
+    // let url = `http://net-positive.herokuapp.com/pong/bot?bally=${Math.round(this.ball.position.y)}&paddley=${this.players[1].position.y}&reward=${this.aggregateReward}&img=${image}`
     var that = this
     var xmlhttp = new XMLHttpRequest()
     xmlhttp.onreadystatechange = function() {

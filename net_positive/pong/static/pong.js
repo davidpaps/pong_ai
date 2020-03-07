@@ -114,21 +114,13 @@ class Pong
   }
 
   getMove(){
-    console.log('ball')
-    Math.round(this.ball.position.y)
-  
-    console.log('paddle')
-    console.log(this.players[1].position.y)
     let url = `http://localhost:8000/pong/bot?&bally=${Math.round(this.ball.position.y)}&paddley=${this.players[1].position.y}`
-    // let url = `http://localhost:8000/pong/bot?&bally=98&paddley=120`
     var that = this
     var xmlhttp = new XMLHttpRequest()
     xmlhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
         var myArr = JSON.parse(this.responseText);
         that._move = myArr['up'];
-        console.log('move')
-        console.log(that._move);
         that.botUpdate(that._move);
      }
     };

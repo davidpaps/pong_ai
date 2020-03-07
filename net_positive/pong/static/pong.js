@@ -96,7 +96,6 @@ class Pong
    let count;
    count = 99;
    const callback = (milliseconds) => {
-     console.log("callback")
       if (lastTime) {
         this.update((milliseconds - lastTime) / 1000);
       }
@@ -104,7 +103,6 @@ class Pong
       requestAnimationFrame(callback);
       count += 1;
       if(count % 10 === 0) {
-        console.log("api called")
         this.getMove()
       }
 
@@ -114,22 +112,20 @@ class Pong
     
     this.reset();
   }
+
   getMove(){
-    let url = `http://localhost:8000/pong/bot?&bally=${this.ball.position.y}&paddley=${this.players[1].position.y}`
+    let url = `http://localhost:8000/pong/bot?&bally=${Math.round(this.ball.position.y)}&paddley=${this.players[1].position.y}`
     var that = this
     var xmlhttp = new XMLHttpRequest()
-    console.log("getMove")
     xmlhttp.onreadystatechange = function() {
-      console.log("onreadystate")
       if (this.readyState == 4 && this.status == 200) {
         var myArr = JSON.parse(this.responseText);
         that._move = myArr['up'];
         that.botUpdate(that._move);
-        console.log("botUpdate called")
-        // that.bottest();
      }
     };
     xmlhttp.open('GET', url, true);
+
     xmlhttp.send();
     
   }
@@ -171,8 +167,6 @@ class Pong
       this.start()    
     } else {
       this.done = true
-      // console.log(this.done)
-      // console.log(this.pixelData)
       this.restartGame(); 
     }
   }
@@ -216,7 +210,6 @@ class Pong
       }
       
       this.players[playerId].score++;
-      // console.log(this.reward)
       
       this.reset();
     }
@@ -224,14 +217,13 @@ class Pong
     if (this.ball.top < 0 || this.ball.bottom > this._canvas.height) {
       this.ball.velocity.y = -this.ball.velocity.y
     }
-    // bot
-    // this.players[1].position.y = this.ball.position.y
+  
 
     
     this.players.forEach(player => this.collide(player, this.ball))
 
-    // console.log(this.reward)
     this.draw();
+
   }
 
   bottest() {
@@ -244,15 +236,10 @@ class Pong
 
   botUpdate(moveUp) {
     if(moveUp === true) {
-        if (this.ball.position.y < 20) {
-          this.players[1].position.y <= this.players[1].position.y + 20
-        }
-        else {
         this.players[1].position.y -= 20
-        }
-      } else {
+    } else {
         this.players[1].position.y += 20
-      }
+    }
   }
 
 }
@@ -325,7 +312,7 @@ class Game {
       else if(e.keyCode === 87 && pong.players[0].position.y > 50) {
           pong.players[0].position.y -= 25
       }  
-    } // }
+    }
   }
 }
 

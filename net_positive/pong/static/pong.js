@@ -212,10 +212,8 @@ class Pong
     
     if (this.ball.left < 0 || this.ball.right > this._canvas.width) {
       if (this.ball.velocity.x < 0) {
-        console.log('called')
         this.aggregate_reward += 1
       } else {
-        console.log('called')
         this.aggregate_reward += -1;
       }
     }

@@ -225,7 +225,15 @@ while True:
     grad = back_prop(episode_input, episode_z1 ,episode_h1, episode_z2, episode_h2, episode_loss_grad)
     
     for k in model: grad_buffer[k] += grad[k] # accumulate grad over the batch
+    if episode_number % batch_size == 0:
+      for k,v in model.items():
+        #updated .iteritems to .items to work with python3
+        g = grad_buffer[k] # gradient
+        rmsprop_cache[k] = decay_rate * rmsprop_cache[k] + (1 - decay_rate) * g**2
+        model[k] += learning_rate * g / (np.sqrt(rmsprop_cache[k]) + 1e-5)
+        grad_buffer[k] = np.zeros_like(v)
 
+    # === Documenting Performance and resetting below
     if episode_number % batch_size == 1:
       cumulative_batch_rewards = reward_sum
       batch_average = reward_sum

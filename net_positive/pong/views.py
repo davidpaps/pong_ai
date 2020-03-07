@@ -9,7 +9,7 @@ def home(request, template='index.html'):
 def bot(request):
     bally = request.GET.get('bally')
     paddley = request.GET.get('paddley')
-    reward = request.GET.get('aggregate_reward')
+    reward = request.GET.get('reward')
     court = {'bally': bally, 'paddley': paddley, 'reward': reward}
     data = {
       'up': SimpleBot.simple_bot(court),

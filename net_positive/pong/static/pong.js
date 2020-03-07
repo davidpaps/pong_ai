@@ -115,7 +115,7 @@ class Pong
 
   getMove(){
     // let url = `http://localhost:8000/pong/bot?&bally=${Math.round(this.ball.position.y)}&paddley=${this.players[1].position.y}`
-    let url = `http://net-positive.herokuapp.com/pong/bot?ballx=${this.ball.position.x}&bally=${this.ball.position.y}&paddley=${this.players[1].position.y}`
+    let url = `http://net-positive.herokuapp.com/pong/bot?bally=${Math.round(this.ball.position.y)}&paddley=${this.players[1].position.y}`
 
     var that = this
     var xmlhttp = new XMLHttpRequest()

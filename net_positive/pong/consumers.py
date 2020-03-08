@@ -10,11 +10,15 @@ class PongConsumer(WebsocketConsumer):
         pass
 
     def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        message = text_data_json['message']
-        move = SimpleBot.simple_bot({'bally': '150', 'paddley': '120', 'reward': '0'})
+        print(text_data)
+        court_json = json.loads(text_data)["court"]
+        print(court_json)
+        bally = json.loads(court_json)["bally"]
+        paddley = json.loads(court_json)["paddley"]
+        reward = json.loads(court_json)["reward]
+        move = SimpleBot.simple_bot_ws(bally, paddley, reward)
 
         self.send(text_data=json.dumps({
-            'message': message,
+            'court': court,
             'move': move,
         }))

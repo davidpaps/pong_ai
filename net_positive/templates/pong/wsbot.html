@@ -20,8 +20,9 @@
     chatSocket.onmessage = function(e) {
         var data = JSON.parse(e.data);
         console.log(data);
-        var message = data['message'];
-        document.querySelector('#chat-log').value += (message + '\n');
+        var move = data['move'];
+        var court = data['court'];
+        document.querySelector('#chat-log').value += (court + '\n' + move);
     };
 
     chatSocket.onclose = function(e) {
@@ -38,10 +39,8 @@
     document.querySelector('#chat-message-submit').onclick = function(e) {
         var messageInputDom = document.querySelector('#chat-message-input');
         var message = messageInputDom.value;
-        var move = messageInputDom.value;
         chatSocket.send(JSON.stringify({
-            'message': message,
-            'move': move,
+            'court': message,
         }));
 
         messageInputDom.value = '';

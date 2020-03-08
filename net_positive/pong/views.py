@@ -21,10 +21,7 @@ def play(request):
     return HttpResponse('<h1> Pong Play </h3>')
 
 def wsbot(request, training_session):
-  print(message.content)
+ 
   return render(request, 'pong/wsbot.html', {
-        # 'message2' : message.content['message'],
         'training_session': training_session,
-        'up': SimpleBot.simple_bot({'bally': '150', 'paddley': '120', 'reward': '0'}),
-
     })

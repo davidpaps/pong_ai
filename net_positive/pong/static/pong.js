@@ -74,15 +74,22 @@ class Pong
     this._canvas = canvas;
     this._context = canvas.getContext('2d');
     this.pixelData = this._context.getImageData(0, 0, 600, 400);
+    
     // console.log(this.pixelData);
+   
+
 
     this.ball = new Ball;
+    this.throttle = 1;
+    this.gameCount = 0;
 
     this.done = false;
 
-    this.is_point_over = false;
+    this.isPointOver = false;
 
-    this.aggregate_reward = 0;
+    this.aggregateReward = 0;
+
+    this.responseReceived = true;
   
 
     this.players = [
@@ -92,17 +99,16 @@ class Pong
 
     this.players[0].position.x = 20;
     this.players[1].position.x = this._canvas.width - 20;
-    this.players.forEach( player => { player.position.y = this._canvas.height /2 });
+    this.players.forEach( player => { player.position.y = this._canvas.height / 2 });
 
 
-   let lastTime;
-   let count;
-   count = 99;
-   const callback = (milliseconds) => {
+    let lastTime;
+    this.count = 99;
+    const callback = (milliseconds) => {
       if (lastTime) {
         this.update((milliseconds - lastTime) / 1000);
-        this.update_reward();
-        if (this.is_point_over === true) {
+        this.updateReward();
+        if (this.isPointOver === true) {
           this.reset();
         }
         this.draw();
@@ -111,13 +117,21 @@ class Pong
       lastTime = milliseconds;
       requestAnimationFrame(callback);
       
-      count += 1;
       
-      if(count % 10 === 0) {
-        this.getMove()
-        if (this.is_point_over === true) {
-          this.aggregate_reward = 0;
-          this.is_point_over = false;
+      this.count += 1;
+      // console.log(this.responseReceived);
+     
+      if ((this.responseReceived === true) && (this.count % this.throttle === 0)) {
+        // this.draw();
+        // uncomment the above line to see what the bot is seeing
+        this.responseReceived = false;
+        this.getMove(this.count)
+        if (this.isPointOver === true) {
+          this.gameCount += 1;
+          console.log('game count')
+          console.log(this.gameCount);
+          this.aggregateReward = 0;
+          this.isPointOver = false;
         }
       }
       
@@ -128,8 +142,13 @@ class Pong
   }
 
   getMove(){
-    let url = `http://localhost:8000/pong/bot?&bally=${Math.round(this.ball.position.y)}&paddley=${this.players[1].position.y}&reward=${this.aggregate_reward}`
-    // let url = `http://net-positive.herokuapp.com/pong/bot?bally=${Math.round(this.ball.position.y)}&paddley=${this.players[1].position.y}`
+    // console.log(this.count);
+    // var d = new Date
+    // console.log(d.getSeconds())
+    // console.log(d.getMilliseconds())
+    var image = 'placeholder'
+    // let url = `http://localhost:8000/pong/bot?&bally=${Math.round(this.ball.position.y)}&paddley=${this.players[1].position.y}&reward=${this.aggregateReward}&img=${image}`
+    let url = `http://net-positive.herokuapp.com/pong/bot?bally=${Math.round(this.ball.position.y)}&paddley=${this.players[1].position.y}&reward=${this.aggregateReward}&img=${image}`
     var that = this
     var xmlhttp = new XMLHttpRequest()
     xmlhttp.onreadystatechange = function() {
@@ -137,7 +156,8 @@ class Pong
         var myArr = JSON.parse(this.responseText);
         that._move = myArr['up'];
         that.botUpdate(that._move);
-     }
+        that.responseReceived = true;
+      }
     };
     xmlhttp.open('GET', url, true);
 
@@ -189,7 +209,7 @@ class Pong
     if (this.ball.velocity.x === 0 && this.ball.velocity.y === 0) {
       this.ball.velocity.x = 300 * (Math.random() > .5 ? 1 : -1);
       this.ball.velocity.y = 300 * (Math.random() * 2 -1);
-      this.ball.velocity.length = 150
+      this.ball.velocity.length = 2000;
     }
   }
 
@@ -208,13 +228,13 @@ class Pong
       this.start();
   }
 
-  update_reward() {
+  updateReward() {
     
     if (this.ball.left < 0 || this.ball.right > this._canvas.width) {
       if (this.ball.velocity.x < 0) {
-        this.aggregate_reward += 1
+        this.aggregateReward += 1
       } else {
-        this.aggregate_reward += -1;
+        this.aggregateReward += -1;
       }
     }
   }
@@ -230,10 +250,10 @@ class Pong
       var playerId;
       if (this.ball.velocity.x < 0) {
         playerId = 1;
-        this.is_point_over = true;
+        this.isPointOver = true;
       } else {
         playerId = 0;
-        this.is_point_over = true;
+        this.isPointOver = true;
       }
       this.players[playerId].score++;
     }
@@ -248,7 +268,7 @@ class Pong
     
   }
 
-  bottest() {
+  botJS() {
     if (this.ball.position.y <= this.players[1].position.y) {
       this.players[1].position.y -= 20
     } else  {

@@ -80,7 +80,8 @@ class Pong
 
 
     this.ball = new Ball;
-    this.throttle = 10;
+    this.throttle = 1;
+    this.gameCount = 0;
 
     this.done = false;
 
@@ -101,9 +102,9 @@ class Pong
     this.players.forEach( player => { player.position.y = this._canvas.height / 2 });
 
 
-   let lastTime;
-   this.count = 99;
-   const callback = (milliseconds) => {
+    let lastTime;
+    this.count = 99;
+    const callback = (milliseconds) => {
       if (lastTime) {
         this.update((milliseconds - lastTime) / 1000);
         this.updateReward();
@@ -116,13 +117,19 @@ class Pong
       lastTime = milliseconds;
       requestAnimationFrame(callback);
       
-    
-      this.count += 1
-      console.log(this.responseReceived);
-      if (this.responseReceived === true && this.count % this.throttle === 0) {
+      
+      this.count += 1;
+      // console.log(this.responseReceived);
+     
+      if ((this.responseReceived === true) && (this.count % this.throttle === 0)) {
+        // this.draw();
+        // uncomment the above line to see what the bot is seeing
         this.responseReceived = false;
         this.getMove(this.count)
         if (this.isPointOver === true) {
+          this.gameCount += 1;
+          console.log('game count')
+          console.log(this.gameCount);
           this.aggregateReward = 0;
           this.isPointOver = false;
         }
@@ -135,6 +142,10 @@ class Pong
   }
 
   getMove(){
+    // console.log(this.count);
+    // var d = new Date
+    // console.log(d.getSeconds())
+    // console.log(d.getMilliseconds())
     var image = 'placeholder'
     // let url = `http://localhost:8000/pong/bot?&bally=${Math.round(this.ball.position.y)}&paddley=${this.players[1].position.y}&reward=${this.aggregateReward}&img=${image}`
     let url = `http://net-positive.herokuapp.com/pong/bot?bally=${Math.round(this.ball.position.y)}&paddley=${this.players[1].position.y}&reward=${this.aggregateReward}&img=${image}`
@@ -198,7 +209,7 @@ class Pong
     if (this.ball.velocity.x === 0 && this.ball.velocity.y === 0) {
       this.ball.velocity.x = 300 * (Math.random() > .5 ? 1 : -1);
       this.ball.velocity.y = 300 * (Math.random() * 2 -1);
-      this.ball.velocity.length = 150
+      this.ball.velocity.length = 2000;
     }
   }
 

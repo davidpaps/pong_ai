@@ -9,7 +9,8 @@ def home(request, template='index.html'):
 def bot(request):
     bally = request.GET.get('bally')
     paddley = request.GET.get('paddley')
-    court = {'bally': bally, 'paddley': paddley}
+    reward = request.GET.get('reward')
+    court = {'bally': bally, 'paddley': paddley, 'reward': reward}
     data = {
       'up': SimpleBot.simple_bot(court),
     }
@@ -17,3 +18,8 @@ def bot(request):
 
 def play(request):
     return HttpResponse('<h1> Pong Play </h3>')
+
+def wsbot(request, training_session):
+  return render(request, 'pong/wsbot.html', {
+        'training_session': training_session
+    })

@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -128,3 +129,7 @@ STATIC_ROOT = os.path.join(os.path.abspath(
 STATIC_URL = '/static/'
 
 django_heroku.settings(locals())
+
+
+# Channels
+ASGI_APPLICATION = 'net_positive.routing.application'

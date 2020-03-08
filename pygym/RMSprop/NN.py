@@ -10,6 +10,7 @@ from pathlib import Path
 
 render = False
 benchmark = False
+
 batch_size = 3
 learning_rate = 1e-4
 gamma = 0.99 # discount factor for reward
@@ -60,9 +61,9 @@ def forward_prop(input_array, weights_dict):
   return forward_output
 
 def make_move(A3):
-  if A3 > 0.8:
+  if A3 > 0.975:
     action = 2 
-  elif A3 < 0.2:
+  elif A3 < 0.025:
     action = 3
   elif A3 > np.random.uniform():
     action = 2

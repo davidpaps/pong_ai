@@ -16,5 +16,5 @@ class PongConsumer(WebsocketConsumer):
 
         self.send(text_data=json.dumps({
             'message': message,
-            'move': message,
+            'move': move,
         }))

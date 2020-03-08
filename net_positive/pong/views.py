@@ -5,25 +5,25 @@ from pong.models import SimpleBot
 
 
 def home(request, template='index.html'):
-    return render(request, template, {})
+  return render(request, template, {})
 
 def bot(request):
-    bally = request.GET.get('bally')
-    paddley = request.GET.get('paddley')
-    reward = request.GET.get('reward')
-    court = {'bally': bally, 'paddley': paddley, 'reward': reward}
-    bally = court['bally']
-    # {"bally": "10", "paddley": "20", "reward": "0"}
-    data = {
-      'up': SimpleBot.simple_bot(court),
-    }
-    return JsonResponse(data)
+  bally = request.GET.get('bally')
+  paddley = request.GET.get('paddley')
+  reward = request.GET.get('reward')
+  court = {'bally': bally, 'paddley': paddley, 'reward': reward}
+  bally = court['bally']
+  # {"bally": "10", "paddley": "20", "reward": "0"}
+  data = {
+    'up': SimpleBot.simple_bot(court),
+  }
+  return JsonResponse(data)
 
 def play(request):
-    return HttpResponse('<h1> Pong Play </h3>')
+  return HttpResponse('<h1> Pong Play </h3>')
 
 def wsbot(request, training_session):
- 
   return render(request, 'pong/wsbot.html', {
         'training_session': training_session,
     })
+

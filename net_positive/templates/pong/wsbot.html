@@ -13,19 +13,17 @@
     var trainingSession = "{{ training_session|escapejs }}";
   
 
-    var chatSocket = new WebSocket(
+    var BotSocket = new WebSocket(
         'ws://' + window.location.host +
         '/ws/pong/' + trainingSession + '/');
 
-    chatSocket.onmessage = function(e) {
+    BotSocket.onmessage = function(e) {
         var data = JSON.parse(e.data);
-        console.log(data);
         var move = data['move'];
-        var court = data['court'];
-        document.querySelector('#chat-log').value += (court + '\n' + move);
+        document.querySelector('#chat-log').value += (move + '\n');
     };
 
-    chatSocket.onclose = function(e) {
+    BotSocket.onclose = function(e) {
         console.error('Chat socket closed unexpectedly');
     };
 
@@ -37,13 +35,12 @@
     };
 
     document.querySelector('#chat-message-submit').onclick = function(e) {
-        var messageInputDom = document.querySelector('#chat-message-input');
-        var message = messageInputDom.value;
-        chatSocket.send(JSON.stringify({
-            'court': message,
+        var court = '{"bally": "10", "paddley": "20", "reward": "0"}'
+        BotSocket.send(JSON.stringify({
+            'court': court,
         }));
 
-        messageInputDom.value = '';
+        court = '';
     };
 </script>
 </html>

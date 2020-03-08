@@ -8,11 +8,11 @@ import csv
 from pathlib import Path
 
 
-render = True
+render = False 
 benchmark = False
 in_match = False
 
-batch_size = 2
+batch_size = 3
 learning_rate = 1e-4
 gamma = 0.99 # discount factor for reward
 

@@ -10,7 +10,7 @@ from pathlib import Path
 
 render = False
 benchmark = False
-batch_size = 2
+batch_size = 3
 learning_rate = 1e-4
 gamma = 0.99 # discount factor for reward
 decay_rate = 0.99

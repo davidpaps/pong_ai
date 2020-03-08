@@ -10,6 +10,7 @@ from pathlib import Path
 
 render = True
 benchmark = False
+in_match = True 
 
 batch_size = 2
 learning_rate = 1e-4
@@ -114,6 +115,13 @@ def make_move(A3):
     action = 3 
   return action 
 
+def match_move(A3):
+  if A3 > 0.5:
+    action = 3 
+  else:
+    action = 2
+  return action 
+
 def true_y(action): 
   ''' function for randomly generating true y ''' 
   if action == 2:
@@ -199,7 +207,11 @@ while True:
   h2.append(net_vals["A2"])
   z2.append(net_vals["Z2"])
 
-  action = make_move(net_vals["A3"])
+  if in_match == False: 
+    action = make_move(net_vals["A3"])
+  else: 
+    action = match_move(net_vals["A3"])
+
   y = true_y(action)
   loss_grad.append(y - net_vals["A3"])
 

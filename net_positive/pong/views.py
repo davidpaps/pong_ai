@@ -18,3 +18,8 @@ def bot(request):
 
 def play(request):
     return HttpResponse('<h1> Pong Play </h3>')
+
+def wsbot(request, training_session):
+  return render(request, 'pong/wsbot.html', {
+        'training_session': training_session
+    })

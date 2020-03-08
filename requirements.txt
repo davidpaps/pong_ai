@@ -3,3 +3,6 @@ django-heroku
 django-jasmine
 gym[atari]
 channels
+sniffer
+coverage
+pytest

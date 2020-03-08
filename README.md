@@ -27,12 +27,13 @@ Six neural nets were provisioned with different batch size parameters and allowe
 
 | Batch size   | Av. reward over final 10 episodes of run   |              
 | -------------|:------------------------------------------:|
-| 3            |                                            | 
-| 5            |                                            | 
-| 7            |                                            | 
-| 10           |                                            | 
+| 3            |                                            |
+| 5            |                                            |
+| 7            |                                            |
+| 10           |                                            |
 | 12           |                                            |
-| 15           |                                            | 
+| 15           |                                            |
 
-- added to heroku using git push heroku master will turn on auto deploy in the next hour
 
+To test all dirs do - coverage run -m pytest
+alternatively you can run pyest spec if you do not want to see level of test coverage

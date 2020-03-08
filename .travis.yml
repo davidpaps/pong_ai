@@ -2,11 +2,11 @@ language: python
 dist: trusty
 python:
 - '3.6'
-cache: pip
+cache: pip3
 install:
-- pip install -r requirements.txt
+- pip3 install -r requirements.txt
 script:
-- python spec/tests_net.py
+- pytest spec
 deploy:
   provider: heroku
   app: net-positive

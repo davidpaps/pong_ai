@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from pong.models import SimpleBot
 
+
 def home(request, template='index.html'):
     return render(request, template, {})
 
@@ -20,6 +21,7 @@ def play(request):
     return HttpResponse('<h1> Pong Play </h3>')
 
 def wsbot(request, training_session):
+ 
   return render(request, 'pong/wsbot.html', {
-        'training_session': training_session
+        'training_session': training_session,
     })

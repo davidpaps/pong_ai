@@ -12,6 +12,8 @@ def bot(request):
     paddley = request.GET.get('paddley')
     reward = request.GET.get('reward')
     court = {'bally': bally, 'paddley': paddley, 'reward': reward}
+    bally = court['bally']
+    # {"bally": "10", "paddley": "20", "reward": "0"}
     data = {
       'up': SimpleBot.simple_bot(court),
     }

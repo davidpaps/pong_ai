@@ -125,7 +125,8 @@ class Pong
         // this.draw();
         // uncomment the above line to see what the bot is seeing
         this.responseReceived = false;
-        this.getMove(this.count)
+       
+        this.getMove(this.count);
         if (this.isPointOver === true) {
           this.gameCount += 1;
           console.log('game count')

@@ -6,7 +6,7 @@ cache: pip
 install:
 - pip install -r requirements.txt
 script:
-- python spec/tests_net.py
+- python3 pytest spec
 deploy:
   provider: heroku
   app: net-positive

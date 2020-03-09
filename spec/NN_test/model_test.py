@@ -1,10 +1,19 @@
 import os
-NN = os.system("python3 ../../pygym/RMSprop/NN.py")
-from NN import forward_prop
-
+os.system("python3 ../../pygym/RMSprop/NN.py")
 
 def test_print():
   print('hello')
+
+# def seam_test():
+# print('needs to be between 0 and 1')
+#   @weights = NeuralNetwork.weights,
+#   @weights.each do |point|
+#     (0..1).must_include(point)
+
+# it 'has data that sums up to 1'
+#   @weights = NeuralNetwork.weights,
+  
+#   @weights.reduce(&:+).must_equal 1
 
 # def test_convnet():
 #       image = tf.placeholder(tf.float32, (None, 100, 100, 3)

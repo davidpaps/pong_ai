@@ -37,3 +37,6 @@ Six neural nets were provisioned with different batch size parameters and allowe
 
 To test all dirs do - coverage run -m pytest
 alternatively you can run pyest spec if you do not want to see level of test coverage
+
+Given the fact that we have problems such as unstable data, underfitted models, overfitted models, and uncertain future resiliency, what should we do? There are some general guidelines and techniques, known as heuristics, that we can write into tests to mitigate the risk of these issues arising.
+We can test those two seams by unit testing our data inputs and outputs to make sure they are valid within our given tolerances.

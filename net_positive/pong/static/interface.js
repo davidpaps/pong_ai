@@ -3,8 +3,8 @@
 
 $(document).ready(function(){
 
-  
   updateScore()
+  
 
 
 function updateScore(){

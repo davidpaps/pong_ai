@@ -255,11 +255,30 @@ class Pong
         this.isPointOver = true;
       }
       this.players[playerId].score++;
+
+
+    $(document).ready(function(){
+    
+      updateScore()
+
+    
+    
+    function updateScore(){
+    
+      $("#player1tally").text(
+        pong.players[0].score
+      )
+      $("#player2tally").text(
+        pong.players[1].score
+      )
     }
+  })
+  }
   
     if (this.ball.top < 0 || this.ball.bottom > this._canvas.height) {
       this.ball.velocity.y = -this.ball.velocity.y;
     }
+
 
     
     this.players.forEach(player => this.collide(player, this.ball));

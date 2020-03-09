@@ -17,12 +17,12 @@ class PongConsumer(WebsocketConsumer):
         reward = json.loads(court_json)["reward"]
         image = json.loads(text_data)["image"]
         
-        image_array = [int(i) for i in image]
-        print(image_array)
+       
+       
         # print(type(image_array))
         # print(image_array)
         # move = SimpleBot.simple_bot_ws(bally, paddley, reward)
-        move = AndrejBot.andrej_bot(image_array)
+        move = AndrejBot.andrej_bot(image)
         
         self.send(text_data=json.dumps({
             'move': move,

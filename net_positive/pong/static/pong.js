@@ -129,8 +129,6 @@ class Pong
         this.getMove(this.count);
         if (this.isPointOver === true) {
           this.gameCount += 1;
-          console.log('game count')
-          console.log(this.gameCount);
           this.aggregateReward = 0;
           this.isPointOver = false;
         }

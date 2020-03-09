@@ -2,10 +2,25 @@
 <!DOCTYPE html>
   <head>
     <title>Pong</title>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
   </head>
   <h1>Pong<h1>
   <body>
    <canvas id='pong' width='600' height='400'></canvas>
    <script src={% static "pong.js" %}></script>
+   
+
+   <section>
+     <div id="player1tally" class=""> 
+
+     </div>
+
+     <div id="player2tally" class="">
+
+     </div>
+    </section>
+
+    <script src={% static "interface.js" %}></script>
   </body>
+
 </html>

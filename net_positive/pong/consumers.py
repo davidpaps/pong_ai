@@ -18,6 +18,7 @@ class PongConsumer(WebsocketConsumer):
         image = json.loads(text_data)["image"]
         
         image_array = [int(i) for i in image]
+        print(image_array)
         # print(type(image_array))
         # print(image_array)
         # move = SimpleBot.simple_bot_ws(bally, paddley, reward)

@@ -191,13 +191,14 @@ class Pong
       return (i + 1) % 4;
     })
 
-    var pixel_data = imageArray.filter(function(value, index, Arr) {
-      return index % 3 == 0;
-    });
+    var pixelData = imageArray
+    // var pixel_data = imageArray.filter(function(value, index, Arr) {
+    //   return index % 3 == 0;
+    // });
 
     
     
-    console.log(pixel_data);
+    console.log(pixelData);
 
 
     var bally = Math.round(this.ball.position.y);
@@ -207,7 +208,7 @@ class Pong
     // var court = '{"bally": "10", "paddley": "20", "reward": "0"}'
     this.BotSocket.send(JSON.stringify({
       "court": court,
-      "image": pixel_data,
+      "image": pixelData,
     }));
     court = '';
   }

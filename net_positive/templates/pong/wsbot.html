@@ -190,11 +190,10 @@ class Pong
     imageArray = imageArray.filter(function(_, i) {
       return (i + 1) % 4;
     })
-
-    var pixelData = imageArray
-    // var pixel_data = imageArray.filter(function(value, index, Arr) {
-    //   return index % 3 == 0;
-    // });
+    
+    var pixelData = imageArray.filter(function(value, index, Arr) {
+      return index % 3 == 0;
+    });
 
     
     

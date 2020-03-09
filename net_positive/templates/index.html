@@ -6,9 +6,6 @@
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <link rel="stylesheet" type="text/css" href={% static "css/main.css" %}></link>
   </head>
-  <!-- <div id="tournament" class="">
-    <button id="tournament-button">Tournament</button>
-  </div> -->
   <nav class="navbar navbar-inverse">
     <div class="container-fluid">
       <div class="navbar-header">
@@ -16,26 +13,25 @@
       </div>
       <ul class="nav navbar-nav">
         <li class="active"><a href="#">Arcade</a></li>
-        <li><a href="#">Tournament</a></li>
-      
+        <li><a href="/tournement">Tournament</a></li>
+        <li><a href="#">Two Player</a></li>
       </ul>
     </div>
   </nav>
-  <!-- <center>
-    <h1>Pong</h1>
-  </center> -->
+  <center>
+    <h1>Arcade Mode</h1>
+  </center>
   
-
-
-
   <body>
 
-
-<div class="container">
+<div>
+  <div class="container-top">
     <div id="left-container">
       <div id="Player1Name" class=""> Player 1 </div>
-      <div id="set">set: <div id="player1-game-tally" class=""></div></div>
-      <div id="score">score: <div id="player1tally" class=""></div></div>
+      <div id="test">
+        set:<div id="player1-game-tally" class=""></div>
+        score: <div id="player1tally" class=""></div>
+      </div>
     </div>
     <div id="game">
       <canvas id='pong' width='320' height='320'></canvas>
@@ -43,31 +39,13 @@
       <div id="right-container">
         <div id=Player2Name class=""> Player 2 </div>
         <div id="set">set:<div id="player2-game-tally" class=""></div></div>
-        <div>score:<div id="player2tally" class=""></div></div>
+        <div id ="score">score:<div id="player2tally" class=""></div></div>
       </div>
     </div>
+
     
-    <section>
-      <div id="control-selection" class="">
-        <div id="controls-title">
-          Control Selection Panal
-        </div>
-        <div id="up-down" class="">
-          <button id="up-down-button"> ↓ ↑ </button>
-        </div>
-        <div id="w-s">
-          <button id="w-s-button">W S</button>
-        </div>
-      </div>
-    </section>
 
-    <section>
-      <div id="player-vs-player">
-        2 Player Mode 
-        <button id="player-vs-player-button">Activate</button>
-      </div>
-    </section>
-
+    <div class="container-bottom">
     <section>
       <div id="mode-buttons" class=""> 
         <div id="bot-1">
@@ -87,7 +65,9 @@
         </div>
       </div>
     </section>
+    </div>
     <script src={% static "pong.js" %}></script>
     <script src={% static "interface.js" %}></script>
   </body>
+</div>
 </html>

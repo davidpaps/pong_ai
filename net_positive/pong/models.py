@@ -8,10 +8,8 @@ class SimpleBot(models.Model):
 
 
       if int(court["bally"]) <= int(court["paddley"]):
-        print(True)
         return True
       else:
-        print(False)
         return False
 
     @classmethod

@@ -4,11 +4,12 @@ body{
   width: 100%;
 }
 
-.container {
+.container-top {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
   height: 320px;
   width: 100%;
+  float: top;
 }
 
 
@@ -21,6 +22,7 @@ body{
 #left-container{
   display: flex;
   flex-direction: column;
+  justify-content:flex-start;
   float: left;
   position: relative;
   background-color: pink;
@@ -42,9 +44,22 @@ body{
   font-size: 40px;
 }
 
-#set {
-  flex-wrap: wrap;
+.container-bottom {
+  display: flex;
+  flex-direction: row;
+  align-content: space-between;
+  height: 320px;
+  width: 100%;
+  background-color: magenta;
 }
+
+  
+
+
+
+
+
+
 
 
 

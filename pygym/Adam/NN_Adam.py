@@ -1,12 +1,12 @@
-from datetime import datetime 
-import pickle
-import gym
-import random 
-import numpy as np
-import cv2
 import csv
+import pickle
+import random
+from datetime import datetime
 from pathlib import Path
 
+import cv2
+import gym
+import numpy as np
 
 render = False 
 benchmark = False

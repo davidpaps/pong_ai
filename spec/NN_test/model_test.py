@@ -28,10 +28,10 @@ def test_print():
 #   for b, a, n in zip(before, after):
 #       # Make sure something changed.
 #       assert (b != a).any()
+
 # this test will verify that the variables that we created get trained.
 # grabbed this from my reading of doc i linked in slack 
 # its commented out as it currently refers to tensor flow and other thing not in our net
-
 
 if __name__ == "__main__":
   test_print()

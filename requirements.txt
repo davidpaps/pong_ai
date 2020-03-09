@@ -6,3 +6,5 @@ channels
 sniffer
 coverage
 pytest
+numpy
+pickle-mixin

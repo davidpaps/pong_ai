@@ -271,6 +271,12 @@ class Pong
       $("#player2tally").text(
         pong.players[1].score
       )
+      $("#player1-game-tally").text(
+        pong.players[0].game
+      )
+      $("#player2-game-tally").text(
+        pong.players[1].game
+      )
     }
   })
   }

@@ -8,7 +8,7 @@ import csv
 from pathlib import Path
 
 
-render = False 
+render = False
 benchmark = False
 in_match = False
 

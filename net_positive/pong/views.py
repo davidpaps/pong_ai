@@ -19,8 +19,11 @@ def bot(request):
   }
   return JsonResponse(data)
 
+def tour(request, template='tournament.html'):
+    return render(request, template, {})
+
 def play(request):
-  return HttpResponse('<h1> Pong Play </h3>')
+    return HttpResponse('<h1> Pong Play </h1>')
 
 def wsbot(request, training_session):
   return render(request, 'pong/wsbot.html', {

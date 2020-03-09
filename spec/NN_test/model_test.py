@@ -6,16 +6,23 @@ from NN import forward_prop
 def test_print():
   print('hello')
 
-# def test_make_move(A3):
-#   if A3 > 0.975:
-#     action = 2 
-#   elif A3 < 0.025:
-#     action = 3
-#   elif A3 > np.random.uniform():
-#     action = 2
-#   else:
-#     action = 3 
-#   return action 
+# def test_convnet():
+#       image = tf.placeholder(tf.float32, (None, 100, 100, 3)
+#   model = Model(image)
+#   sess = tf.Session()
+#   sess.run(tf.global_variables_initializer())
+#   before = sess.run(tf.trainable_variables())
+#   _ = sess.run(model.train, feed_dict={
+#                image: np.ones((1, 100, 100, 3)),
+#                })
+#   after = sess.run(tf.trainable_variables())
+#   for b, a, n in zip(before, after):
+#       # Make sure something changed.
+#       assert (b != a).any()
+# this test will verify that the variables that we created get trained.
+# grabbed this from my reading of doc i linked in slack 
+# its commented out as it currently refers to tensor flow and other thing not in our net
+
 
 if __name__ == "__main__":
   test_print()

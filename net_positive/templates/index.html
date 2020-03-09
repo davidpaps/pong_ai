@@ -2,10 +2,69 @@
 <!DOCTYPE html>
   <head>
     <title>Pong</title>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
   </head>
+  <div id="tournament" class="">
+    <button id="tournament-button">Tournament</button>
+  </div>
   <h1>Pong<h1>
   <body>
+  <center>
    <canvas id='pong' width='600' height='400'></canvas>
+  </center>
    <script src={% static "pong.js" %}></script>
+   
+
+    <div id=Player1Name class=""> Player1 </div>
+    <div id=Player2Name class=""> Player2 </div>
+  
+    <div id="player1tally" class=""> </div>
+    <div id="player2tally" class=""></div>
+
+    <div id="player1-game-tally" class=""></div>
+    <div id="game-tally-title" class="">Game Tally</div>
+    <div id="player2-game-tally" class=""></div>
+
+    <section>
+      <div id="control-selection" class="">
+        <div id="controls-title">
+          Control Selection Panal
+        </div>
+        <div id="up-down" class="">
+          <button id="up-down-button"> ↓ ↑ </button>
+        </div>
+        <div id="w-s">
+          <button id="w-s-button">W S</button>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div id="player-vs-player">
+        2 Player Mode 
+        <button id="player-vs-player-button">Activate</button>
+      </div>
+    </section>
+
+    <section>
+      <div id="mode-buttons" class=""> 
+        <div id="bot-1">
+          <button id="rl-federer">RL</button>
+        </div>
+        <div id="bot-2">
+          <button id="steffi-graf">Graph</button>
+        </div>
+        <div id="bot-3">
+          <button id='nodevak-djockovic'>Nodevak</button>
+        </div> 
+        <div id="bot-4">
+          <button id='bjorn-cyborg'>Cyborg</button>
+        </div>
+        <div id="bot-5">
+          <button id='andrai-agassi'>AndrAI</button>
+        </div>
+      </div>
+    </section>
+    <script src={% static "interface.js" %}></script>
   </body>
 </html>

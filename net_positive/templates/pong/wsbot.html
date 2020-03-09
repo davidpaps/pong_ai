@@ -185,30 +185,14 @@ class Pong
   getMoveWS(){
     var image = this._context.getImageData(0, 0, 320, 320);
 
-    // console.log('sent API')
-    // console.log(image.data[3])
-    // console.log(typeof(image))
-    // var imageArray = []
-    // var i = 0;
-    // for (i = 0; i < image.data.length; i ++){
-    //   if (i % 3 != 0) {
-    //   var value = image.data[i];
-    //   imageArray.push(value);
-    //   }
-    // }
-
     var imageArray = Array.from(image.data)
-    // console.log(image.data)
-    // console.log(imageArray)
-    // console.log(typeof(imageArray))
-    var interval = 3
-    while (interval < 50000) {
-      imageArray.splice(interval, 1)
-      interval += 3
 
-    } 
+    imageArray = imageArray.filter(function(_, i) {
+      return (i + 1) % 4;
+    })
     
-    console.log(imageArray)
+  
+    console.log(imageArray);
 
 
     var bally = Math.round(this.ball.position.y);
@@ -218,7 +202,7 @@ class Pong
     // var court = '{"bally": "10", "paddley": "20", "reward": "0"}'
     this.BotSocket.send(JSON.stringify({
       "court": court,
-      "image": image,
+      "image": imageArray,
     }));
     court = '';
   }

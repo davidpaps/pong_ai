@@ -48,6 +48,7 @@ class AndrejBot(models.Model):
       
     @classmethod
     def prepro(request, I):
+      print(I)
       """ prepro 210x160x3 uint8 frame into 6400 (80x80) 1D float vector """
       I = I[::4,::4,0] # downsample by factor of 4
       # I[I == 144] = 0 # erase background (background type 1)

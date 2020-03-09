@@ -31,21 +31,28 @@ class AndrejBot(models.Model):
     prev_x = None # used in computing the difference frame
     model = pickle.load(open('pong/save.p', 'rb'))
 
+    def __init__(self):
+      self.prev_x = None
+      self.model = pickle.load(open('pong/save.p', 'rb'))
+
     @classmethod
-    def andrej_bot(request, pixels):
+    def andrej_bot(self, pixels):
       D = 80 * 80
       # preprocess the observation, set input to network to be difference image
       cur_x = AndrejBot.prepro(pixels)
-      x = cur_x - prev_x if prev_x is not None else np.zeros(D)
-      prev_x = cur_x
+      
+      x = cur_x - self.prev_x if self.prev_x is not None else np.zeros(D)
+      self.prev_x = cur_x
 
       # forward the policy network and sample an action from the returned probability
       aprob, h = AndrejBot.policy_forward(x)
+      print(aprob)
+      print(self.prev_x)
       move_up = True if 0.5 < aprob else False #take the action most likely to yield the best result
       return move_up
 
     @classmethod
-    def sigmoid(x): 
+    def sigmoid(request, x): 
       return 1.0 / (1.0 + np.exp(-x)) # sigmoid "squashing" function to interval [0,1]
       
     @classmethod
@@ -67,11 +74,9 @@ class AndrejBot(models.Model):
       # return I.astype(np.float).ravel()
 
     @classmethod
-    def policy_forward(x):
-      h = np.dot(model['W1'], x)
+    def policy_forward(self, x):
+      h = np.dot(self.model['W1'], x)
       h[h<0] = 0 # ReLU nonlinearity
-      logp = np.dot(model['W2'], h)
+      logp = np.dot(self.model['W2'], h)
       p = AndrejBot.sigmoid(logp)
       return p, h # return probability of taking action 2, and hidden state
-
-

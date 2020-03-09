@@ -129,8 +129,6 @@ class Pong
         this.getMove(this.count);
         if (this.isPointOver === true) {
           this.gameCount += 1;
-          console.log('game count')
-          console.log(this.gameCount);
           this.aggregateReward = 0;
           this.isPointOver = false;
         }
@@ -257,11 +255,36 @@ class Pong
         this.isPointOver = true;
       }
       this.players[playerId].score++;
+
+
+    $(document).ready(function(){
+    
+      updateScore()
+
+    
+    
+    function updateScore(){
+    
+      $("#player1tally").text(
+        pong.players[0].score
+      )
+      $("#player2tally").text(
+        pong.players[1].score
+      )
+      $("#player1-game-tally").text(
+        pong.players[0].game
+      )
+      $("#player2-game-tally").text(
+        pong.players[1].game
+      )
     }
+  })
+  }
   
     if (this.ball.top < 0 || this.ball.bottom > this._canvas.height) {
       this.ball.velocity.y = -this.ball.velocity.y;
     }
+
 
     
     this.players.forEach(player => this.collide(player, this.ball));

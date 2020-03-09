@@ -4,45 +4,48 @@ body{
   width: 100%;
 }
 
-canvas{
-  
-  position: relative;
-  margin: 0;
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  height: 320px;
+  width: 100%;
 }
+
 
 #game{
-  position: fixed;
   background-color: palegreen;
   text-align: center;
+  width: 50%;
 }
 
-#player1tally{
+#left-container{
   display: flex;
+  flex-direction: column;
   float: left;
   position: relative;
   background-color: pink;
   margin: left;
-  width: 25%
-  
+  width: 25%;
+  text-align: center;
+  font-size: 40px;
 }
 
-
-
-#player2tally {
+#right-container {
   display: flex;
+  flex-direction: column;
   float: right;
   position: relative;
   background-color: cyan;
   margin: right;
-  width: 25%
+  width: 25%;
+  text-align: center;
+  font-size: 40px;
+}
+
+#set {
+  flex-wrap: wrap;
 }
 
 
 
-
-/* 
-#container{
-  text-align: center;
-  background-color: moccasin;
-} */
 

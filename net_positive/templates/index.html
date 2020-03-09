@@ -2,40 +2,51 @@
 <!DOCTYPE html>
   <head>
     <title>Pong</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <link rel="stylesheet" type="text/css" href={% static "css/main.css" %}></link>
   </head>
-  <div id="tournament" class="">
+  <!-- <div id="tournament" class="">
     <button id="tournament-button">Tournament</button>
-  </div>
-  <center>
+  </div> -->
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">Pong</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Arcade</a></li>
+        <li><a href="#">Tournament</a></li>
+      
+      </ul>
+    </div>
+  </nav>
+  <!-- <center>
     <h1>Pong</h1>
-  </center>
+  </center> -->
+  
+
 
 
   <body>
 
 
-
+<div class="container">
+    <div id="left-container">
+      <div id="Player1Name" class=""> Player 1 </div>
+      <div id="set">set: <div id="player1-game-tally" class=""></div></div>
+      <div id="score">score: <div id="player1tally" class=""></div></div>
+    </div>
     <div id="game">
       <canvas id='pong' width='320' height='320'></canvas>
-      <div id="player1tally" class=""></div>
-      <div id="player2tally" class=""></div>
+      </div>
+      <div id="right-container">
+        <div id=Player2Name class=""> Player 2 </div>
+        <div id="set">set:<div id="player2-game-tally" class=""></div></div>
+        <div>score:<div id="player2tally" class=""></div></div>
+      </div>
     </div>
     
-
-  
-   
-
-    <div id=Player1Name class=""> Player1 </div>
-    <div id=Player2Name class=""> Player2 </div>
-  
-    
-
-    <div id="player1-game-tally" class=""></div>
-    <div id="game-tally-title" class="">Game Tally</div>
-    <div id="player2-game-tally" class=""></div>
-
     <section>
       <div id="control-selection" class="">
         <div id="controls-title">

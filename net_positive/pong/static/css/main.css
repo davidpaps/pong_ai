@@ -1,0 +1,48 @@
+html,
+
+body{
+  width: 100%;
+}
+
+canvas{
+  
+  position: relative;
+  margin: 0;
+}
+
+#game{
+  position: fixed;
+  background-color: palegreen;
+  text-align: center;
+}
+
+#player1tally{
+  display: flex;
+  float: left;
+  position: relative;
+  background-color: pink;
+  margin: left;
+  width: 25%
+  
+}
+
+
+
+#player2tally {
+  display: flex;
+  float: right;
+  position: relative;
+  background-color: cyan;
+  margin: right;
+  width: 25%
+}
+
+
+
+
+/* 
+#container{
+  text-align: center;
+  background-color: moccasin;
+} */
+

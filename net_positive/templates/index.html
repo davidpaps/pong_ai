@@ -3,23 +3,34 @@
   <head>
     <title>Pong</title>
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <link rel="stylesheet" type="text/css" href={% static "css/main.css" %}></link>
   </head>
   <div id="tournament" class="">
     <button id="tournament-button">Tournament</button>
   </div>
-  <h1>Pong<h1>
-  <body>
   <center>
-   <canvas id='pong' width='600' height='400'></canvas>
+    <h1>Pong</h1>
   </center>
-   <script src={% static "pong.js" %}></script>
+
+
+  <body>
+
+
+
+    <div id="game">
+      <canvas id='pong' width='320' height='320'></canvas>
+      <div id="player1tally" class=""></div>
+      <div id="player2tally" class=""></div>
+    </div>
+    
+
+  
    
 
     <div id=Player1Name class=""> Player1 </div>
     <div id=Player2Name class=""> Player2 </div>
   
-    <div id="player1tally" class=""> </div>
-    <div id="player2tally" class=""></div>
+    
 
     <div id="player1-game-tally" class=""></div>
     <div id="game-tally-title" class="">Game Tally</div>
@@ -65,6 +76,7 @@
         </div>
       </div>
     </section>
+    <script src={% static "pong.js" %}></script>
     <script src={% static "interface.js" %}></script>
   </body>
 </html>

@@ -3,6 +3,8 @@ import json
 from datetime import datetime
 import numpy as np
 import pickle
+import csv
+from pathlib import Path
 
 class SimpleBot(models.Model):
     @classmethod
@@ -48,13 +50,21 @@ class AndrejBot(models.Model):
       
     @classmethod
     def prepro(request, I):
-      print(I)
       """ prepro 210x160x3 uint8 frame into 6400 (80x80) 1D float vector """
-      I = I[::4,::4,0] # downsample by factor of 4
+      # I = I[::4,::4,0] # downsample by factor of 4
+      I = I[::16] # downsample by factor of 16
+      print(I)
+
+  
+      count = 1
+      if count == 1 :
+        with open('final_file.csv', mode='w') as final_file: #store the pixels
+              final_writer = csv.writer(final_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+              final_writer.writerow(I)
       # I[I == 144] = 0 # erase background (background type 1)
       # I[I == 109] = 0 # erase background (background type 2)
       I[I != 0] = 1 # everything else (paddles, ball) just set to 1
-      return I.astype(np.float).ravel()
+      # return I.astype(np.float).ravel()
 
     @classmethod
     def policy_forward(x):

@@ -190,9 +190,14 @@ class Pong
     imageArray = imageArray.filter(function(_, i) {
       return (i + 1) % 4;
     })
+
+    var pixel_data = imageArray.filter(function(value, index, Arr) {
+      return index % 3 == 0;
+    });
+
     
-  
-    console.log(imageArray);
+    
+    console.log(pixel_data);
 
 
     var bally = Math.round(this.ball.position.y);
@@ -202,7 +207,7 @@ class Pong
     // var court = '{"bally": "10", "paddley": "20", "reward": "0"}'
     this.BotSocket.send(JSON.stringify({
       "court": court,
-      "image": imageArray,
+      "image": pixel_data,
     }));
     court = '';
   }

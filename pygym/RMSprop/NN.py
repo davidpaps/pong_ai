@@ -20,6 +20,8 @@ dimension = 80 * 80
 # resume from previous checkpoint?
 
 my_file = Path("./episode_file.csv")
+""" for the first game played there is no history 
+Can we rename resume, isnt clear to what it is doing - seperation of concerns"""
 if my_file.is_file():
   print('Resuming run')
   resume = True
@@ -132,28 +134,35 @@ def discount_rewards(r):
   discounted_r /= np.std(discounted_r)
   return discounted_r
 
+
 def import_csv(csvfilename):
+  """ read csv to find number of games played """
   data = []
   row_index = 0
   with open(csvfilename, "r", encoding="utf-8", errors="ignore") as scraped:
     reader = csv.reader(scraped, delimiter=',')
     for row in reader:
       data.append(row[0])
+  print(data)
   return data
 
+# if resume:
+#   data = import_csv('episode_file.csv')
+#   episode_number = int(data[0])
+# else:
+#   episode_number = 0
+# refactored to below
+
+episode_number = 0
 if resume:
   data = import_csv('episode_file.csv')
   episode_number = int(data[0])
-else:
-  episode_number = 0
-
-
-if resume:
   model = pickle.load(open('save.p', 'rb'))
   #takes 10-15 ms on macbook pro
 else:
   model = {}
   if benchmark:
+    # is benchmark dead code cant find another instance of it
     np.random.seed(5) ; model['W1'] = np.random.randn(200,dimension)/np.sqrt(dimension)
     np.random.seed(5) ; model['B1'] = np.random.randn(200)/np.sqrt(200)
     np.random.seed(5) ; model['W2'] = np.random.randn(50,200)/np.sqrt(200)
@@ -262,6 +271,5 @@ while True:
     reward_sum = 0 
     observation = env.reset() # reset env
     prev_x = None
-    
-        
+            
 env.close()

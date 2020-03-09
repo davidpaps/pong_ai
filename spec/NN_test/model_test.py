@@ -33,6 +33,13 @@ def test_print():
 # grabbed this from my reading of doc i linked in slack 
 # its commented out as it currently refers to tensor flow and other thing not in our net
 
+# Where is the batting data sent / physically stored url? gym? one side is the gym?
+# whats the format for the episode I cant find this in the implementation, confirming that this is a game
+# Where in the code is this sent cause if i did see it i did not recognise it - also where did we configure gym 
+# how can i view / show current model when i start a series of episodes 
+# 
+# 
+
 if __name__ == "__main__":
   test_print()
   # test_make_move()

@@ -86,7 +86,7 @@ class Player extends Rectangle
 {
   constructor()
   {
-    super(7, 32);
+    super(7, 30);
     this.score = 0;
     this.game = 0;
     this.velocity = new Vector;
@@ -139,8 +139,8 @@ class Pong
       new Player,
     ];
 
-    this.players[0].position.x = 32;
-    this.players[1].position.x = this._canvas.width - 32;
+    this.players[0].position.x = 36;
+    this.players[1].position.x = this._canvas.width - 36;
     this.players.forEach( player => { player.position.y = this._canvas.height / 2 });
 
     let lastTime;
@@ -191,8 +191,13 @@ class Pong
       return (i + 1) % 4;
     })
     
-  
-    console.log(imageArray);
+    // var pixelData = imageArray.filter(function(value, index, Arr) {
+    //   return index % 3 == 0;
+    // });
+
+    
+    
+    // console.log(pixelData);
 
 
     var bally = Math.round(this.ball.position.y);
@@ -273,8 +278,8 @@ class Pong
   start() {
     if (this.ball.velocity.x === 0 && this.ball.velocity.y === 0) {
       this.ball.velocity.x = 300 * (Math.random() > .5 ? 1 : -1);
-      this.ball.velocity.y = 300 * (Math.random() * 2 -1);
-      this.ball.velocity.length = 200;
+      this.ball.velocity.y = 300 * (Math.random() > .5 ? 1 : -1);
+      this.ball.velocity.length = 30;
     }
   }
 
@@ -336,9 +341,9 @@ class Pong
 
   botUpdate(moveUp) {
     if(moveUp === true) {
-        this.players[1].position.y -= 10
+        this.players[1].position.y -= 25
     } else {
-        this.players[1].position.y += 10
+        this.players[1].position.y += 25
     }
   }
 }

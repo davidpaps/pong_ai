@@ -16,6 +16,11 @@ class PongConsumer(WebsocketConsumer):
         paddley = json.loads(court_json)["paddley"]
         reward = json.loads(court_json)["reward"]
         image = json.loads(text_data)["image"]
+        
+       
+       
+        # print(type(image_array))
+        # print(image_array)
         # move = SimpleBot.simple_bot_ws(bally, paddley, reward)
         move = AndrejBot.andrej_bot(image)
         

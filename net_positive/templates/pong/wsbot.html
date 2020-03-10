@@ -2,10 +2,44 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>WebSocket Bot</title>
-</head>
-<body>
-    <canvas id='pong' width='320' height='320'></canvas>
+    <title>Training</title>
+ 
+     
+      <body background="backgroundImg.jpg">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+      <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+      <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/press-start-2p" type="text/css"/>
+      <link rel="stylesheet" type="text/css" href="./training.css"></link>
+    </head>
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">AI Pong</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="/">Arcade</a></li>
+          <li><a href="/training">Training</a></li>
+          <li><a href="/multiplayer">Multiplayer</a></li>
+        </ul>
+      </div>
+    </nav>
+    <center>
+      <h2>Training!</h2>
+    </center>
+    
+    <img id="background-image" src="https://wallpaperaccess.com/full/42332.png">
+
+      <div id="game">
+        <canvas id='pong' width='320' height='320'></canvas>
+        </div>
+        
+     
+  
+
+
+
+
+
 <script>
 
   class Vector

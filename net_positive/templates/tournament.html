@@ -2,9 +2,27 @@
 <!DOCTYPE html>
   <head>
     <title>Tournament</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/press-start-2p" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href={% static "css/main.css" %}></link>
   </head>
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">AI Pong</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/tournament">Tournament</a></li>
+        <li><a href="/">Arcade</a></li>
+        <li><a href="#">Two Player</a></li>
+      </ul>
+    </div>
+  </nav>
+  
   <h1>Tournament Standings<h1>
   <button type="button" onclick="alert('You pressed the button!')">Click me!</button>
   <body>
+    <img id="background-image" src="https://wallpaperaccess.com/full/42332.png">
+
    </body>
 </html>

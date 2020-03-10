@@ -208,7 +208,7 @@ class Pong
     if (this.ball.velocity.x === 0 && this.ball.velocity.y === 0) {
       this.ball.velocity.x = 300 * (Math.random() > .5 ? 1 : -1);
       this.ball.velocity.y = 300 * (Math.random() * 2 -1);
-      this.ball.velocity.length = 2000;
+      this.ball.velocity.length = 300;
     }
   }
 

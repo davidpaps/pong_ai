@@ -2,6 +2,11 @@ html,
 
 body{
   width: 100%;
+  color: white;
+  font-family: 'PressStart2PRegular';
+   font-weight: normal;
+   font-style: normal;
+
 }
 
 .container-top {
@@ -10,11 +15,22 @@ body{
   height: 320px;
   width: 100%;
   float: top;
+  font-size: 20px;
+}
+
+#background-image {
+  position: fixed;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  width: 100%;
+  z-index: -1;
 }
 
 
 #game{
-  background-color: palegreen;
+  /* background-color: palegreen; */
   text-align: center;
   width: 50%;
 }
@@ -25,7 +41,7 @@ body{
   justify-content:flex-start;
   float: left;
   position: relative;
-  background-color: pink;
+  color: white;
   margin: left;
   width: 25%;
   text-align: center;
@@ -37,7 +53,7 @@ body{
   flex-direction: column;
   float: right;
   position: relative;
-  background-color: cyan;
+  /* background-color: cyan; */
   margin: right;
   width: 25%;
   text-align: center;
@@ -50,7 +66,8 @@ body{
   align-items: space-between;
   height: 320px;
   width: 100%;
-  background-color: magenta;
+  color: magenta;
+  /* background-color: magenta; */
 }
 
 #bot-1 {

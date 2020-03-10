@@ -1,3 +1,5 @@
+import pytest
+
 import os
 os.system("python3 ../../pygym/RMSprop/NN.py")
 

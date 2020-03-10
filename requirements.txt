@@ -6,3 +6,4 @@ channels
 sniffer
 coverage
 pytest
+pytest-spec

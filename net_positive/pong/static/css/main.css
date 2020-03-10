@@ -31,7 +31,6 @@ body{
 
 
 #game{
-  /* background-color: palegreen; */
   text-align: center;
   width: 50%;
   padding: 100px 0 0 0; 
@@ -56,7 +55,6 @@ body{
   flex-direction: column;
   float: right;
   position: relative;
-  /* background-color: cyan; */
   margin: right;
   width: 25%;
   text-align: center;
@@ -64,9 +62,8 @@ body{
 }
 
 .container-fluid {
-
+  background-color: black;
   font-size: 10px;
-
 }
 
 .container-bottom {
@@ -76,7 +73,6 @@ body{
   height: 320px;
   width: 100%;
   color: magenta;
-  /* background-color: magenta; */
 }
 
 #bot-1 {
@@ -105,7 +101,11 @@ body{
   font-size: 15px;
 }
 
-
+button {
+  border-color: transparent;
+  background-color: Transparent;
+  outline: none;
+}
   
 
 

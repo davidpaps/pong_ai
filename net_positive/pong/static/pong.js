@@ -50,7 +50,7 @@ class Ball extends Rectangle
 {
   constructor()
   {
-    super(10, 10);
+    super(4, 8);
     this.velocity = new Vector;
   }
 }
@@ -59,7 +59,7 @@ class Player extends Rectangle
 {
   constructor()
   {
-    super(20 , 100);
+    super(7 , 32);
     this.score = 0;
     this.game = 0;
     this.velocity = new Vector;
@@ -97,8 +97,8 @@ class Pong
       new Player,
     ];
 
-    this.players[0].position.x = 20;
-    this.players[1].position.x = this._canvas.width - 20;
+    this.players[0].position.x = 32;
+    this.players[1].position.x = this._canvas.width - 32;
     this.players.forEach( player => { player.position.y = this._canvas.height / 2 });
 
 

@@ -6,7 +6,7 @@ body{
   font-family: 'PressStart2PRegular';
    font-weight: normal;
    font-style: normal;
-
+  font-size: 20px;
 }
 
 .container-top {
@@ -15,7 +15,6 @@ body{
   height: 320px;
   width: 100%;
   float: top;
-  font-size: 20px;
 }
 
 #background-image {
@@ -33,6 +32,7 @@ body{
   /* background-color: palegreen; */
   text-align: center;
   width: 50%;
+  padding: 100px 0 0 0;
 }
 
 #left-container{

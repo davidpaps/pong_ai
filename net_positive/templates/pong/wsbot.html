@@ -278,8 +278,8 @@ class Pong
   start() {
     if (this.ball.velocity.x === 0 && this.ball.velocity.y === 0) {
       this.ball.velocity.x = 300 * (Math.random() > .5 ? 1 : -1);
-      this.ball.velocity.y = 300 * (Math.random() * 2 -1);
-      this.ball.velocity.length = 15;
+      this.ball.velocity.y = 300 * (Math.random() > .5 ? 1 : -1);
+      this.ball.velocity.length = 50;
     }
   }
 
@@ -341,9 +341,9 @@ class Pong
 
   botUpdate(moveUp) {
     if(moveUp === true) {
-        this.players[1].position.y -= 7
+        this.players[1].position.y -= 20
     } else {
-        this.players[1].position.y += 7
+        this.players[1].position.y += 20
     }
   }
 }

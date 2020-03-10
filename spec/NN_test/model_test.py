@@ -1,7 +1,12 @@
 import pytest
+import sys
+
+sys.path.append("../../pygym/RMSprop/NN.py")
+
+from .NN.py import discount_rewards
 
 import os
-os.system("python3 ../../pygym/RMSprop/NN.py")
+os.system("../../pygym/RMSprop/NN.py")
 
 def test_print():
   print('hello')

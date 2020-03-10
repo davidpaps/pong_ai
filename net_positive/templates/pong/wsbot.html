@@ -8,7 +8,7 @@
     <!-- <textarea id="chat-log" cols="100" rows="20"></textarea><br/>
     <input id="chat-message-input" type="text" size="100"/><br/>
     <input id="chat-message-submit" type="button" value="Send"/> -->
-    <canvas id='pong' width='600' height='400'></canvas>
+    <canvas id='pong' width='320' height='320'></canvas>
 <script>
 
     // document.querySelector('#chat-message-input').focus();
@@ -77,7 +77,7 @@ class Ball extends Rectangle
 {
   constructor()
   {
-    super(10, 10);
+    super(4, 8);
     this.velocity = new Vector;
   }
 }
@@ -86,7 +86,7 @@ class Player extends Rectangle
 {
   constructor()
   {
-    super(20 , 100);
+    super(7, 32);
     this.score = 0;
     this.game = 0;
     this.velocity = new Vector;
@@ -97,10 +97,8 @@ class Pong
 {
   constructor(canvas)
   {
-
     var trainingSession = "{{ training_session|escapejs }}";
   
-
     this.BotSocket = new WebSocket(
         'ws://' + window.location.host +
         '/ws/pong/' + trainingSession + '/');
@@ -122,9 +120,6 @@ class Pong
     this._move = "";
     this._canvas = canvas;
     this._context = canvas.getContext('2d');
-    this.pixelData = this._context.getImageData(0, 0, 600, 400);
-    
-    // console.log(this.pixelData);
 
     this.ball = new Ball;
     this.throttle = 1;
@@ -144,10 +139,9 @@ class Pong
       new Player,
     ];
 
-    this.players[0].position.x = 20;
-    this.players[1].position.x = this._canvas.width - 20;
+    this.players[0].position.x = 32;
+    this.players[1].position.x = this._canvas.width - 32;
     this.players.forEach( player => { player.position.y = this._canvas.height / 2 });
-
 
     let lastTime;
     this.count = 99;
@@ -163,7 +157,6 @@ class Pong
       
       lastTime = milliseconds;
       requestAnimationFrame(callback);
-      
       
       this.count += 1;
       if (this.BotSocket.readyState === 1) {
@@ -189,9 +182,19 @@ class Pong
     this.reset();
   }
 
-
   getMoveWS(){
-    var image = 'placeholder';
+    var image = this._context.getImageData(0, 0, 320, 320);
+
+    var imageArray = Array.from(image.data)
+
+    imageArray = imageArray.filter(function(_, i) {
+      return (i + 1) % 4;
+    })
+    
+  
+    console.log(imageArray);
+
+
     var bally = Math.round(this.ball.position.y);
     var paddley = this.players[1].position.y;
     var reward = this.aggregateReward;
@@ -199,11 +202,10 @@ class Pong
     // var court = '{"bally": "10", "paddley": "20", "reward": "0"}'
     this.BotSocket.send(JSON.stringify({
       "court": court,
+      "image": imageArray,
     }));
     court = '';
-    
   }
-
 
   getMove(){
     // console.log(this.count);
@@ -226,7 +228,6 @@ class Pong
     xmlhttp.open('GET', url, true);
 
     xmlhttp.send();
-    
   }
 
   collide(player, ball) {
@@ -273,7 +274,7 @@ class Pong
     if (this.ball.velocity.x === 0 && this.ball.velocity.y === 0) {
       this.ball.velocity.x = 300 * (Math.random() > .5 ? 1 : -1);
       this.ball.velocity.y = 300 * (Math.random() * 2 -1);
-      this.ball.velocity.length = 3000;
+      this.ball.velocity.length = 200;
     }
   }
 
@@ -293,7 +294,6 @@ class Pong
   }
 
   updateReward() {
-    
     if (this.ball.left < 0 || this.ball.right > this._canvas.width) {
       if (this.ball.velocity.x < 0) {
         this.aggregateReward += 1
@@ -303,13 +303,10 @@ class Pong
     }
   }
 
-
-
   update(deltatime) {
     this.ball.position.x += this.ball.velocity.x * deltatime;
     this.ball.position.y += this.ball.velocity.y * deltatime;
  
-  
     if (this.ball.left < 0 || this.ball.right > this._canvas.width) {
       var playerId;
       if (this.ball.velocity.x < 0) {
@@ -326,10 +323,7 @@ class Pong
       this.ball.velocity.y = -this.ball.velocity.y;
     }
 
-    
     this.players.forEach(player => this.collide(player, this.ball));
-
-    
   }
 
   botJS() {
@@ -347,9 +341,7 @@ class Pong
         this.players[1].position.y += 10
     }
   }
-
 }
-
 
 const canvas = document.getElementById('pong');
 const pong = new Pong(canvas);
@@ -424,11 +416,7 @@ class Game {
 
 const game = new Game(pong);
 game.controls();
-
-
-
-
-    
+  
 </script>
 </body>
 </html>

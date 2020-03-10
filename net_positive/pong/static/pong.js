@@ -314,6 +314,8 @@ class Pong
 const canvas = document.getElementById('pong');
 const pong = new Pong(canvas);
 
+
+
 class Game {
 
   constructor(pong) 

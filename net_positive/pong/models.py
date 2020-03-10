@@ -5,6 +5,7 @@ import numpy as np
 import pickle
 import csv
 from pathlib import Path
+import cv2
 
 class SimpleBot(models.Model):
     @classmethod
@@ -60,23 +61,34 @@ class AndrejBot(models.Model):
     def prepro(self, I):
       """ prepro 210x160x3 uint8 frame into 6400 (80x80) 1D float vector """
       # I = I[::4,::4,0] # downsample by factor of 4
-      I = np.array(I)
-      if self.count == 0 :
+      image_array = np.asarray(I)
+      a = image_array.reshape(320, 320, 3).astype('float32')
+      a = cv2.cvtColor(cv2.resize(a,(80,80)), cv2.COLOR_BGR2GRAY)
+     
+      cv2.imwrite('color_img.jpg', a)
+      # print(frame[0][frame != 0])
+      print("this is the frame size", a.size)
+      ret, a = cv2.threshold(a, 127, 255, cv2.THRESH_BINARY) # et is useless
+      a[a == 255] = 1
+      I = a.ravel()
+      print(len(I))
+
+      if self.count == 20 :
         with open('final_file.csv', mode='w') as final_file: #store the pixels
               final_writer = csv.writer(final_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
               final_writer.writerow(I)
 
       self.count += 1
-      I = I[::16] # downsample by factor of 16
-      print(len(I))
+      # I = I[::16] # downsample by factor of 16
+      # print(len(I))
     
      
       # I[I == 144] = 0 # erase background (background type 1)
       # I[I == 109] = 0 # erase background (background type 2)
-      I[I != 0] = 1 # everything else (paddles, ball) just set to 1
+      # I[I != 0] = 1 # everything else (paddles, ball) just set to 1
     
       
-      print(I)
+      # print(I)
       return I
 
     @classmethod

@@ -98,6 +98,8 @@ class Vector
 
       this.done = false;
 
+      this.training = false
+
       this.isPointOver = false;
 
       this.aggregateReward = 0;
@@ -135,6 +137,9 @@ class Vector
             // uncomment the above line to see what the bot is seeing
             this.responseReceived = false;
             this.getMoveWS()
+            if( this.training == true ){
+              this.getMoveWSyAxis() 
+            }
             // console.log(this.aggregateReward);
             if (this.isPointOver === true) {
               this.gameCount += 1;
@@ -208,6 +213,19 @@ class Vector
       court = '';
       this.done = false;
     }
+
+    getMoveWSyAxis(){
+      var bally = Math.round(this.ball.position.y);
+      var court = `{"bally": ${bally}}`;
+
+      this.BotSocket.send(JSON.stringify({
+        "court": court
+        }));
+
+      court = '';
+    }
+
+
 
 
     getMove(){

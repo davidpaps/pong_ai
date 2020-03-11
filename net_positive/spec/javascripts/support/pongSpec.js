@@ -53,23 +53,23 @@ describe('Pong', function() {
     })
   })
   
-  describe("getMove", function() {
-   it("should communicate data with XHR request", function() {
+  // describe("getMove", function() {
+  //  it("should communicate data with XHR request", function() {
 
-    var xhr = {
+  //   var xhr = {
 
-       open: jasmine.createSpy('open')
-   };
+  //      open: jasmine.createSpy('open')
+  //  };
 
-   XMLHttpRequest = jasmine.createSpy('XMLHttpRequest');
-   XMLHttpRequest.and.callFake(function () {
-       return xhr;
+  //  XMLHttpRequest = jasmine.createSpy('XMLHttpRequest');
+  //  XMLHttpRequest.and.callFake(function () {
+  //      return xhr;
 
-   });
+  //  });
 
-   submit();
+  //  submit();
 
-   expect(xhr.open).toHaveBeenCalled(); 
-    })
-  })
+  //  expect(xhr.open).toHaveBeenCalled(); 
+  //   })
+  // })
 });

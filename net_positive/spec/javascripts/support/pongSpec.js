@@ -52,6 +52,24 @@ describe('Pong', function() {
       expect(pong.players[1].position.y).toEqual(75)
     })
   })
+  
+  // describe("getMove", function() {
+  //  it("should communicate data with XHR request", function() {
 
+  //   var xhr = {
 
-})
+  //      open: jasmine.createSpy('open')
+  //  };
+
+  //  XMLHttpRequest = jasmine.createSpy('XMLHttpRequest');
+  //  XMLHttpRequest.and.callFake(function () {
+  //      return xhr;
+
+  //  });
+
+  //  submit();
+
+  //  expect(xhr.open).toHaveBeenCalled(); 
+  //   })
+  // })
+});

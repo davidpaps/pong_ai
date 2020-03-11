@@ -6,6 +6,7 @@ channels
 sniffer
 coverage
 pytest
+pytest-spec
 numpy
 pickle-mixin
 opencv-python

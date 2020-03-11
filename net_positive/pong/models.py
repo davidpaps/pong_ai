@@ -10,8 +10,6 @@ import cv2
 class SimpleBot(models.Model):
     @classmethod
     def simple_bot(request, court):
-
-
       if int(court["bally"]) <= int(court["paddley"]):
         return True
       else:

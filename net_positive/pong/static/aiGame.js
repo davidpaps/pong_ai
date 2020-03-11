@@ -80,8 +80,11 @@ class Vector
       this.BotSocket.onmessage = function(e) {
           var data = JSON.parse(e.data);
           var move = data['move'];
-          that.botUpdate(move);
-          that.responseReceived = true;
+          var trainingopponent = data['trainingopponent']
+          if(trainingopponent === "false"){
+            that.botUpdate(move);
+            that.responseReceived = true;}
+          else{ that.trainingOpponentMove(move) }
       };
 
       this.BotSocket.onclose = function(e) {
@@ -97,6 +100,11 @@ class Vector
       this.gameCount = 0;
 
       this.done = false;
+
+      this.training = true
+      this.bot = 'rl-federer'
+      
+
 
       this.isPointOver = false;
 
@@ -137,6 +145,9 @@ class Vector
             // uncomment the above line to see what the bot is seeing
             this.responseReceived = false;
             this.getMoveWS()
+            if( this.training === true ){
+              this.getOpponentMove() 
+            }
             // console.log(this.aggregateReward);
             if (this.isPointOver === true) {
               this.gameCount += 1;
@@ -205,11 +216,31 @@ class Vector
         "court": court,
         "image": imageString,
         "done": this.done,
+        "bot": this.bot,
+        "trainingopponent": "false"
         }));
 
       court = '';
       this.done = false;
     }
+
+    getOpponentMove(){
+      var bally = Math.round(this.ball.position.y);
+      var paddley = this.players[0].position.y;
+      var court = `{"bally": ${bally}, "paddley":${paddley}, "reward": "dummy"}`;
+
+      this.BotSocket.send(JSON.stringify({
+        "court": court,
+        "done": "dummy",
+        "image": "dummy",
+        "bot": "steffi-graph",
+        "trainingopponent": "true"
+        }));
+
+      court = '';
+    }
+
+
 
 
     getMove(){
@@ -355,7 +386,20 @@ class Vector
           this.players[1].position.y += 25
       }
     }
+
+    trainingOpponentMove(move){
+      if(move === false){
+        this.players[0].position.y += 5
+      }
+      else {
+        this.players[0].position.y -= 5
+      }
+    }
+
+
+
   }
+
 
   const canvas = document.getElementById('pong');
   const pong = new Pong(canvas);
@@ -366,6 +410,7 @@ class Vector
     {
       this.pong = pong;
     }
+
 
     keyboard(){
       window.addEventListener('keydown', keyboardHandlerFunction); 

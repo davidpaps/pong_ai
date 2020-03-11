@@ -18,12 +18,10 @@ class SimpleBot(models.Model):
         return False
 
     @classmethod
-    def simple_bot_ws(request, bally, paddley, reward):
+    def simple_bot_ws(request, bally, paddley):
       if int(bally) <= int(paddley):
-        print(True)
         return True
       else:
-        print(False)
         return False
 
 class AndrejBot(models.Model):

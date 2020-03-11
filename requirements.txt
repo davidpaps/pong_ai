@@ -10,3 +10,4 @@ numpy
 pickle-mixin
 opencv-python
 opencv-contrib-python
+opencv-python-headless

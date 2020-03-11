@@ -328,6 +328,10 @@ class Vector
             pong.players[1].game
           )
         }
+
+        function chooseBot(){
+          
+        }
       })
     
       if (this.ball.top < 0 || this.ball.bottom > this._canvas.height) {
@@ -361,44 +365,21 @@ class Vector
     constructor(pong) 
     {
       this.pong = pong;
-      this.playerVsAi = true;
-      this.playerVsPlayer = false;
     }
 
-    controls(){ 
-      if (this.playerVsAi) {
-        this.keyboard(0);
-      } else if (this.playerVsPlayer) {
-        this.keyboardTwoPlayer();
-        this.keyboard(1);
-      }
-    }
-
-    keyboard(player){
+    keyboard(){
       window.addEventListener('keydown', keyboardHandlerFunction); 
       function keyboardHandlerFunction(e) {
-        if(e.keyCode === 40 && pong.players[player].position.y < (pong._canvas.height - 50) ) {
-          pong.players[player].position.y += 25
-        }
-        else if(e.keyCode === 38 && pong.players[player].position.y > 50) {
-            pong.players[player].position.y -= 25
-        } else if(e.keyCode === 32) {
-            pong.start();
-        } 
-      }
-    }
-
-    keyboardTwoPlayer(){
-      window.addEventListener('keydown', keyboardHandlerFunction); 
-      function keyboardHandlerFunction(e) {
-        if(e.keyCode === 83 && pong.players[0].position.y < (pong._canvas.height - 50) ) {
+        if(e.keyCode === 40 && pong.players[0].position.y < (pong._canvas.height - 50) ) {
           pong.players[0].position.y += 25
-        } else if(e.keyCode === 87 && pong.players[0].position.y > 50) {
+        } else if(e.keyCode === 38 && pong.players[0].position.y > 50) {
             pong.players[0].position.y -= 25
-        }  
+        } else if(e.keyCode === 32) {
+            // pong.start();
+        } 
       }
     }
   }
 
   const game = new Game(pong);
-  game.controls();
+  game.keyboard();

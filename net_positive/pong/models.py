@@ -5,8 +5,6 @@ class SimpleBot(models.Model):
     
     @classmethod
     def simple_bot(request, court):
-
-
       if int(court["bally"]) <= int(court["paddley"]):
         print(True)
         return True

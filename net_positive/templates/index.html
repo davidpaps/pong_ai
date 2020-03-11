@@ -58,25 +58,58 @@
         <div id="bot-1">
           <button id="rl-federer">RL Federer</button>
         </div>
+
         <div id="bot-2">
-          <button id="steffi-graf">Steffi Graph</button>
+          <button id="steffi-graph">Steffi GraPH</button>
         </div>
 
-   
         <div id="bot-3">
-          <button id='nodevak-djockovic'>Nodevak Djokovic</button>
+          <button id='nodevak-djokovic'>NODEvak Djokovic</button>
         </div> 
 
 
         <div id="bot-4">
-          <button id='bjorn-cyborg'>Bjorn Cyborg</button>
+          <button id='bjorn-cyborg'>Bjorn CYborg</button>
         </div>
+
         <div id="bot-5">
           <button id='andrai-agassi'>AndrAI Agassi</button>
         </div>
 
       </div>
     </section>
+
+    <script>
+      $(document).ready(function(){
+
+          $('#rl-federer').on('click', function(){
+            pong.bot = 'rl-federer';
+            console.log(pong.bot)
+          })
+
+          $('#steffi-graph').on('click', function(){
+            pong.bot = 'steffi-graph'
+            console.log(pong.bot)
+          })
+
+          $('#nodevak-djokovic').on('click', function(){
+            pong.bot = 'nodevak-djokovic'
+            console.log(pong.bot)
+          })
+
+          $('#bjorn-cyborg').on('click', function(){
+            pong.bot = 'bjorn-cyborg'
+            console.log(pong.bot)
+          })
+
+          $('#andrai-agassi').on('click', function(){
+            pong.bot = 'andrai-agassi'
+            console.log(pong.bot)
+          })
+        })
+
+       
+    </script>
   
     <script src={% static "aiGame.js" %}></script>
   </body>

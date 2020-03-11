@@ -1,11 +1,84 @@
 {% load static from static %}
 <!DOCTYPE html>
   <head>
-    <title>Pong</title>
-  </head>
-  <h1>Pong<h1>
-  <body>
-   <canvas id='pong' width='600' height='400'></canvas>
-   <script src={% static "pong.js" %}></script>
+    <title>Arcade</title>
+    <link rel="icon" href={% static "public/favicon.ico" %} type="image/x-icon">
+    <body background="backgroundImg.jpg">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/press-start-2p" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href={% static "css/main.css" %}></link>
+    </head>
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">AI Pong</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Arcade</a></li>
+        <li><a href="/training">Training</a></li>
+        <li><a href="/multiplayer">Multiplayer</a></li>
+      </ul>
+    </div>
+  </nav>
+  <center>
+    <h2>Arcade Mode!</h2>
+  </center>
+  
+  <img id="background-image" src="https://wallpaperaccess.com/full/42332.png">
+
+<div>
+  <div class="container-top">
+    <div id="left-container">
+      <div id="Player1Name" class=""> Player 1 </div>
+      <br>
+      <div id="test">
+        Score: <div id="player1tally" class=""></div>
+        <br>
+        Set:<div id="player1-game-tally" class=""></div>
+      </div>
+    </div>
+    <div id="game">
+      <canvas id='pong' width='320' height='320'></canvas>
+      </div>
+      <div id="right-container">
+        <div id=Player2Name class=""> Player 2 </div>
+        <br>
+        <div id ="score">Score:<div id="player2tally" class=""></div></div>
+        <br>
+        <div id="set">Set:<div id="player2-game-tally" class=""></div></div>
+      </div>
+    </div>
+
+    
+
+    
+    <section>
+      <div class="container-bottom">
+        <div id="bot-1">
+          <button id="rl-federer">RL Federer</button>
+        </div>
+        <div id="bot-2">
+          <button id="steffi-graf">Steffi Graph</button>
+        </div>
+
+   
+        <div id="bot-3">
+          <button id='nodevak-djockovic'>Nodevak Djokovic</button>
+        </div> 
+
+
+        <div id="bot-4">
+          <button id='bjorn-cyborg'>Bjorn Cyborg</button>
+        </div>
+        <div id="bot-5">
+          <button id='andrai-agassi'>AndrAI Agassi</button>
+        </div>
+
+      </div>
+    </section>
+  
+    <script src={% static "aiGame.js" %}></script>
   </body>
+</div>
 </html>

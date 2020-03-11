@@ -28,7 +28,7 @@ SECRET_KEY = '-g*nv9(7-t@kby_#$@*bajb4-eufo*9#$$@e$*k3l6+*u=^!nr'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['net-positive.herokuapp.com']
 
 
 # Application definition
@@ -127,6 +127,10 @@ STATIC_ROOT = os.path.join(os.path.abspath(
     os.path.join(BASE_DIR, 'net_positive', 'static')), '')
 
 STATIC_URL = '/static/'
+STATIC_TMP = os.path.join(BASE_DIR, 'static')
+
+os.makedirs(STATIC_TMP, exist_ok=True)
+os.makedirs(STATIC_ROOT, exist_ok=True)
 
 django_heroku.settings(locals())
 

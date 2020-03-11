@@ -27,6 +27,43 @@ else:
   print('First run')
   resume = False
 
+def import_csv(csvfilename):
+  data = []
+  row_index = 0
+  with open(csvfilename, "r", encoding="utf-8", errors="ignore") as scraped:
+    reader = csv.reader(scraped, delimiter=',')
+    for row in reader:
+      data.append(row[0])
+  return data
+
+if resume:
+  data = import_csv('episode_file.csv')
+  episode_number = int(data[0])
+else:
+  episode_number = 0
+
+
+if resume:
+  model = pickle.load(open('save.p', 'rb'))
+  #takes 10-15 ms on macbook pro
+else:
+  model = {}
+  if benchmark:
+    np.random.seed(5) ; model['W1'] = np.random.randn(200,dimension)/np.sqrt(dimension)
+    np.random.seed(5) ; model['W2'] = np.random.randn(150,200)/np.sqrt(200)
+    np.random.seed(5) ; model['W3'] = np.random.randn(100,150)/np.sqrt(150)
+    np.random.seed(5) ; model['W4'] = np.random.randn(100)/np.sqrt(100)
+  else:
+    model['W1'] = np.random.randn(200,dimension)/np.sqrt(dimension)
+    model['W2'] = np.random.randn(150,200)/np.sqrt(200)
+    model['W3'] = np.random.randn(100,150)/np.sqrt(150)
+    model['W4'] = np.random.randn(100)/np.sqrt(100)
+
+grad_buffer = { k : np.zeros_like(v) for k,v in model.items() } # update buffers that add up gradients over a batch
+#updated .iteritems to .items
+rmsprop_cache = { k : np.zeros_like(v) for k,v in model.items() } 
+
+
 # below function used for balck and white game
 def pre_process_image(frame): # function for when we use the main pong on server
   """ prepro 210x160x3 uint8 frame into 6400 (80x80) 1D float vector """
@@ -131,45 +168,6 @@ def discount_rewards(r):
   discounted_r -= np.mean(discounted_r)
   discounted_r /= np.std(discounted_r)
   return discounted_r
-
-def import_csv(csvfilename):
-  data = []
-  row_index = 0
-  with open(csvfilename, "r", encoding="utf-8", errors="ignore") as scraped:
-    reader = csv.reader(scraped, delimiter=',')
-    for row in reader:
-      data.append(row[0])
-  return data
-
-if resume:
-  data = import_csv('episode_file.csv')
-  episode_number = int(data[0])
-else:
-  episode_number = 0
-
-
-if resume:
-  model = pickle.load(open('save.p', 'rb'))
-  #takes 10-15 ms on macbook pro
-else:
-  model = {}
-  if benchmark:
-    np.random.seed(5) ; model['W1'] = np.random.randn(200,dimension)/np.sqrt(dimension)
-    np.random.seed(5) ; model['B1'] = np.random.randn(200)/np.sqrt(200)
-    np.random.seed(5) ; model['W2'] = np.random.randn(50,200)/np.sqrt(200)
-    np.random.seed(5) ; model['B2'] = np.random.randn(50)/np.sqrt(50)
-    np.random.seed(5) ; model['W3'] = np.random.randn(50)/np.sqrt(50)
-  else:
-    model['W1'] = np.random.randn(200,dimension)/np.sqrt(dimension)
-    model['B1'] = np.random.randn(200)/np.sqrt(200)
-    model['W2'] = np.random.randn(50,200)/np.sqrt(200)
-    model['B2'] = np.random.randn(50)/np.sqrt(50)
-    model['W3'] = np.random.randn(50)/np.sqrt(50)
-
-grad_buffer = { k : np.zeros_like(v) for k,v in model.items() } # update buffers that add up gradients over a batch
-#updated .iteritems to .items
-rmsprop_cache = { k : np.zeros_like(v) for k,v in model.items() } 
-
 
 env = gym.make("Pong-v0")
 observation = env.reset()

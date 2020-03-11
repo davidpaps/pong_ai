@@ -79,21 +79,23 @@ class Vector
       var that = this
       this.BotSocket.onmessage = function(e) {
           var data = JSON.parse(e.data);
+          that.repeatActionCount = 0;
           var move = data['move'];
           var trainingopponent = data['trainingopponent']
-          if(trainingopponent === "false"){
-            that.botUpdate(move);
+          if (trainingopponent === "false"){
+            that._moveup = move;
             that.responseReceived = true;}
-          else{ that.trainingOpponentMove(move) }
+          else { that.trainingOpponentMove(move) }
       };
 
       this.BotSocket.onclose = function(e) {
           console.error('Chat socket closed unexpectedly');
       };
 
-      this._move = "";
+      this._moveup = '';
       this._canvas = canvas;
       this._context = canvas.getContext('2d');
+      this.repeatActionCount = 0;
 
       this.ball = new Ball;
       this.throttle = 1;
@@ -101,8 +103,8 @@ class Vector
 
       this.done = false;
 
-      this.training = true
-      this.bot = 'rl-federer'
+      this.training = true;
+      this.bot = 'rl-federer';
       
 
 
@@ -129,6 +131,16 @@ class Vector
         if (lastTime) {
           this.update((milliseconds - lastTime) / 1000);
           this.updateReward();
+          if (this.repeatActionCount<3){
+            this.botUpdate(this._moveup);
+            this.repeatActionCount += 1;
+          }
+          else {
+            this.repeatActionCount = 0;
+          }
+          if (this.training === true) {
+            this.players[0].position.y = this.ball.position.y
+          }
           if (this.isPointOver === true) {
             this.reset();
           }
@@ -139,6 +151,7 @@ class Vector
         requestAnimationFrame(callback);
         
         this.count += 1;
+        
         if (this.BotSocket.readyState === 1) {
           if ((this.responseReceived === true) && (this.count % this.throttle === 0)) {
             // this.draw();
@@ -146,7 +159,8 @@ class Vector
             this.responseReceived = false;
             this.getMoveWS()
             if( this.training === true ){
-              this.getOpponentMove() 
+              // this.getOpponentMove() 
+              //use line above to train against a backend bot
             }
             // console.log(this.aggregateReward);
             if (this.isPointOver === true) {
@@ -300,7 +314,7 @@ class Vector
       if (this.ball.velocity.x === 0 && this.ball.velocity.y === 0) {
         this.ball.velocity.x = 300 * (Math.random() > .5 ? 1 : -1);
         this.ball.velocity.y = 300 * (Math.random() > .5 ? 1 : -1);
-        this.ball.velocity.length = 50;
+        this.ball.velocity.length = 150;
       }
     }
 
@@ -381,9 +395,9 @@ class Vector
 
     botUpdate(moveUp) {
       if(moveUp === true) {
-          this.players[1].position.y -= 25
+          this.players[1].position.y -= 5
       } else {
-          this.players[1].position.y += 25
+          this.players[1].position.y += 5
       }
     }
 

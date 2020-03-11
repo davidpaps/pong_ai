@@ -69,7 +69,8 @@ class Vector
   {
     constructor(canvas)
     {
-      var trainingSession = "{{ training_session|escapejs }}";
+      // var trainingSession = "{{ training_session|escapejs }}";
+      var trainingSession = "training";
     
       this.BotSocket = new WebSocket(
           'ws://' + window.location.host +

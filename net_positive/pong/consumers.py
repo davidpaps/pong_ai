@@ -15,6 +15,7 @@ class PongConsumer(WebsocketConsumer):
 
 
     def receive(self, text_data):
+        
         court_json = json.loads(text_data)["court"]
         bally = json.loads(court_json)["bally"]
         paddley = json.loads(court_json)["paddley"]
@@ -40,33 +41,36 @@ class PongConsumer(WebsocketConsumer):
         # print(type(image))
         # print('send to model')
         # print(datetime.now()) 
-        if trainingopponent == 'true':
-            bot = "steffi-graph"
-            move = SimpleBot.simple_bot_ws(bally, paddley)
-            self.send(text_data=json.dumps({
-            'move': move,
-            'trainingopponent': trainingopponent}))
         
-        if bot == "student":
-            move = AndrejBotTraining.andrej_training(image, reward, done)
-            self.send(text_data=json.dumps({
-            'move': move,
-            'trainingopponent': trainingopponent
-            }))
+        if trainingopponent == "true":
+          bot = "steffi-graph"
+          move = SimpleBot.simple_bot_ws(bally, paddley)
+          self.send(text_data=json.dumps({
+          'move': move,
+          'trainingopponent': trainingopponent}))
+        else:
+          if bot == "student":
+              move = AndrejBotTraining.andrej_training(image, reward, done)
+              self.send(text_data=json.dumps({
+              'move': move,
+              'trainingopponent': trainingopponent
+              }))
 
-        if bot == "steffi-graph":
+          if bot == "steffi-graph":
             move = SimpleBot.simple_bot_ws(bally, paddley)
             self.send(text_data=json.dumps({
             'move': move,
             'trainingopponent': trainingopponent
             }))
 
-        if bot == "rl-federer":
+          if bot == "rl-federer":
+            print('hi')
             move = AndrejBot.andrej_bot(image)
             self.send(text_data=json.dumps({
             'move': move,
             'trainingopponent': trainingopponent 
             }))
         
+          
         
 

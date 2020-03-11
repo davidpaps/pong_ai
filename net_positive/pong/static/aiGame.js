@@ -114,7 +114,6 @@ class Vector
 
       this.responseReceived = true;
 
-      this.bot = '';
     
       this.players = [
         new Player,

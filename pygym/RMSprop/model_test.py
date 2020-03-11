@@ -1,6 +1,10 @@
 import pytest
 import sys
-import NN
+from django.test import TestCase
+from django.http import JsonResponse
+# Create your tests here.
+from django.views.generic import TemplateView
+# import NN
 
 def test_print():
   print('hello')
@@ -39,9 +43,18 @@ def test_print():
 # Where in the code is this sent cause if i did see it i did not recognise it - also where did we configure gym 
 # how can i view / show current model when i start a series of episodes 
 # 
-# 
+
+
+class HomeView(TemplateView):
+    template_name = 'myapp/home.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs['environment'] = 'Production'
+        return super().get_context_data(**kwargs)
+
 
 if __name__ == "__main__":
   test_print()
+  HomeView()
   # test_make_move()
   print("Everything passed")

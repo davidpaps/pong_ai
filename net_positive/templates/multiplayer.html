@@ -12,9 +12,9 @@
         <a class="navbar-brand" href="#">AI Pong</a>
       </div>
       <ul class="nav navbar-nav">
-        <li class="active"><a href="/tournament">Tournament</a></li>
+        <li class="active"><a href="/multiplayer">Multiplayer</a></li>
         <li><a href="/">Arcade</a></li>
-        <li><a href="/multiplayer">Multiplayer</a></li>
+        <li><a href="/training">Training</a></li>
       </ul>
     </div>
   </nav>
@@ -23,8 +23,27 @@
   <body>
     <img id="background-image" src="https://wallpaperaccess.com/full/42332.png">
 
-    <div id="game">
-      <canvas id='pong' width='320' height='320'></canvas>
-      </div>
+    <div>
+      <div class="container-top">
+        <div id="left-container">
+          <div id="Player1Name" class=""> Player 1 </div>
+          <br>
+          <div id="test">
+            Score: <div id="player1tally" class=""></div>
+            <br>
+            Set:<div id="player1-game-tally" class=""></div>
+          </div>
+        </div>
+        <div id="game">
+          <canvas id='pong' width='320' height='320'></canvas>
+          </div>
+          <div id="right-container">
+            <div id=Player2Name class=""> Player 2 </div>
+            <br>
+            <div id ="score">Score:<div id="player2tally" class=""></div></div>
+            <br>
+            <div id="set">Set:<div id="player2-game-tally" class=""></div></div>
+          </div>
+        </div>
    </body>
 </html>

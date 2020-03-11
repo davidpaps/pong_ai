@@ -82,10 +82,7 @@ button {
         </center>
 
         
-     
-  
-
-
+    
 
 
 
@@ -149,7 +146,7 @@ button {
   {
     constructor()
     {
-      super(7, 30);
+      super(8, 32);
       this.score = 0;
       this.game = 0;
       this.velocity = new Vector;
@@ -225,11 +222,11 @@ button {
             // uncomment the above line to see what the bot is seeing
             this.responseReceived = false;
             this.getMoveWS()
-            console.log(this.aggregateReward);
+            // console.log(this.aggregateReward);
             if (this.isPointOver === true) {
               this.gameCount += 1;
-              console.log('game count')
-              console.log(this.gameCount);
+              // console.log('game count')
+              // console.log(this.gameCount);
               this.aggregateReward = 0;
               this.isPointOver = false;
             }
@@ -243,26 +240,71 @@ button {
 
     getMoveWS(){
       var image = this._context.getImageData(0, 0, 320, 320);
-
+      // console.log(image)
+      var t = new Date
+      console.log(t.getSeconds())
+      console.log(t.getMilliseconds())
       var imageArray = Array.from(image.data)
-
+      var d2 = new Date
       imageArray = imageArray.filter(function(_, i) {
         return (i + 1) % 4;
       })
+      imageArray = imageArray.filter(function(_, i) {
+        return (i + 1) % 3;
+      })
+      imageArray = imageArray.filter(function(_, i) {
+        return (i + 1) % 2;
+      
+      })
+
+      var count = 0
+
+      for (var i = 0, len = imageArray.length; i < len; i++) {
+        if (imageArray[i] < 127.5) {
+          imageArray[i] = 0;
+        }
+        else if (imageArray[i] == 127.5)
+        {
+          if (count % 2 == 0) {
+
+            imageArray[i] = 1;
+            count += 1;
+          }
+        }
+        else {
+          imageArray[i] = 1;
+        }
+      }
+
+      var imageString = imageArray.join('')
+
+      var regex = /0000000000000000000000000000000000000000/gi
+
+      imageString = imageString.replace(regex, 'x');
+      // console.log(imageString)
+      
+      // var d2 = new Date
+      // console.log('btoa')
+      // console.log(d2.getSeconds())
+      // console.log(d2.getMilliseconds())
+
+      // // var imageString = btoa(imageString)
 
       var bally = Math.round(this.ball.position.y);
       var paddley = this.players[1].position.y;
       var reward = this.aggregateReward;
-      var court = `{"bally": ${bally}, "paddley": ${paddley}, "reward": ${reward}}`
+      var court = `{"bally": ${bally}, "paddley": ${paddley}, "reward": ${reward}}`;
+        
       this.BotSocket.send(JSON.stringify({
         "court": court,
-        "image": imageArray,
+        "image": imageString,
         "done": this.done,
-      }));
+        }));
+
       court = '';
       this.done = false;
+ 
     }
-      // let url = `http://net-positive.herokuapp.com/pong/bot?bally=${Math.round(this.ball.position.y)}&paddley=${this.players[1].position.y}&reward=${this.aggregateReward}&img=${image}`
 
     getMove(){
       var image = 'placeholder'
@@ -284,7 +326,7 @@ button {
       if (player.left < ball.right && player.right > ball.left && player.top < ball.bottom && player.bottom > ball.top) {
         const length = ball.velocity.length
         ball.velocity.x = -ball.velocity.x;
-        ball.velocity.y += 300 * (Math.random() - .5);
+        ball.velocity.y += ball.velocity.y * (Math.random() - 0.5);
         ball.velocity.length = length * 1.05; 
       }
     }

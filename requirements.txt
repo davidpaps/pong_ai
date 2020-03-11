@@ -8,3 +8,5 @@ coverage
 pytest
 numpy
 pickle-mixin
+opencv-python
+opencv-contrib-python

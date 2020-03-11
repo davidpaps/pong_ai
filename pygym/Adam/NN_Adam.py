@@ -8,7 +8,7 @@ import cv2
 import gym
 import numpy as np
 
-render = False 
+render = False
 benchmark = False
 in_match = False
 

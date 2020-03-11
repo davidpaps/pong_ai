@@ -103,6 +103,8 @@ class Vector
       this.aggregateReward = 0;
 
       this.responseReceived = true;
+
+      this.bot = '';
     
       this.players = [
         new Player,
@@ -154,9 +156,9 @@ class Vector
     getMoveWS(){
       var image = this._context.getImageData(0, 0, 320, 320);
       // console.log(image)
-      var t = new Date
-      console.log(t.getSeconds())
-      console.log(t.getMilliseconds())
+      // var t = new Date
+      // console.log(t.getSeconds())
+      // console.log(t.getMilliseconds())
       var imageArray = Array.from(image.data)
       imageArray = imageArray.filter(function(_, i) {
         return (i + 1) % 4;
@@ -328,12 +330,10 @@ class Vector
             pong.players[1].game
           )
         }
-
-        function chooseBot(){
-          
-        }
       })
     
+      
+
       if (this.ball.top < 0 || this.ball.bottom > this._canvas.height) {
         this.ball.velocity.y = -this.ball.velocity.y;
       }

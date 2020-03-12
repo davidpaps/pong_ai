@@ -59,6 +59,7 @@ class Player extends Rectangle
 {
   constructor()
   {
+    
     super(12 , 50);
     this.score = 0;
     this.game = 0;
@@ -89,6 +90,10 @@ class Pong
     this.players[1].position.x = this._canvas.width - 32;
     this.players.forEach( player => { player.position.y = this._canvas.height / 2 });
 
+    this.ballSpeed = 300;
+    this.reboundSpeed = 1.05;
+    this.paddleSize = 50;
+
 
     let lastTime;
     const callback = (milliseconds) => {
@@ -113,7 +118,7 @@ class Pong
       const length = ball.velocity.length
       ball.velocity.x = -ball.velocity.x;
       ball.velocity.y += 300 * (Math.random() - .5);
-      ball.velocity.length = length * 1.05; 
+      ball.velocity.length = length * this.reboundSpeed; 
     }
   }
 
@@ -158,7 +163,7 @@ class Pong
     if (this.ball.velocity.x === 0 && this.ball.velocity.y === 0) {
       this.ball.velocity.x = 300 * (Math.random() > .5 ? 1 : -1);
       this.ball.velocity.y = 300 * (Math.random() * 2 -1);
-      this.ball.velocity.length = 1000;
+      this.ball.velocity.length = this.ballSpeed;
     }
   }
 

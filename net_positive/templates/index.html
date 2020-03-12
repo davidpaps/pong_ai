@@ -81,7 +81,8 @@
 
     <script>
       $(document).ready(function(){
-
+        pong.training = false
+        
           $('#rl-federer').on('click', function(){
             pong.bot = 'rl-federer';
             pong.players[0].score = 0

@@ -432,8 +432,8 @@ class Vector
 
     botUpdate(moveUp) {
       if(moveUp === true) {
-        if (this.players[1].position.y - 11.5 >= 0) {
-          this.players[1].position.y -= 11.5
+        if (this.players[1].position.y - 12 >= 0) {
+          this.players[1].position.y -= 12
         }
         else {
           this.players[1].position.y = this.players[1].position.y
@@ -443,8 +443,8 @@ class Vector
         // 
       } 
       else {
-        if (this.players[1].position.y + 11.5 <= 320) {
-          this.players[1].position.y += 11.5
+        if (this.players[1].position.y + 12 <= 320) {
+          this.players[1].position.y += 12
         }
         else {
           this.players[1].position.y = this.players[1].position.y

@@ -39,6 +39,12 @@ class AndrejBot(models.Model):
       cur_x = AndrejBot.prepro(pixels)
     
       x = cur_x - self.prev_x if self.prev_x is not None else np.zeros(D)
+
+      # if self.count == 65:
+      #   with open('final_file.csv', mode='w') as final_file: #store the pixels
+      #       final_writer = csv.writer(final_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+      #       final_writer.writerow(x)
+
       self.prev_x = cur_x
 
       # forward the policy network and sample an action from the returned probability
@@ -92,8 +98,6 @@ class AndrejBot(models.Model):
       #       final_writer = csv.writer(final_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
       #       final_writer.writerow(I)
      
-
-      
 
       print("this is the frame size", I.size)
       print(len(I))

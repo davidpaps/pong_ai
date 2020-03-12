@@ -13,7 +13,7 @@ Makers final project - lets build a neural net
 * python3 manage.py runserver
 * Go to your browser and copy into the url localhost:8000
 
-## Networks
+## Networks
 
 This project is tightly based off the work done by Andrej Karpathy in his [Reinforcement Learning Blog](http://karpathy.github.io/2016/05/31/rl/). We used his network as the bot which represents the hardest net to play against. His work also provided strong guidance for how a net should interact with the pong game and what values it should recieve. The nets were trained on the OpenAI gym and then put onto our game which was made to mimic the AIgym as close as possible. Modifications to the code were done to fit with the new game. 
 

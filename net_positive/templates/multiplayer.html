@@ -72,7 +72,6 @@
                 pong.reboundSpeed = 1.00;
                 pong.players[0].score = 0;
                 pong.players[1].score = 0;
-                
               })
     
               $('#medium').on('click', function(){
@@ -80,8 +79,6 @@
                 pong.reboundSpeed = 1.10;
                 pong.players[0].score = 0;
                 pong.players[1].score = 0;
-                
-
               })
     
               $('#hard').on('click', function(){
@@ -89,14 +86,13 @@
                 pong.reboundSpeed = 1.20;
                 pong.players[0].score = 0;
                 pong.players[1].score = 0;
-                
-
               })
             }) 
         </script>
  
 
    </body>
+   <br>
    <center><h4>Spacebar to Serve!<h4></center>
    <script src={% static "multiplayer.js" %}></script>
    <audio id ="music" controls autoplay>

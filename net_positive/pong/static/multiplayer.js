@@ -146,17 +146,13 @@ class Pong
     this.players[0].position.y = this._canvas.height / 2;
     this.players[1].position.y = this._canvas.height / 2;
 
-    if (this.players[0].score < 21 && this.players[1].score < 21){
-      this.startGame()    
+    if (this.players[0].score < 21 && this.players[1].score < 21){  
     } else {
       this.done = true
       this.restartGame(); 
     }
   }
 
-  startGame(){
-
-  }
 
   start() {
     if (this.ball.velocity.x === 0 && this.ball.velocity.y === 0) {

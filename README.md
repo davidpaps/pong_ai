@@ -7,10 +7,23 @@ Makers final project - lets build a neural net
 
 ## How to run
 
+* First Clone of fork this repo 
+* Run the setup section
+* From the terminal cd Net-Positive-Makers/net_positive
 * python3 manage.py runserver
+* Go to your browser and copy into the url localhost:8000
 
+## Networks
 
-## Benchmarking of AWS instances for training a net
+This project is tightly based off the work done by Andrej Karpathy in his [Reinforcement Learning Blog](http://karpathy.github.io/2016/05/31/rl/). We used his network as the bot which represents the hardest net to play against. His work also provided strong guidance for how a net should interact with the pong game and what values it should recieve. The nets were trained on the OpenAI gym and then put onto our game which was made to mimic the AIgym as close as possible. Modifications to the code were done to fit with the new game. 
+
+This team tried different methods of including biases in the net, making it deeper and using Adam optimization instead of RMSprop. We found that the simple single layer without biases yeilded far superior results when compared to the combination of the afforementioned specifiacations. Nevertheless, our version of the neural net is represented in the game as Nodevak Djocokic and its code can be seen in the models section of project along with andrej's.  
+
+## Training 
+
+The networks were trained on AWS EC2 most of the training runs were done on the C5.2xlarge as we found it was the most cost effective for our runtime and the nature of the problem. 
+
+### Benchmarking of AWS instances for training a net
 
 | EC2 instance type      | vCPU          | Memory       | Cost per hour  |
 | -----------------------|:-------------:|:------------:| --------------:|

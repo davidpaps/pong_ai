@@ -78,22 +78,28 @@ class Vector
 
       var that = this
       this.BotSocket.onmessage = function(e) {
+          // console.log('new-message')
+          // var t2 = new Date
+          // console.log(t2.getSeconds())
+          // console.log(t2.getMilliseconds())
           var data = JSON.parse(e.data);
+          that.repeatActionCount = 0;
           var move = data['move'];
           var trainingopponent = data['trainingopponent']
-          if(trainingopponent === "false"){
-            that.botUpdate(move);
+          if (trainingopponent === "false"){
+            that._moveup = move;
             that.responseReceived = true;}
-          else{ that.trainingOpponentMove(move) }
+          else { that.trainingOpponentMove(move) }
       };
 
       this.BotSocket.onclose = function(e) {
           console.error('Chat socket closed unexpectedly');
       };
 
-      this._move = "";
+      this._moveup = '';
       this._canvas = canvas;
       this._context = canvas.getContext('2d');
+      this.repeatActionCount = 0;
 
       this.ball = new Ball;
       this.throttle = 1;
@@ -101,8 +107,8 @@ class Vector
 
       this.done = false;
 
-      this.training = true
-      this.bot = 'rl-federer'
+      this.training = true;
+      this.bot = 'rl-federer';
       
 
 
@@ -111,6 +117,7 @@ class Vector
       this.aggregateReward = 0;
 
       this.responseReceived = true;
+
     
       this.players = [
         new Player,
@@ -127,6 +134,16 @@ class Vector
         if (lastTime) {
           this.update((milliseconds - lastTime) / 1000);
           this.updateReward();
+          if (this.repeatActionCount<3){
+            this.botUpdate(this._moveup);
+            this.repeatActionCount += 1;
+          }
+          else {
+            this.repeatActionCount = 0;
+          }
+          if (this.training === true) {
+            this.players[0].position.y = this.ball.position.y
+          }
           if (this.isPointOver === true) {
             this.reset();
           }
@@ -137,6 +154,7 @@ class Vector
         requestAnimationFrame(callback);
         
         this.count += 1;
+        
         if (this.BotSocket.readyState === 1) {
           if ((this.responseReceived === true) && (this.count % this.throttle === 0)) {
             // this.draw();
@@ -144,7 +162,8 @@ class Vector
             this.responseReceived = false;
             this.getMoveWS()
             if( this.training === true ){
-              this.getOpponentMove() 
+              // this.getOpponentMove() 
+              //use line above to train against a backend bot
             }
             // console.log(this.aggregateReward);
             if (this.isPointOver === true) {
@@ -164,10 +183,7 @@ class Vector
 
     getMoveWS(){
       var image = this._context.getImageData(0, 0, 320, 320);
-      // console.log(image)
-      var t = new Date
-      console.log(t.getSeconds())
-      console.log(t.getMilliseconds())
+      
       var imageArray = Array.from(image.data)
       imageArray = imageArray.filter(function(_, i) {
         return (i + 1) % 4;
@@ -180,7 +196,7 @@ class Vector
       
       })
 
-      var count = 0
+      var everyOtherTime = 0
 
       for (var i = 0, len = imageArray.length; i < len; i++) {
         if (imageArray[i] < 127.5) {
@@ -188,10 +204,10 @@ class Vector
         }
         else if (imageArray[i] == 127.5)
         {
-          if (count % 2 == 0) {
+          if (everyOtherTime % 2 == 0) {
 
             imageArray[i] = 1;
-            count += 1;
+            everyotherTime += 1;
           }
         }
         else {
@@ -200,11 +216,24 @@ class Vector
       }
 
       var imageString = imageArray.join('')
+      // console.log('pre-regex')
+      // var t = new Date
+      // console.log(t.getSeconds())
+      // console.log(t.getMilliseconds())
+      var regex80 = /00000000000000000000000000000000000000000000000000000000000000000000000000000000/gi
+      var regex40 = /0000000000000000000000000000000000000000/gi
+      var regex20 = /00000000000000000000/gi
+      var regex10 = /0000000000/gi
 
-      var regex = /0000000000000000000000000000000000000000/gi
-
-      imageString = imageString.replace(regex, 'x');
-
+      // console.log('post-regex')
+      // var t = new Date
+      // console.log(t.getSeconds())
+      // console.log(t.getMilliseconds())
+      imageString = imageString.replace(regex80, 'w');
+      imageString = imageString.replace(regex40, 'x');
+      imageString = imageString.replace(regex20, 'y');
+      imageString = imageString.replace(regex10, 'z');
+      // console.log(imageString)
       var bally = Math.round(this.ball.position.y);
       var paddley = this.players[1].position.y;
       var reward = this.aggregateReward;
@@ -298,7 +327,7 @@ class Vector
       if (this.ball.velocity.x === 0 && this.ball.velocity.y === 0) {
         this.ball.velocity.x = 300 * (Math.random() > .5 ? 1 : -1);
         this.ball.velocity.y = 300 * (Math.random() > .5 ? 1 : -1);
-        this.ball.velocity.length = 50;
+        this.ball.velocity.length = 200;
       }
     }
 
@@ -361,6 +390,8 @@ class Vector
         }
       })
     
+      
+
       if (this.ball.top < 0 || this.ball.bottom > this._canvas.height) {
         this.ball.velocity.y = -this.ball.velocity.y;
       }
@@ -377,13 +408,27 @@ class Vector
 
     botUpdate(moveUp) {
       if(moveUp === true) {
-          this.players[1].position.y -= 25
-      } else {
-          this.players[1].position.y += 25
+        if (this.players[1].position.y - 11.5 >= 0) {
+          this.players[1].position.y -= 11.5
+        }
+        else {
+          this.players[1].position.y = this.players[1].position.y
+        }
+        //  3 works well for first andrej with ball speed at 60
+        // 11-11.5-12 works well for andrej ep-14000 with ball speed at 200
+        // 
+      } 
+      else {
+        if (this.players[1].position.y + 11.5 <= 320) {
+          this.players[1].position.y += 11.5 
+        }
+        else {
+          this.players[1].position.y = this.players[1].position.y
+        }
       }
     }
 
-    trainingOpponentMove(move){
+    trainingOpponentMove(move) {
       if(move === false){
         this.players[0].position.y += 5
       }
@@ -405,46 +450,22 @@ class Vector
     constructor(pong) 
     {
       this.pong = pong;
-      this.playerVsAi = true;
-      this.playerVsPlayer = false;
     }
 
-    controls(){ 
-      if (this.playerVsAi) {
-        this.keyboard(0);
-      } else if (this.playerVsPlayer) {
-        this.keyboardTwoPlayer();
-        this.keyboard(1);
-      }
-    }
 
-    keyboard(player){
+    keyboard(){
       window.addEventListener('keydown', keyboardHandlerFunction); 
       function keyboardHandlerFunction(e) {
-        if(e.keyCode === 40 && pong.players[player].position.y < (pong._canvas.height - 50) ) {
-          pong.players[player].position.y += 25
-        }
-        else if(e.keyCode === 38 && pong.players[player].position.y > 50) {
-            pong.players[player].position.y -= 25
-        } else if(e.keyCode === 32) {
-            pong.start();
-        } 
-      }
-    }
-
-  
-
-    keyboardTwoPlayer(){
-      window.addEventListener('keydown', keyboardHandlerFunction); 
-      function keyboardHandlerFunction(e) {
-        if(e.keyCode === 83 && pong.players[0].position.y < (pong._canvas.height - 50) ) {
+        if(e.keyCode === 40 && pong.players[0].position.y < (pong._canvas.height - 50) ) {
           pong.players[0].position.y += 25
-        } else if(e.keyCode === 87 && pong.players[0].position.y > 50) {
+        } else if(e.keyCode === 38 && pong.players[0].position.y > 50) {
             pong.players[0].position.y -= 25
-        }  
+        } else if(e.keyCode === 32) {
+            // pong.start();
+        } 
       }
     }
   }
 
   const game = new Game(pong);
-  game.controls();
+  game.keyboard();

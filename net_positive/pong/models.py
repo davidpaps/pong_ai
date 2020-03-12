@@ -10,8 +10,6 @@ import cv2
 class SimpleBot(models.Model):
     @classmethod
     def simple_bot(request, court):
-
-
       if int(court["bally"]) <= int(court["paddley"]):
         return True
       else:
@@ -47,6 +45,7 @@ class AndrejBot(models.Model):
       aprob, h = AndrejBot.policy_forward(x)
       print(aprob)
       move_up = True if 0.5 < aprob else False #take the action most likely to yield the best result
+      
       return move_up
 
     @classmethod

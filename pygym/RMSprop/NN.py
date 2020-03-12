@@ -1,12 +1,12 @@
-from datetime import datetime 
-import pickle
-import gym
-import random 
-import numpy as np
-import cv2
 import csv
+import pickle
+import random
+from datetime import datetime
 from pathlib import Path
 
+import cv2
+import gym
+import numpy as np
 
 render = False
 benchmark = False
@@ -20,6 +20,8 @@ dimension = 80 * 80
 # resume from previous checkpoint?
 
 my_file = Path("./episode_file.csv")
+""" for the first game played there is no history 
+Can we rename resume, isnt clear to what it is doing - seperation of concerns"""
 if my_file.is_file():
   print('Resuming run')
   resume = True
@@ -260,6 +262,5 @@ while True:
     reward_sum = 0 
     observation = env.reset() # reset env
     prev_x = None
-    
-        
+            
 env.close()

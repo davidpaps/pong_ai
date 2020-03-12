@@ -3,6 +3,8 @@
 <html>
 <head>
   <link rel="icon" href={% static "public/favicon.ico" %} type="image/x-icon">
+  
+
     <title>Training</title>
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
       <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
@@ -21,6 +23,9 @@
         </ul>
       </div>
     </nav>
+    <audio id ="music" controls autoplay>
+      <source src={% static "public/Rocky_theme_song.mp3" %} type="audio/mpeg">
+    </audio>
   <body>
     <center>
       <h2>Training!</h2>
@@ -28,11 +33,16 @@
     
     <img id="background-image" src="https://wallpaperaccess.com/full/42332.png">
 
-        <center>
+    <center>
+    <div id="traininggame">
         <canvas id='pong' width='320' height='320'></canvas>
-        </center>
+    </div>
+    </center>
+
 
         <script src={% static 'aiGame.js' %}></script>
+
   </body>
+ 
 
 </html>

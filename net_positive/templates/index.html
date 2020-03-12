@@ -81,27 +81,36 @@
 
     <script>
       $(document).ready(function(){
-
+        pong.training = false
+        
           $('#rl-federer').on('click', function(){
             pong.bot = 'rl-federer';
-
+            pong.players[0].score = 0
+            pong.players[1].score = 0
           })
 
           $('#steffi-graph').on('click', function(){
             pong.bot = 'steffi-graph';
+            pong.players[0].score = 0
+            pong.players[1].score = 0
           })
 
           $('#nodevak-djokovic').on('click', function(){
             pong.bot = 'nodevak-djokovic';
+            pong.players[0].score = 0
+            pong.players[1].score = 0
           })
 
           $('#bjorn-cyborg').on('click', function(){
             pong.bot = 'bjorn-cyborg';
+            pong.players[0].score = 0
+            pong.players[1].score = 0
           })
 
           $('#andrai-agassi').on('click', function(){
             pong.bot = 'andrai-agassi';
-
+            pong.players[0].score = 0
+            pong.players[1].score = 0
           })
         })
 

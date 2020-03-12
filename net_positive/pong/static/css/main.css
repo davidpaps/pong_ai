@@ -134,8 +134,32 @@ button {
     animation: flicker 1s linear infinite;
   }
   
+  .difficulty{
+    display: flex;
+    flex-direction: row;
+    align-items: space-between;
+    height: 320px;
+    width: 100%;
+    color: white;
+  }
 
+  #easy {
+    padding: 150px 0 0 90px; 
+    width:40%;
+    font-size: 20px;
+  }
   
+  #medium{
+    padding: 150px 0 0 90px; 
+    width:40%;
+    font-size: 20px;
+  }
+
+  #hard{
+    padding: 150px 0 0 90px; 
+    width:40%;
+    font-size: 20px;
+  }
 
 
 

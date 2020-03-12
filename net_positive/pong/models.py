@@ -24,15 +24,15 @@ class SimpleBot(models.Model):
 
 class FaultyBot(models.Model):
     @classmethod
-    def simple_bot(request, court):
-      if court["bally"] <= court["paddley"]:
+    def faulty_bot(request, court):
+      if str(court["bally"]) <= str(court["paddley"]):
         return True
       else:
         return False
 
     @classmethod
-    def simple_bot_ws(request, bally, paddley):
-      if int(bally) <= int(paddley):
+    def faulty_bot_ws(request, bally, paddley):
+      if str(bally) <= str(paddley):
         return True
       else:
         return False

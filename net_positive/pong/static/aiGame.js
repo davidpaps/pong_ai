@@ -266,25 +266,22 @@ class Vector
 
       court = '';
     }
-
-
-
-
-    getMove(){
-      var image = 'placeholder'
-      var that = this
-      var xmlhttp = new XMLHttpRequest()
-      xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-          var myArr = JSON.parse(this.responseText);
-          that._move = myArr['up'];
-          that.botUpdate(that._move);
-          that.responseReceived = true;
-        }
-      };
-      xmlhttp.open('GET', url, true);
-      xmlhttp.send();
-    }
+    
+    // http GET interface to backend
+    // getMove(){
+    //   var that = this
+    //   var xmlhttp = new XMLHttpRequest()
+    //   xmlhttp.onreadystatechange = function() {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //       var myArr = JSON.parse(this.responseText);
+    //       that._move = myArr['up'];
+    //       that.botUpdate(that._move);
+    //       that.responseReceived = true;
+    //     }
+    //   };
+    //   xmlhttp.open('GET', url, true);
+    //   xmlhttp.send();
+    // }
 
     collide(player, ball) {
       if (player.left <= ball.right && player.right >= ball.left && player.top <= ball.bottom && player.bottom >= ball.top) {

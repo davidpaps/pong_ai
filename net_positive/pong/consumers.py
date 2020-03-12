@@ -3,6 +3,7 @@ import json
 from pong.models import SimpleBot
 from pong.models import AndrejBot
 from pong.models import AndrejBotTraining
+from pong.models import FaultyBot
 from datetime import datetime
 import numpy as np
 
@@ -69,6 +70,13 @@ class PongConsumer(WebsocketConsumer):
 
           if bot == "rl-federer":
             move = AndrejBot.andrej_bot(image)
+            self.send(text_data=json.dumps({
+            'move': move,
+            'trainingopponent': trainingopponent 
+            }))
+          
+          if bot == "andrai-agassi":
+            move = FaultyBot.faulty_bot_ws(bally, paddley)
             self.send(text_data=json.dumps({
             'move': move,
             'trainingopponent': trainingopponent 

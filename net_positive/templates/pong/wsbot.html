@@ -3,7 +3,7 @@
 <html>
 <head>
   <link rel="icon" href={% static "public/favicon.ico" %} type="image/x-icon">
-  <audio src={% static 'public/Rocky_theme_song.mp3' %} type="audio/mpeg"></audio>
+  
 
     <title>Training</title>
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -23,6 +23,9 @@
         </ul>
       </div>
     </nav>
+    <audio id ="music" controls autoplay>
+      <source src={% static "public/Rocky_theme_song.mp3" %} type="audio/mpeg">
+    </audio>
   <body>
     <center>
       <h2>Training!</h2>
@@ -35,6 +38,8 @@
         </center>
 
         <script src={% static 'aiGame.js' %}></script>
+
   </body>
+ 
 
 </html>

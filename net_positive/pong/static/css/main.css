@@ -36,6 +36,10 @@ body{
   border-radius: 10px;
 }
 
+#music {
+  background-color: transparent;
+}
+
 #game{
   text-align: center;
   width: 50%;
@@ -111,7 +115,7 @@ body{
 button {
     font-family: 'PressStart2PRegular';
     font-size: 25px;
-    color: rgb(171, 54, 171);
+    color: rgb(240, 97, 240);
     background-color: transparent;
     border-color: transparent;
     /* top: 50%;

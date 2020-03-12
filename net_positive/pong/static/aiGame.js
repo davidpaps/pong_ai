@@ -289,8 +289,17 @@ class Vector
     collide(player, ball) {
       if (player.left <= ball.right && player.right >= ball.left && player.top <= ball.bottom && player.bottom >= ball.top) {
         const length = ball.velocity.length
-        ball.position.x -= ball.velocity.x * 0.1
+
+        if (ball.position.x > 160) {
+          ball.position.x -=  9
+        }
+        else {
+          ball.position.x +=  9
+        }
+
+
         ball.velocity.x = -ball.velocity.x;
+        
         ball.velocity.y += ball.velocity.y * (Math.random() - .5);
 
         
@@ -299,6 +308,8 @@ class Vector
         // var bounceAngle = normalizedRelativeIntersectionY * 5 * Math.PI / 12;
         // ball.velocity.x = ball.velocity.length * Math.cos(bounceAngle);
         // ball.velocity.y = ball.velocity.length * - Math.sin(bounceAngle);
+
+     
 
         ball.velocity.length = length * 1.05; 
 

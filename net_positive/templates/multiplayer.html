@@ -31,9 +31,9 @@
           <div id="Player1Name" class=""> Player 1 </div>
           <br>
           <div id="test">
-            Score: <div id="player1tally" class=""></div>
+            Score: <div id="player1tally" class="">0</div>
             <br>
-            Set:<div id="player1-game-tally" class=""></div>
+            Set:<div id="player1-game-tally" class="">0</div>
           </div>
         </div>
         <div id="game">
@@ -42,9 +42,9 @@
           <div id="right-container">
             <div id=Player2Name class=""> Player 2 </div>
             <br>
-            <div id ="score">Score:<div id="player2tally" class=""></div></div>
+            <div id ="score">Score:<div id="player2tally" class="">0</div></div>
             <br>
-            <div id="set">Set:<div id="player2-game-tally" class=""></div></div>
+            <div id="set">Set:<div id="player2-game-tally" class="">0</div></div>
           </div>
         </div>
         
@@ -70,22 +70,27 @@
               $('#easy').on('click', function(){
                 pong.ballSpeed = 300;
                 pong.reboundSpeed = 1.00;
-                pong.playersscore = 0;
-                // pong.players[1].score = 0;
+                pong.players[0].score = 0;
+                pong.players[1].score = 0;
+                
               })
     
               $('#medium').on('click', function(){
                 pong.ballSpeed = 400;
                 pong.reboundSpeed = 1.10;
-                pong.players.score = 0;
-                // pong.players[1].score = 0;
+                pong.players[0].score = 0;
+                pong.players[1].score = 0;
+                
+
               })
     
               $('#hard').on('click', function(){
                 pong.ballSpeed = 500;
                 pong.reboundSpeed = 1.20;
-                pong.players.score = 0;
-                // pong.players[1].score = 0;
+                pong.players[0].score = 0;
+                pong.players[1].score = 0;
+                
+
               })
             }) 
         </script>

@@ -40,10 +40,10 @@ class AndrejBot(models.Model):
     
       x = cur_x - self.prev_x if self.prev_x is not None else np.zeros(D)
 
-      if self.count == 65:
-        with open('final_file.csv', mode='w') as final_file: #store the pixels
-            final_writer = csv.writer(final_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-            final_writer.writerow(x)
+      # if self.count == 65:
+      #   with open('final_file.csv', mode='w') as final_file: #store the pixels
+      #       final_writer = csv.writer(final_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+      #       final_writer.writerow(x)
 
       self.prev_x = cur_x
 

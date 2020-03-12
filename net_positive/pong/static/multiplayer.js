@@ -79,11 +79,10 @@ class Pong
 
     this.done = false;
     this.isPointOver = false;
-    this.paddleSize = 50;
 
     this.players = [
-      new Player(10,  this.paddleSize),
-      new Player(10,  this.paddleSize),
+      new Player(10, 50),
+      new Player(10, 50),
     ];
 
     this.players[0].position.x = 32;

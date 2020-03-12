@@ -50,23 +50,38 @@
 
         <section>
           <div class="container-bottom">
-            <div id="ballSpeed">
-              <p>Ball Speed</p>
-              <input type="range" min="50" max="1000" value="300" class="slider" id="ballSpeed">
+            <div id="easy">
+              <button id="easy">Easy Mode</button>
             </div>
     
-            <div id="reboundSpeed">
-              <p>Rebound Speed</p>
-              <input type="range" min="1.00" max="2.55" value="1.05" class="slider" id="reboundSpeed">
+            <div id="medium">
+              <button id="medium">Medium Mode</button>
             </div>
     
-            <div id="paddleSize">
-              <p>Paddle Size</p>
-              <input type="range" min="10" max="100" value="50" class="slider" id="paddleSize">
+            <div id="hard">
+              <button id='hard'>Hard Mode</button>
             </div> 
-  
           </div>
         </section>
+
+        <script>
+          $(document).ready(function(){
+              $('#easy').on('click', function(){
+                pong.ballSpeed = 300;
+                pong.reboundSpeed = 1.00;
+              })
+    
+              $('#medium').on('click', function(){
+                pong.ballSpeed = 400;
+                pong.reboundSpeed = 1.10;
+              })
+    
+              $('#hard').on('click', function(){
+                pong.ballSpeed = 500;
+                pong.reboundSpeed = 1.20;
+              })
+            }) 
+        </script>
 
    </body>
    <script src={% static "multiplayer.js" %}></script>

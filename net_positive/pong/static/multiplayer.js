@@ -50,7 +50,7 @@ class Ball extends Rectangle
 {
   constructor()
   {
-    super(4, 8);
+    super(8, 10);
     this.velocity = new Vector;
   }
 }
@@ -59,7 +59,7 @@ class Player extends Rectangle
 {
   constructor()
   {
-    super(7 , 50);
+    super(12 , 50);
     this.score = 0;
     this.game = 0;
     this.velocity = new Vector;
@@ -147,18 +147,22 @@ class Pong
     this.players[1].position.y = this._canvas.height / 2;
 
     if (this.players[0].score < 21 && this.players[1].score < 21){
-      this.start()    
+      this.startGame()    
     } else {
       this.done = true
       this.restartGame(); 
     }
   }
 
+  startGame(){
+
+  }
+
   start() {
     if (this.ball.velocity.x === 0 && this.ball.velocity.y === 0) {
       this.ball.velocity.x = 300 * (Math.random() > .5 ? 1 : -1);
       this.ball.velocity.y = 300 * (Math.random() * 2 -1);
-      this.ball.velocity.length = 200;
+      this.ball.velocity.length = 1000;
     }
   }
 

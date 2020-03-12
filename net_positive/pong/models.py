@@ -92,8 +92,6 @@ class AndrejBot(models.Model):
 
       I = cv2.resize(I,(80,80))
      
-      
-
 
       # a = cv2.cvtColor(cv2.resize(a,(80,80)), cv2.COLOR_BGR2GRAY)
       # cv2.imwrite('color_img.jpg', a)
@@ -114,9 +112,6 @@ class AndrejBot(models.Model):
       #       final_writer.writerow(I)
      
 
-      print("this is the frame size", I.size)
-      print(len(I))
-
       self.count += 1
       return I
 
@@ -127,6 +122,94 @@ class AndrejBot(models.Model):
       logp = np.dot(self.model['W2'], h)
       p = AndrejBot.sigmoid(logp)
       return p, h # return probability of taking action 2, and hidden state
+
+
+class AndrejBotBallOnly(models.Model):
+    prev_x = None # used in computing the difference frame
+    model = pickle.load(open('pong/training/ball_only.p', 'rb'))
+    count = 0
+
+    def __init__(self):
+      self.prev_x = None
+      self.model = pickle.load(open('pong/training/ball_only.p', 'rb'))
+      self.count = 0
+
+    @classmethod
+    def andrej_bot_ball_only(self, pixels):
+      D = 80 * 70
+      # preprocess the observation, set input to network to be difference image
+      cur_x = AndrejBotBallOnly.prepro(pixels)
+    
+      x = cur_x - self.prev_x if self.prev_x is not None else np.zeros(D)
+
+      # if self.count == 65:
+      #   with open('final_file.csv', mode='w') as final_file: #store the pixels
+      #       final_writer = csv.writer(final_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+      #       final_writer.writerow(x)
+
+      self.prev_x = cur_x
+
+      # forward the policy network and sample an action from the returned probability
+      aprob, h = AndrejBotBallOnly.policy_forward(x)
+      move_up = True if 0.5 < aprob else False #take the action most likely to yield the best result
+      
+      return move_up
+
+    @classmethod
+    def sigmoid(request, x): 
+      return 1.0 / (1.0 + np.exp(-x)) # sigmoid "squashing" function to interval [0,1]
+      
+    @classmethod
+    def prepro(self, I):
+      """ prepro 210x160x3 uint8 frame into 6400 (80x80) 1D float vector """
+     
+      I = np.asarray(I)
+
+      # if np.count_nonzero(I==1) != 544 and np.count_nonzero(I==1) != 0:
+      #   with open('final_file.csv', mode='w') as final_file: #store the pixels
+      #       final_writer = csv.writer(final_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+      #       final_writer.writerow(I)
+      
+      I = I.reshape(320, 320).astype('float32')
+
+      # print("number of ones", np.count_nonzero(I==1))
+
+      I = cv2.resize(I,(80,80))
+     
+      I = I[:,10:]
+
+      # a = cv2.cvtColor(cv2.resize(a,(80,80)), cv2.COLOR_BGR2GRAY)
+      # cv2.imwrite('color_img.jpg', a)
+      # print(frame[0][frame != 0])
+    
+      # ret, a = cv2.threshold(a, 127, 255, cv2.THRESH_BINARY) # et is useless
+      I[I !=1] = 0
+     
+
+      # print("number of ones", np.count_nonzero(I==1.0))
+
+      I = I.ravel()
+    
+      # if np.count_nonzero(I==1.0) != 34:
+  
+      # if self.count == 20:
+      #   with open('final_file.csv', mode='w') as final_file: #store the pixels
+      #       final_writer = csv.writer(final_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+      #       final_writer.writerow(I)
+     
+
+      self.count += 1
+      return I
+
+    @classmethod
+    def policy_forward(self, x):
+      h = np.dot(self.model['W1'], x)
+      h[h<0] = 0 # ReLU nonlinearity
+      logp = np.dot(self.model['W2'], h)
+      p = AndrejBotBallOnly.sigmoid(logp)
+      return p, h # return probability of taking action 2, and hidden state
+
+
 
 class AndrejBotTraining(models.Model):
 

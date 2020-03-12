@@ -2,6 +2,7 @@ from channels.generic.websocket import WebsocketConsumer
 import json
 from pong.models import SimpleBot
 from pong.models import AndrejBot
+from pong.models import AndrejBotBallOnly
 from pong.models import AndrejBotTraining
 from pong.models import FaultyBot
 from datetime import datetime
@@ -81,6 +82,16 @@ class PongConsumer(WebsocketConsumer):
             'move': move,
             'trainingopponent': trainingopponent 
             }))
+
+          if bot == "bjorn-cyborg":
+            move = AndrejBotBallOnly.andrej_bot_ball_only(image)
+            self.send(text_data=json.dumps({
+            'move': move,
+            'trainingopponent': trainingopponent 
+          }))
+
+
+        
         
           
         

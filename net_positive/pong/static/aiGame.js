@@ -108,7 +108,7 @@ class Vector
       this.done = false;
 
       this.training = true;
-      this.bot = 'rl-federer';
+      this.bot = 'bjorn-cyborg';
       
 
 
@@ -266,7 +266,7 @@ class Vector
 
       court = '';
     }
-    
+
     // http GET interface to backend
     // getMove(){
     //   var that = this

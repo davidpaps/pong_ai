@@ -78,6 +78,10 @@ class Vector
 
       var that = this
       this.BotSocket.onmessage = function(e) {
+          // console.log('new-message')
+          // var t2 = new Date
+          // console.log(t2.getSeconds())
+          // console.log(t2.getMilliseconds())
           var data = JSON.parse(e.data);
           that.repeatActionCount = 0;
           var move = data['move'];
@@ -179,10 +183,7 @@ class Vector
 
     getMoveWS(){
       var image = this._context.getImageData(0, 0, 320, 320);
-      // console.log(image)
-      // var t = new Date
-      // console.log(t.getSeconds())
-      // console.log(t.getMilliseconds())
+      
       var imageArray = Array.from(image.data)
       imageArray = imageArray.filter(function(_, i) {
         return (i + 1) % 4;
@@ -195,7 +196,7 @@ class Vector
       
       })
 
-      var count = 0
+      var everyOtherTime = 0
 
       for (var i = 0, len = imageArray.length; i < len; i++) {
         if (imageArray[i] < 127.5) {
@@ -203,10 +204,10 @@ class Vector
         }
         else if (imageArray[i] == 127.5)
         {
-          if (count % 2 == 0) {
+          if (everyOtherTime % 2 == 0) {
 
             imageArray[i] = 1;
-            count += 1;
+            everyotherTime += 1;
           }
         }
         else {
@@ -215,11 +216,24 @@ class Vector
       }
 
       var imageString = imageArray.join('')
+      // console.log('pre-regex')
+      // var t = new Date
+      // console.log(t.getSeconds())
+      // console.log(t.getMilliseconds())
+      var regex80 = /00000000000000000000000000000000000000000000000000000000000000000000000000000000/gi
+      var regex40 = /0000000000000000000000000000000000000000/gi
+      var regex20 = /00000000000000000000/gi
+      var regex10 = /0000000000/gi
 
-      var regex = /0000000000000000000000000000000000000000/gi
-
-      imageString = imageString.replace(regex, 'x');
-
+      // console.log('post-regex')
+      // var t = new Date
+      // console.log(t.getSeconds())
+      // console.log(t.getMilliseconds())
+      imageString = imageString.replace(regex80, 'w');
+      imageString = imageString.replace(regex40, 'x');
+      imageString = imageString.replace(regex20, 'y');
+      imageString = imageString.replace(regex10, 'z');
+      // console.log(imageString)
       var bally = Math.round(this.ball.position.y);
       var paddley = this.players[1].position.y;
       var reward = this.aggregateReward;
@@ -313,7 +327,7 @@ class Vector
       if (this.ball.velocity.x === 0 && this.ball.velocity.y === 0) {
         this.ball.velocity.x = 300 * (Math.random() > .5 ? 1 : -1);
         this.ball.velocity.y = 300 * (Math.random() > .5 ? 1 : -1);
-        this.ball.velocity.length = 150;
+        this.ball.velocity.length = 200;
       }
     }
 
@@ -394,9 +408,12 @@ class Vector
 
     botUpdate(moveUp) {
       if(moveUp === true) {
-          this.players[1].position.y -= 5
+          this.players[1].position.y -= 11.5
+        //  3 works well for first andrej with ball speed at 60
+        // 11-11.5-12 works well for andrej ep-14000 with ball speed at 200
+        // 
       } else {
-          this.players[1].position.y += 5
+          this.players[1].position.y += 11.5
       }
     }
 

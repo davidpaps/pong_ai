@@ -32,7 +32,10 @@ class PongConsumer(WebsocketConsumer):
         # print('decode ascii')
         # print(datetime.now())
         # image = image.decode('ascii')
+        image = image.replace('w', '00000000000000000000000000000000000000000000000000000000000000000000000000000000')
         image = image.replace('x', '0000000000000000000000000000000000000000')
+        image = image.replace('y', '00000000000000000000')
+        image = image.replace('z', '0000000000')
         # print('split')
         # print(datetime.now())
         image = list(image)
@@ -47,7 +50,8 @@ class PongConsumer(WebsocketConsumer):
           move = SimpleBot.simple_bot_ws(bally, paddley)
           self.send(text_data=json.dumps({
           'move': move,
-          'trainingopponent': trainingopponent}))
+          'trainingopponent': trainingopponent
+          }))
         else:
           if bot == "student":
               move = AndrejBotTraining.andrej_training(image, reward, done)
@@ -64,7 +68,6 @@ class PongConsumer(WebsocketConsumer):
             }))
 
           if bot == "rl-federer":
-            print('hi')
             move = AndrejBot.andrej_bot(image)
             self.send(text_data=json.dumps({
             'move': move,

@@ -51,15 +51,15 @@
         <section>
           <div class="difficulty">
             <div id="easy">
-              <button id="easy">Easy Mode</button>
+              <button id="easy">Easy</button>
             </div>
     
             <div id="medium">
-              <button id="medium">Medium Mode</button>
+              <button id="medium">Medium</button>
             </div>
     
             <div id="hard">
-              <button id='hard'>Hard Mode</button>
+              <button id='hard'>Hard</button>
             </div> 
           </div>
         </section>
@@ -69,16 +69,22 @@
               $('#easy').on('click', function(){
                 pong.ballSpeed = 300;
                 pong.reboundSpeed = 1.00;
+                pong.playersscore = 0;
+                // pong.players[1].score = 0;
               })
     
               $('#medium').on('click', function(){
                 pong.ballSpeed = 400;
                 pong.reboundSpeed = 1.10;
+                pong.players.score = 0;
+                // pong.players[1].score = 0;
               })
     
               $('#hard').on('click', function(){
                 pong.ballSpeed = 500;
                 pong.reboundSpeed = 1.20;
+                pong.players.score = 0;
+                // pong.players[1].score = 0;
               })
             }) 
         </script>

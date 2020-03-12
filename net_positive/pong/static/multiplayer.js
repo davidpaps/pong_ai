@@ -113,8 +113,14 @@ class Pong
   }
 
   collide(player, ball) {
-    if (player.left < ball.right && player.right > ball.left && player.top < ball.bottom && player.bottom > ball.top) {
+    if (player.left <= ball.right && player.right >= ball.left && player.top <= ball.bottom && player.bottom >= ball.top) {
       const length = ball.velocity.length
+      if (ball.position.x > 300) {
+        ball.position.x -=  11
+      }
+      else {
+        ball.position.x +=  11
+      }
       ball.velocity.x = -ball.velocity.x;
       ball.velocity.y += 300 * (Math.random() - .5);
       ball.velocity.length = length * this.reboundSpeed; 

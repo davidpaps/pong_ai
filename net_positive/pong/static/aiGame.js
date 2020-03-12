@@ -408,16 +408,27 @@ class Vector
 
     botUpdate(moveUp) {
       if(moveUp === true) {
+        if (this.players[1].position.y - 11.5 >= 0) {
           this.players[1].position.y -= 11.5
+        }
+        else {
+          this.players[1].position.y = this.players[1].position.y
+        }
         //  3 works well for first andrej with ball speed at 60
         // 11-11.5-12 works well for andrej ep-14000 with ball speed at 200
         // 
-      } else {
-          this.players[1].position.y += 11.5
+      } 
+      else {
+        if (this.players[1].position.y + 11.5 <= 320) {
+          this.players[1].position.y += 11.5 
+        }
+        else {
+          this.players[1].position.y = this.players[1].position.y
+        }
       }
     }
 
-    trainingOpponentMove(move){
+    trainingOpponentMove(move) {
       if(move === false){
         this.players[0].position.y += 5
       }

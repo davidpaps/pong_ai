@@ -37,7 +37,7 @@ body{
 }
 
 #music {
-  background-color: transparent;
+  display: none;
 }
 
 #game{

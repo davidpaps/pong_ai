@@ -22,6 +22,21 @@ class SimpleBot(models.Model):
       else:
         return False
 
+class FaultyBot(models.Model):
+    @classmethod
+    def simple_bot(request, court):
+      if court["bally"] <= court["paddley"]:
+        return True
+      else:
+        return False
+
+    @classmethod
+    def simple_bot_ws(request, bally, paddley):
+      if int(bally) <= int(paddley):
+        return True
+      else:
+        return False
+
 class AndrejBot(models.Model):
     prev_x = None # used in computing the difference frame
     model = pickle.load(open('pong/training/andrej_gold.p', 'rb'))

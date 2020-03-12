@@ -15,9 +15,9 @@ Makers final project - lets build a neural net
 
 ## Networks
 
-This project is tightly based off the work done by Andrej Karpathy in his [Reinforcement Learning Blog](http://karpathy.github.io/2016/05/31/rl/). We used his network as the bot which represents the hardest net to play against. His work also provided strong guidance for how a net should interact with the pong game and what values it should recieve. The nets were trained on the OpenAI gym and then put onto our game which was made to mimic the AIgym as close as possible. Modifications to the code were done to fit with the new game. 
+This project is tightly based on the work done by Andrej Karpathy in his [Reinforcement Learning Blog](http://karpathy.github.io/2016/05/31/rl/). We used his network as the bot which represents the hardest net to play against. His work also provided strong guidance for how a net should interact with the pong game and what values it should receive. The nets were trained on the OpenAI gym and then put onto our game which was made to mimic the AIgym as close as possible. Modifications to the code were done to fit with the new game.
 
-This team tried different methods of including biases in the net, making it deeper and using Adam optimization instead of RMSprop. We found that the simple single layer without biases yeilded far superior results when compared to the combination of the afforementioned specifiacations. Nevertheless, our version of the neural net is represented in the game as Nodevak Djocokic and its code can be seen in the models section of project along with andrej's.  
+This team tried different methods of including biases in the net, making it deeper and using Adam optimization instead of RMSprop. We found that the simple single layer without biases yielded far superior results when compared to the combination of the aforementioned specifications. Nevertheless, our version of the neural net is represented in the game as Nodevak Djocokic and its code can be seen in the model's section of the project along with Andrej's.  
 
 ## Training 
 

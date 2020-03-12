@@ -28,12 +28,12 @@ class SimpleBot(models.Model):
     def simple_bot_ws(request, bally, paddley):
         sample = np.random.uniform()
         if int(bally) <= int(paddley):
-          if sample >= 0.005:
+          if sample >= 0.1:
             move_up = True
           else:
             move_up = False 
         else:
-          if sample >= 0.005:
+          if sample >= 0.1:
             move_up = False 
           else:
             move_up = True

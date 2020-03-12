@@ -436,7 +436,7 @@ class Vector
         else {
           this.players[1].position.y = this.players[1].position.y
         }
-        // 11-11.5-12 works well for andrej ep-14000 with ball speed at 200
+        // 12 works well for andrej ep-14000 with ball speed at 200
         // 
       } 
       else {
@@ -451,10 +451,11 @@ class Vector
 
     trainingOpponentMove(move) {
       if (move === false){
-        this.players[0].position.y += 20
+        this.players[0].position.y += 17
+        // 17 good for training at ball speed 200
       }
       else {
-        this.players[0].position.y -= 20
+        this.players[0].position.y -= 17
       }
     }
 

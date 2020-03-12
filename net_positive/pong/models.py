@@ -7,20 +7,37 @@ import csv
 from pathlib import Path
 import cv2
 
+
 class SimpleBot(models.Model):
-    @classmethod
-    def simple_bot(request, court):
-      if int(court["bally"]) <= int(court["paddley"]):
-        return True
-      else:
-        return False
+    # @classmethod
+    # def simple_bot(request, court):
+    #   sample = np.random.uniform()
+    #   if int(court["bally"]) <= int(court["paddley"]):
+    #     if sample >= 0.005:
+    #       move_up = True
+    #     else:
+    #       move_up = False 
+    #   else:
+    #     if sample >= 0.005:
+    #       move_up = False 
+    #     else:
+    #       move_up = True
+    #   return move_up
 
     @classmethod
     def simple_bot_ws(request, bally, paddley):
-      if int(bally) <= int(paddley):
-        return True
-      else:
-        return False
+        sample = np.random.uniform()
+        if int(bally) <= int(paddley):
+          if sample >= 0.005:
+            move_up = True
+          else:
+            move_up = False 
+        else:
+          if sample >= 0.005:
+            move_up = False 
+          else:
+            move_up = True
+        return move_up
 
 class FaultyBot(models.Model):
     @classmethod
@@ -215,7 +232,7 @@ class AndrejBotTraining(models.Model):
 
   # hyperparameters
     H = 200 # number of hidden layer neurons
-    batch_size = 2 # every how many episodes to do a param update?
+    batch_size = 10 # every how many episodes to do a param update?
     learning_rate = 1e-4
     gamma = 0.99 # discount factor for reward
     decay_rate = 0.99 # decay factor for RMSProp leaky sum of grad^2
@@ -288,7 +305,7 @@ class AndrejBotTraining(models.Model):
     @classmethod
     def andrej_training(self, pixels, reward, done):
 
-      print(self.episode_number)
+      # print(self.episode_number)
 
       if self.my_file.is_file():
         self.resume = True 
@@ -395,16 +412,16 @@ class AndrejBotTraining(models.Model):
      
       # cv2.imwrite('color_img.jpg', a)
       # print(frame[0][frame != 0])
-      print("this is the frame size", a.size)
+      # print("this is the frame size", a.size)
       # ret, a = cv2.threshold(a, 127, 255, cv2.THRESH_BINARY) # et is useless
       a[a >= 0.5] = 1
       a = a.ravel()
-      print(len(a))
+      # print(len(a))
 
-      if self.count == 20 :
-        with open('final_file.csv', mode='w') as final_file: #store the pixels
-              final_writer = csv.writer(final_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-              final_writer.writerow(a)
+      # if self.count == 20 :
+      #   with open('final_file.csv', mode='w') as final_file: #store the pixels
+      #         final_writer = csv.writer(final_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+      #         final_writer.writerow(a)
       
       return a
     

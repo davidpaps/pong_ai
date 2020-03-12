@@ -57,10 +57,9 @@ class Ball extends Rectangle
 
 class Player extends Rectangle 
 {
-  constructor()
+  constructor(w, h)
   {
-    
-    super(12 , 50);
+    super(w , h);
     this.score = 0;
     this.game = 0;
     this.velocity = new Vector;
@@ -80,10 +79,11 @@ class Pong
 
     this.done = false;
     this.isPointOver = false;
+    this.paddleSize = 50;
 
     this.players = [
-      new Player,
-      new Player,
+      new Player(10,  this.paddleSize),
+      new Player(10,  this.paddleSize),
     ];
 
     this.players[0].position.x = 32;
@@ -92,7 +92,7 @@ class Pong
 
     this.ballSpeed = 300;
     this.reboundSpeed = 1.05;
-    this.paddleSize = 50;
+   
 
 
     let lastTime;

@@ -47,23 +47,26 @@
             <div id="set">Set:<div id="player2-game-tally" class="">0</div></div>
           </div>
         </div>
-<!-- 
+
         <section>
           <div class="container-bottom">
             <div id="ballSpeed">
-              <button id="ballSpeed">Ball Speed</button>
+              <p>Ball Speed</p>
+              <input type="range" min="50" max="1000" value="300" class="slider" id="ballSpeed">
             </div>
     
             <div id="reboundSpeed">
-              <button id="reboundSpeed">Rebound Speed</button>
+              <p>Rebound Speed</p>
+              <input type="range" min="1.00" max="2.55" value="1.05" class="slider" id="reboundSpeed">
             </div>
     
             <div id="paddleSize">
-              <button id='paddleSize'>Paddle Size</button>
+              <p>Paddle Size</p>
+              <input type="range" min="10" max="100" value="50" class="slider" id="paddleSize">
             </div> 
   
           </div>
-        </section> -->
+        </section>
 
    </body>
    <script src={% static "multiplayer.js" %}></script>

@@ -8,36 +8,39 @@ from pathlib import Path
 import cv2
 
 
-class SimpleBot(models.Model):
-    # @classmethod
-    # def simple_bot(request, court):
-    #   sample = np.random.uniform()
-    #   if int(court["bally"]) <= int(court["paddley"]):
-    #     if sample >= 0.005:
-    #       move_up = True
-    #     else:
-    #       move_up = False 
-    #   else:
-    #     if sample >= 0.005:
-    #       move_up = False 
-    #     else:
-    #       move_up = True
-    #   return move_up
+class PerfectBot(models.Model):
+    @classmethod
+    def perfect_bot(request, court):
+      if int(court["bally"]) <= int(court["paddley"]):
+        move_up = True
+      else:
+        move_up = False 
+      return move_up
 
     @classmethod
-    def simple_bot_ws(request, bally, paddley):
-        sample = np.random.uniform()
-        if int(bally) <= int(paddley):
-          if sample >= 0.1:
-            move_up = True
-          else:
-            move_up = False 
+    def perfect_bot_ws(request, bally, paddley):
+      if int(bally) <= int(paddley):
+        move_up = True
+      else:
+        move_up = False 
+      return move_up
+
+
+class NonPerfectBot(models.Model):
+    @classmethod
+    def non_perfect_bot_ws(request, bally, paddley):
+      sample = np.random.uniform()
+      if int(bally) <= int(paddley):
+        if sample >= 0.1:
+          move_up = True
         else:
-          if sample >= 0.1:
-            move_up = False 
-          else:
-            move_up = True
-        return move_up
+          move_up = False 
+      else:
+        if sample >= 0.1:
+          move_up = False 
+        else:
+          move_up = True
+      return move_up
 
 class FaultyBot(models.Model):
     @classmethod
@@ -81,7 +84,7 @@ class AndrejBot(models.Model):
 
       # forward the policy network and sample an action from the returned probability
       aprob, h = AndrejBot.policy_forward(x)
-      print(aprob)
+      # print(aprob)
       move_up = True if 0.5 < aprob else False #take the action most likely to yield the best result
       
       return move_up
@@ -105,7 +108,7 @@ class AndrejBot(models.Model):
       I = I.reshape(320, 320).astype('float32')
 
 
-      print("number of ones", np.count_nonzero(I==1))
+      # print("number of ones", np.count_nonzero(I==1))
 
       I = cv2.resize(I,(80,80))
      
@@ -118,7 +121,7 @@ class AndrejBot(models.Model):
       I[I !=1] = 0
      
 
-      print("number of ones", np.count_nonzero(I==1.0))
+      # print("number of ones", np.count_nonzero(I==1.0))
       I = I.ravel()
     
       # if np.count_nonzero(I==1.0) != 34:
@@ -237,7 +240,6 @@ class AndrejBotTraining(models.Model):
     gamma = 0.99 # discount factor for reward
     decay_rate = 0.99 # decay factor for RMSProp leaky sum of grad^2
     prev_x = None # used in computing the difference frame
-    model = {}
     count = 0
     xs = []
     hs = []
@@ -275,8 +277,8 @@ class AndrejBotTraining(models.Model):
   
 
     def __init__(self):
-      self.H = 20
-      self.batch_size = 2 # every how many episodes to do a param update?
+      self.H = 200
+      self.batch_size = 10 # every how many episodes to do a param update?
       self.learning_rate = 1e-4
       self.gamma = 0.99 # discount factor for reward
       self.decay_rate = 0.99
@@ -288,8 +290,16 @@ class AndrejBotTraining(models.Model):
       self.drs = []
       self.reward = 0
       self.my_file = Path("pong/training/episode_file.csv")
-      self.resume = False
+      self.resume = True if self.my_file.is_file() else False
       self.episode_number = 0
+      if self.resume:
+        data = []
+        row_index = 0
+        with open('pong/training/episode_file.csv', "r", encoding="utf-8", errors="ignore") as scraped:
+          reader = csv.reader(scraped, delimiter=',')
+          for row in reader:
+            data.append(row[0])
+        self.episode_number = int(data[0])
       self.benchmark = False
       self.D = 80 * 80
       self.start_model = {}
@@ -320,9 +330,9 @@ class AndrejBotTraining(models.Model):
       if not self.resume and self.count == 0:
         print('First run')
 
-      if self.resume:
-        data = AndrejBotTraining.import_csv('pong/training/episode_file.csv')
-        self.episode_number = int(data[0])
+      # if self.resume:
+      #   data = AndrejBotTraining.import_csv('pong/training/episode_file.csv')
+      #   self.episode_number = int(data[0])
       
       if self.count > 0:
         self.reward_sum += float(reward)
@@ -372,7 +382,7 @@ class AndrejBotTraining(models.Model):
           #print('resetting env. episode reward total was %f. running mean: %f' % (reward_sum, running_reward))
           #removed print for performance purposes
           
-          if self.episode_number % 20 == 0: 
+          if self.episode_number % self.batch_size == 0: 
             pickle.dump(self.model, open('pong/training/our_game_andrej.p', 'wb'))
             #takes 15-20ms on macbook pro
           if self.episode_number % self.batch_size == 0: 

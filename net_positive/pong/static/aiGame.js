@@ -108,8 +108,8 @@ class Vector
 
       this.done = false;
 
-      this.training = true;
-      this.bot = 'student';
+      this.training = false;
+      this.bot = 'rl-federer';
       
 
 

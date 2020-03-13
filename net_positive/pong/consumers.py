@@ -1,6 +1,7 @@
 from channels.generic.websocket import WebsocketConsumer
 import json
-from pong.models import SimpleBot
+from pong.models import PerfectBot
+from pong.models import NonPerfectBot
 from pong.models import AndrejBot
 from pong.models import AndrejBotBallOnly
 from pong.models import AndrejBotTraining
@@ -48,8 +49,8 @@ class PongConsumer(WebsocketConsumer):
         # print(datetime.now()) 
         
         if trainingopponent == "true":
-          bot = "steffi-graph"
-          move = SimpleBot.simple_bot_ws(bally, paddley)
+          bot = "nodevak-djokovic"
+          move = NonPerfectBot.non_perfect_bot_ws(bally, paddley)
           self.send(text_data=json.dumps({
           'move': move,
           'trainingopponent': trainingopponent
@@ -63,11 +64,18 @@ class PongConsumer(WebsocketConsumer):
               }))
 
           if bot == "steffi-graph":
-            move = SimpleBot.simple_bot_ws(bally, paddley)
+            move = PerfectBot.perfect_bot_ws(bally, paddley)
             self.send(text_data=json.dumps({
             'move': move,
             'trainingopponent': trainingopponent
             }))
+          
+          if bot == "nodevak-djokovic":
+            move = NonPerfectBot.non_perfect_bot_ws(bally, paddley)
+            self.send(text_data=json.dumps({
+            'move': move,
+            'trainingopponent': trainingopponent
+          }))
 
           if bot == "rl-federer":
             move = AndrejBot.andrej_bot(image)

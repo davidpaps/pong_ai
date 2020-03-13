@@ -287,11 +287,35 @@ class Vector
     }
 
     collide(player, ball) {
-      if (player.left < ball.right && player.right > ball.left && player.top < ball.bottom && player.bottom > ball.top) {
+      if (player.left <= ball.right && player.right >= ball.left && player.top <= ball.bottom && player.bottom >= ball.top) {
         const length = ball.velocity.length
+
+        if (ball.position.x > 160) {
+          ball.position.x -=  9
+        }
+        else {
+          ball.position.x +=  9
+        }
+
+
         ball.velocity.x = -ball.velocity.x;
+        
         ball.velocity.y += ball.velocity.y * (Math.random() - .5);
+
+        
+        // var relativeIntersectY = player.position.y - ball.position.y;
+        // var normalizedRelativeIntersectionY = relativeIntersectY/(32/2);
+        // var bounceAngle = normalizedRelativeIntersectionY * 5 * Math.PI / 12;
+        // ball.velocity.x = ball.velocity.length * Math.cos(bounceAngle);
+        // ball.velocity.y = ball.velocity.length * - Math.sin(bounceAngle);
+
+     
+
         ball.velocity.length = length * 1.05; 
+
+
+        
+     
       }
     }
 
@@ -408,8 +432,8 @@ class Vector
 
     botUpdate(moveUp) {
       if(moveUp === true) {
-        if (this.players[1].position.y - 11.5 >= 0) {
-          this.players[1].position.y -= 11.5
+        if (this.players[1].position.y - 12 >= 0) {
+          this.players[1].position.y -= 12
         }
         else {
           this.players[1].position.y = this.players[1].position.y
@@ -419,8 +443,8 @@ class Vector
         // 
       } 
       else {
-        if (this.players[1].position.y + 11.5 <= 320) {
-          this.players[1].position.y += 11.5 
+        if (this.players[1].position.y + 12 <= 320) {
+          this.players[1].position.y += 12
         }
         else {
           this.players[1].position.y = this.players[1].position.y

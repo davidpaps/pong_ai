@@ -47,7 +47,53 @@
             <div id="set">Set:<div id="player2-game-tally" class="">0</div></div>
           </div>
         </div>
+        
+        <section>
+          <div class="difficulty">
+            
+            <div id="easy">
+              <button id="easy">Easy</button>
+            </div>
+    
+            <div id="medium">
+              <button id="medium">Medium</button>
+            </div>
+    
+            <div id="hard">
+              <button id='hard'>Hard</button>
+            </div> 
+          </div>
+        </section>
+        
+        <script>
+          $(document).ready(function(){
+              $('#easy').on('click', function(){
+                pong.ballSpeed = 300;
+                pong.reboundSpeed = 1.00;
+                pong.players[0].score = 0;
+                pong.players[1].score = 0;
+              })
+    
+              $('#medium').on('click', function(){
+                pong.ballSpeed = 400;
+                pong.reboundSpeed = 1.10;
+                pong.players[0].score = 0;
+                pong.players[1].score = 0;
+              })
+    
+              $('#hard').on('click', function(){
+                pong.ballSpeed = 500;
+                pong.reboundSpeed = 1.20;
+                pong.players[0].score = 0;
+                pong.players[1].score = 0;
+              })
+            }) 
+        </script>
+ 
+
    </body>
+   <br>
+   <center><h4>Spacebar to Serve!<h4></center>
    <script src={% static "multiplayer.js" %}></script>
    <audio id ="music" controls autoplay>
     <source src={% static "public/fight_music.mp3" %} type="audio/mpeg">

@@ -498,7 +498,7 @@ class Junior(models.Model):
 
     forward_output = Junior.forward_prop(x, self.model)
 
-    move = make_move(forward_output["A3"])
+    move = Junior.make_move(forward_output["A3"])
 
     return move
 
@@ -519,22 +519,18 @@ class Junior(models.Model):
 
   @classmethod
   def make_move(self, A3):
-    if A3 > 0.975:
-      action = 2 
-    elif A3 < 0.025:
-      action = 3
-    elif A3 > np.random.uniform():
-      action = 2
+    if A3 > 0.5:
+      action = True
     else:
-      action = 3 
+      action = False 
     return action
 
   @classmethod 
   def forward_prop(self, input_array, weights_dict): 
     Z1 = np.dot(weights_dict['W1'], input_array) + weights_dict["B1"]
-    A1 = relu(Z1)
+    A1 = Junior.relu(Z1)
     Z2 = np.dot(weights_dict['W2'], A1) + weights_dict["B2"]
-    A2 = relu(Z2)
+    A2 = Junior.relu(Z2)
     Z3 = np.dot(weights_dict['W3'], A2)
     A3 = 1.0 / (1.0 + np.exp(-Z3))
     forward_output = {"X": input_array, "Z1": Z1, "A1": A1,

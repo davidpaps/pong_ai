@@ -92,7 +92,7 @@ class PongConsumer(WebsocketConsumer):
             }))
 
           if bot == "bjorn-cyborg":
-            move = AndrejBotBallOnly.andrej_bot_ball_only(image)
+            move = Junior.junior_bot(image)
             self.send(text_data=json.dumps({
             'move': move,
             'trainingopponent': trainingopponent 

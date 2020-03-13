@@ -1,5 +1,5 @@
 # Data visualization 
-
+setwd("/Users/nicolasraffray/Desktop/Makers_Course/Final_Project/Net-Positive-Makers/pygym/Performance")
 data <- read.csv("performance_file.csv")
 RMS <- read.csv("RMSperformance.csv")
 

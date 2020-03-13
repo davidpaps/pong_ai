@@ -6,6 +6,7 @@ from pong.models import AndrejBot
 from pong.models import AndrejBotBallOnly
 from pong.models import AndrejBotTraining
 from pong.models import FaultyBot
+from pong.models import Junior
 from datetime import datetime
 import numpy as np
 
@@ -92,7 +93,7 @@ class PongConsumer(WebsocketConsumer):
             }))
 
           if bot == "bjorn-cyborg":
-            move = AndrejBotBallOnly.andrej_bot_ball_only(image)
+            move = Junior.junior_bot(image)
             self.send(text_data=json.dumps({
             'move': move,
             'trainingopponent': trainingopponent 

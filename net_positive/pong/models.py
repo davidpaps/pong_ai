@@ -476,6 +476,67 @@ class AndrejBotTraining(models.Model):
           data.append(row[0])
       return data
 
-       
+class Junior(models.Model):
+  prev_x = None 
+  model = pickle.load(open('pong/training/junior.p', 'rb'))
+  count = 0 
+
+  def __init__(self):
+    self.prev_x = None 
+    self.model = pickle.load(open('pong/training/junior.p', 'rb'))
+    self.count = 0
+
+  @classmethod 
+  def junior_bot(self, pixels):
+    D = 80 * 80
+
+    cur_x = Junior.prepro(pixels)
+
+    x = cur_x - self.prev_x if self.prev_x is not None else np.zeros(D)
+
+    self.prev_x = cur_x
+
+    forward_output = Junior.forward_prop(x, self.model)
+
+    move = Junior.make_move(forward_output["A3"])
+
+    return move
+
+  @classmethod
+  def prepro(self, I): 
+    """ prepro 210x160x3 uint8 frame into 6000 (80x80) 1D float vector """
+    I = np.asarray(I)
+    I = I.reshape(320, 320).astype('float32')
+    I = cv2.resize(I,(80,80))
+    I[I !=1] = 0
+    I = I.ravel()
+    self.count += 1
+    return I
+
+  @classmethod 
+  def relu(self, Z): 
+    return np.maximum(0.0,Z) 
+
+  @classmethod
+  def make_move(self, A3):
+    if A3 > 0.5:
+      action = True
+    else:
+      action = False 
+    return action
+
+  @classmethod 
+  def forward_prop(self, input_array, weights_dict): 
+    Z1 = np.dot(weights_dict['W1'], input_array) + weights_dict["B1"]
+    A1 = Junior.relu(Z1)
+    Z2 = np.dot(weights_dict['W2'], A1) + weights_dict["B2"]
+    A2 = Junior.relu(Z2)
+    Z3 = np.dot(weights_dict['W3'], A2)
+    A3 = 1.0 / (1.0 + np.exp(-Z3))
+    forward_output = {"X": input_array, "Z1": Z1, "A1": A1,
+     "Z2": Z2, "A2": A2, "A3": A3}
+    return forward_output
+
+
 
 

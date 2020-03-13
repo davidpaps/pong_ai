@@ -49,7 +49,7 @@ class AndrejBot(models.Model):
 
       # forward the policy network and sample an action from the returned probability
       aprob, h = AndrejBot.policy_forward(x)
-      print(aprob)
+
       move_up = True if 0.5 < aprob else False #take the action most likely to yield the best result
       
       return move_up
@@ -73,7 +73,7 @@ class AndrejBot(models.Model):
       I = I.reshape(320, 320).astype('float32')
 
 
-      print("number of ones", np.count_nonzero(I==1))
+      # print("number of ones", np.count_nonzero(I==1))
 
       I = cv2.resize(I,(80,80))
      
@@ -88,7 +88,7 @@ class AndrejBot(models.Model):
       I[I !=1] = 0
      
 
-      print("number of ones", np.count_nonzero(I==1.0))
+      # print("number of ones", np.count_nonzero(I==1.0))
       I = I.ravel()
     
       # if np.count_nonzero(I==1.0) != 34:
@@ -99,8 +99,8 @@ class AndrejBot(models.Model):
       #       final_writer.writerow(I)
      
 
-      print("this is the frame size", I.size)
-      print(len(I))
+      # print("this is the frame size", I.size)
+      # print(len(I))
 
       self.count += 1
       return I
@@ -190,7 +190,7 @@ class AndrejBotTraining(models.Model):
     @classmethod
     def andrej_training(self, pixels, reward, done):
 
-      print(self.episode_number)
+      # print(self.episode_number)
 
       if self.my_file.is_file():
         self.resume = True 
@@ -297,11 +297,11 @@ class AndrejBotTraining(models.Model):
      
       # cv2.imwrite('color_img.jpg', a)
       # print(frame[0][frame != 0])
-      print("this is the frame size", a.size)
+      # print("this is the frame size", a.size)
       # ret, a = cv2.threshold(a, 127, 255, cv2.THRESH_BINARY) # et is useless
       a[a >= 0.5] = 1
       a = a.ravel()
-      print(len(a))
+      # print(len(a))
 
       if self.count == 20 :
         with open('final_file.csv', mode='w') as final_file: #store the pixels

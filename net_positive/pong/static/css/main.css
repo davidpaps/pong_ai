@@ -124,16 +124,8 @@ button {
     border-color: transparent;
     font-weight: 400;
     letter-spacing: 8px;
-    text-shadow: 1px 0px 4px rgb(0, 0, 0), 2px 0px 4px rgb(1, 0, 1), 3px 0px 4px rgb(191, 66, 191), 2px 0px 3px #D42CCA, 2px 3px 15px #D42CCA, 2px 0px 15px, 5px 0px 125px, 20px 0vw 200px #D42CCA,40px 0vw 200px #D42CCA;
   }
-  
-  .flicker-slow{
-    animation: flicker 3s linear infinite;
-  }
-  
-  .flicker-fast{
-    animation: flicker 1s linear infinite;
-  }
+
   
   .difficulty{
     display: flex;

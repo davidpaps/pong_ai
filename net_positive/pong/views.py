@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import JsonResponse
-from pong.models import SimpleBot
+from pong.models import PerfectBot
 
 
 def home(request, template='index.html'):

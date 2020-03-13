@@ -7,17 +7,52 @@ import csv
 from pathlib import Path
 import cv2
 
-class SimpleBot(models.Model):
+
+class PerfectBot(models.Model):
     @classmethod
-    def simple_bot(request, court):
+    def perfect_bot(request, court):
       if int(court["bally"]) <= int(court["paddley"]):
+        move_up = True
+      else:
+        move_up = False 
+      return move_up
+
+    @classmethod
+    def perfect_bot_ws(request, bally, paddley):
+      if int(bally) <= int(paddley):
+        move_up = True
+      else:
+        move_up = False 
+      return move_up
+
+
+class NonPerfectBot(models.Model):
+    @classmethod
+    def non_perfect_bot_ws(request, bally, paddley):
+      sample = np.random.uniform()
+      if int(bally) <= int(paddley):
+        if sample >= 0.1:
+          move_up = True
+        else:
+          move_up = False 
+      else:
+        if sample >= 0.1:
+          move_up = False 
+        else:
+          move_up = True
+      return move_up
+
+class FaultyBot(models.Model):
+    @classmethod
+    def faulty_bot(request, court):
+      if str(court["bally"]) <= str(court["paddley"]):
         return True
       else:
         return False
 
     @classmethod
-    def simple_bot_ws(request, bally, paddley):
-      if int(bally) <= int(paddley):
+    def faulty_bot_ws(request, bally, paddley):
+      if str(bally) <= str(paddley):
         return True
       else:
         return False
@@ -49,7 +84,6 @@ class AndrejBot(models.Model):
 
       # forward the policy network and sample an action from the returned probability
       aprob, h = AndrejBot.policy_forward(x)
-
       move_up = True if 0.5 < aprob else False #take the action most likely to yield the best result
       
       return move_up
@@ -77,8 +111,6 @@ class AndrejBot(models.Model):
 
       I = cv2.resize(I,(80,80))
      
-      
-
 
       # a = cv2.cvtColor(cv2.resize(a,(80,80)), cv2.COLOR_BGR2GRAY)
       # cv2.imwrite('color_img.jpg', a)
@@ -99,9 +131,6 @@ class AndrejBot(models.Model):
       #       final_writer.writerow(I)
      
 
-      # print("this is the frame size", I.size)
-      # print(len(I))
-
       self.count += 1
       return I
 
@@ -113,16 +142,102 @@ class AndrejBot(models.Model):
       p = AndrejBot.sigmoid(logp)
       return p, h # return probability of taking action 2, and hidden state
 
+
+class AndrejBotBallOnly(models.Model):
+    prev_x = None # used in computing the difference frame
+    model = pickle.load(open('pong/training/ball_only.p', 'rb'))
+    count = 0
+
+    def __init__(self):
+      self.prev_x = None
+      self.model = pickle.load(open('pong/training/ball_only.p', 'rb'))
+      self.count = 0
+
+    @classmethod
+    def andrej_bot_ball_only(self, pixels):
+      D = 80 * 70
+      # preprocess the observation, set input to network to be difference image
+      cur_x = AndrejBotBallOnly.prepro(pixels)
+    
+      x = cur_x - self.prev_x if self.prev_x is not None else np.zeros(D)
+
+      # if self.count == 65:
+      #   with open('final_file.csv', mode='w') as final_file: #store the pixels
+      #       final_writer = csv.writer(final_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+      #       final_writer.writerow(x)
+
+      self.prev_x = cur_x
+
+      # forward the policy network and sample an action from the returned probability
+      aprob, h = AndrejBotBallOnly.policy_forward(x)
+      move_up = True if 0.5 < aprob else False #take the action most likely to yield the best result
+      
+      return move_up
+
+    @classmethod
+    def sigmoid(request, x): 
+      return 1.0 / (1.0 + np.exp(-x)) # sigmoid "squashing" function to interval [0,1]
+      
+    @classmethod
+    def prepro(self, I):
+      """ prepro 210x160x3 uint8 frame into 6400 (80x80) 1D float vector """
+     
+      I = np.asarray(I)
+
+      # if np.count_nonzero(I==1) != 544 and np.count_nonzero(I==1) != 0:
+      #   with open('final_file.csv', mode='w') as final_file: #store the pixels
+      #       final_writer = csv.writer(final_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+      #       final_writer.writerow(I)
+      
+      I = I.reshape(320, 320).astype('float32')
+
+      # print("number of ones", np.count_nonzero(I==1))
+
+      I = cv2.resize(I,(80,80))
+     
+      I = I[:,10:]
+
+      # a = cv2.cvtColor(cv2.resize(a,(80,80)), cv2.COLOR_BGR2GRAY)
+      # cv2.imwrite('color_img.jpg', a)
+      # print(frame[0][frame != 0])
+    
+      # ret, a = cv2.threshold(a, 127, 255, cv2.THRESH_BINARY) # et is useless
+      I[I !=1] = 0
+     
+
+      # print("number of ones", np.count_nonzero(I==1.0))
+
+      I = I.ravel()
+    
+      # if np.count_nonzero(I==1.0) != 34:
+  
+      # if self.count == 20:
+      #   with open('final_file.csv', mode='w') as final_file: #store the pixels
+      #       final_writer = csv.writer(final_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+      #       final_writer.writerow(I)
+     
+      self.count += 1
+      return I
+
+    @classmethod
+    def policy_forward(self, x):
+      h = np.dot(self.model['W1'], x)
+      h[h<0] = 0 # ReLU nonlinearity
+      logp = np.dot(self.model['W2'], h)
+      p = AndrejBotBallOnly.sigmoid(logp)
+      return p, h # return probability of taking action 2, and hidden state
+
+
+
 class AndrejBotTraining(models.Model):
 
   # hyperparameters
     H = 200 # number of hidden layer neurons
-    batch_size = 2 # every how many episodes to do a param update?
+    batch_size = 10 # every how many episodes to do a param update?
     learning_rate = 1e-4
     gamma = 0.99 # discount factor for reward
     decay_rate = 0.99 # decay factor for RMSProp leaky sum of grad^2
     prev_x = None # used in computing the difference frame
-    model = {}
     count = 0
     xs = []
     hs = []
@@ -134,7 +249,12 @@ class AndrejBotTraining(models.Model):
     resume = True if my_file.is_file() else False
     episode_number = 0
     if resume:
-      data = import_csv('pong/training/episode_file.csv')
+      data = []
+      row_index = 0
+      with open('pong/training/episode_file.csv', "r", encoding="utf-8", errors="ignore") as scraped:
+        reader = csv.reader(scraped, delimiter=',')
+        for row in reader:
+          data.append(row[0])
       episode_number = int(data[0])
     benchmark = False
     D = 80 * 80
@@ -155,8 +275,8 @@ class AndrejBotTraining(models.Model):
   
 
     def __init__(self):
-      self.H = 20
-      self.batch_size = 2 # every how many episodes to do a param update?
+      self.H = 200
+      self.batch_size = 10 # every how many episodes to do a param update?
       self.learning_rate = 1e-4
       self.gamma = 0.99 # discount factor for reward
       self.decay_rate = 0.99
@@ -168,8 +288,16 @@ class AndrejBotTraining(models.Model):
       self.drs = []
       self.reward = 0
       self.my_file = Path("pong/training/episode_file.csv")
-      self.resume = False
+      self.resume = True if self.my_file.is_file() else False
       self.episode_number = 0
+      if self.resume:
+        data = []
+        row_index = 0
+        with open('pong/training/episode_file.csv', "r", encoding="utf-8", errors="ignore") as scraped:
+          reader = csv.reader(scraped, delimiter=',')
+          for row in reader:
+            data.append(row[0])
+        self.episode_number = int(data[0])
       self.benchmark = False
       self.D = 80 * 80
       self.start_model = {}
@@ -200,9 +328,9 @@ class AndrejBotTraining(models.Model):
       if not self.resume and self.count == 0:
         print('First run')
 
-      if self.resume:
-        data = AndrejBotTraining.import_csv('pong/training/episode_file.csv')
-        self.episode_number = int(data[0])
+      # if self.resume:
+      #   data = AndrejBotTraining.import_csv('pong/training/episode_file.csv')
+      #   self.episode_number = int(data[0])
       
       if self.count > 0:
         self.reward_sum += float(reward)
@@ -252,7 +380,7 @@ class AndrejBotTraining(models.Model):
           #print('resetting env. episode reward total was %f. running mean: %f' % (reward_sum, running_reward))
           #removed print for performance purposes
           
-          if self.episode_number % 100 == 0: 
+          if self.episode_number % self.batch_size == 0: 
             pickle.dump(self.model, open('pong/training/our_game_andrej.p', 'wb'))
             #takes 15-20ms on macbook pro
           if self.episode_number % self.batch_size == 0: 
@@ -303,10 +431,10 @@ class AndrejBotTraining(models.Model):
       a = a.ravel()
       # print(len(a))
 
-      if self.count == 20 :
-        with open('final_file.csv', mode='w') as final_file: #store the pixels
-              final_writer = csv.writer(final_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-              final_writer.writerow(a)
+      # if self.count == 20 :
+      #   with open('final_file.csv', mode='w') as final_file: #store the pixels
+      #         final_writer = csv.writer(final_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+      #         final_writer.writerow(a)
       
       return a
     
@@ -339,7 +467,7 @@ class AndrejBotTraining(models.Model):
       return {'W1':dW1, 'W2':dW2}
         
     @classmethod
-    def import_csv(request, csvfilename):
+    def import_csv(self, csvfilename):
       data = []
       row_index = 0
       with open(csvfilename, "r", encoding="utf-8", errors="ignore") as scraped:

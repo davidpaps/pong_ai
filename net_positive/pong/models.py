@@ -84,7 +84,6 @@ class AndrejBot(models.Model):
 
       # forward the policy network and sample an action from the returned probability
       aprob, h = AndrejBot.policy_forward(x)
-      # print(aprob)
       move_up = True if 0.5 < aprob else False #take the action most likely to yield the best result
       
       return move_up
@@ -217,7 +216,6 @@ class AndrejBotBallOnly(models.Model):
       #       final_writer = csv.writer(final_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
       #       final_writer.writerow(I)
      
-
       self.count += 1
       return I
 

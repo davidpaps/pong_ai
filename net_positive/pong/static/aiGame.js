@@ -89,7 +89,8 @@ class Vector
           if (trainingopponent === "false"){
             that._moveup = move;
             that.responseReceived = true;}
-          else { that.trainingOpponentMove(move) }
+          else { 
+            that.trainingOpponentMove(move) }
       };
 
       this.BotSocket.onclose = function(e) {
@@ -107,7 +108,7 @@ class Vector
 
       this.done = false;
 
-      this.training = true;
+      this.training = false;
       this.bot = 'rl-federer';
       
 
@@ -141,9 +142,9 @@ class Vector
           else {
             this.repeatActionCount = 0;
           }
-          if (this.training === true) {
-            this.players[0].position.y = this.ball.position.y
-          }
+          // if (this.training === true) {
+          //   // this.players[0].position.y = this.ball.position.y
+          // }
           if (this.isPointOver === true) {
             this.reset();
           }
@@ -162,7 +163,7 @@ class Vector
             this.responseReceived = false;
             this.getMoveWS()
             if( this.training === true ){
-              // this.getOpponentMove() 
+              this.getOpponentMove() 
               //use line above to train against a backend bot
             }
             // console.log(this.aggregateReward);
@@ -267,24 +268,21 @@ class Vector
       court = '';
     }
 
-
-
-
-    getMove(){
-      var image = 'placeholder'
-      var that = this
-      var xmlhttp = new XMLHttpRequest()
-      xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-          var myArr = JSON.parse(this.responseText);
-          that._move = myArr['up'];
-          that.botUpdate(that._move);
-          that.responseReceived = true;
-        }
-      };
-      xmlhttp.open('GET', url, true);
-      xmlhttp.send();
-    }
+    // http GET interface to backend
+    // getMove(){
+    //   var that = this
+    //   var xmlhttp = new XMLHttpRequest()
+    //   xmlhttp.onreadystatechange = function() {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //       var myArr = JSON.parse(this.responseText);
+    //       that._move = myArr['up'];
+    //       that.botUpdate(that._move);
+    //       that.responseReceived = true;
+    //     }
+    //   };
+    //   xmlhttp.open('GET', url, true);
+    //   xmlhttp.send();
+    // }
 
     collide(player, ball) {
       if (player.left <= ball.right && player.right >= ball.left && player.top <= ball.bottom && player.bottom >= ball.top) {
@@ -438,8 +436,7 @@ class Vector
         else {
           this.players[1].position.y = this.players[1].position.y
         }
-        //  3 works well for first andrej with ball speed at 60
-        // 11-11.5-12 works well for andrej ep-14000 with ball speed at 200
+        // 12 works well for andrej ep-14000 with ball speed at 200
         // 
       } 
       else {
@@ -453,11 +450,12 @@ class Vector
     }
 
     trainingOpponentMove(move) {
-      if(move === false){
-        this.players[0].position.y += 5
+      if (move === false){
+        this.players[0].position.y += 17
+        // 17 good for training at ball speed 200
       }
       else {
-        this.players[0].position.y -= 5
+        this.players[0].position.y -= 17
       }
     }
 
@@ -481,9 +479,9 @@ class Vector
       window.addEventListener('keydown', keyboardHandlerFunction); 
       function keyboardHandlerFunction(e) {
         if(e.keyCode === 40 && pong.players[0].position.y < (pong._canvas.height - 50) ) {
-          pong.players[0].position.y += 25
+          pong.players[0].position.y += 20
         } else if(e.keyCode === 38 && pong.players[0].position.y > 50) {
-            pong.players[0].position.y -= 25
+            pong.players[0].position.y -= 20
         } else if(e.keyCode === 32) {
             // pong.start();
         } 

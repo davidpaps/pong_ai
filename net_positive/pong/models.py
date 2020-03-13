@@ -249,7 +249,12 @@ class AndrejBotTraining(models.Model):
     resume = True if my_file.is_file() else False
     episode_number = 0
     if resume:
-      data = import_csv('pong/training/episode_file.csv')
+      data = []
+      row_index = 0
+      with open('pong/training/episode_file.csv', "r", encoding="utf-8", errors="ignore") as scraped:
+        reader = csv.reader(scraped, delimiter=',')
+        for row in reader:
+          data.append(row[0])
       episode_number = int(data[0])
     benchmark = False
     D = 80 * 80
@@ -367,7 +372,7 @@ class AndrejBotTraining(models.Model):
           #print('resetting env. episode reward total was %f. running mean: %f' % (reward_sum, running_reward))
           #removed print for performance purposes
           
-          if self.episode_number % 100 == 0: 
+          if self.episode_number % 20 == 0: 
             pickle.dump(self.model, open('pong/training/our_game_andrej.p', 'wb'))
             #takes 15-20ms on macbook pro
           if self.episode_number % self.batch_size == 0: 
@@ -454,7 +459,7 @@ class AndrejBotTraining(models.Model):
       return {'W1':dW1, 'W2':dW2}
         
     @classmethod
-    def import_csv(request, csvfilename):
+    def import_csv(self, csvfilename):
       data = []
       row_index = 0
       with open(csvfilename, "r", encoding="utf-8", errors="ignore") as scraped:

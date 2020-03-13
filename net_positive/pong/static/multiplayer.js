@@ -247,13 +247,13 @@ class Game {
 
     function keyboardHandlerFunction(e) {
       if(e.keyCode === 40 && pong.players[1].position.y < (pong._canvas.height - 25) ) {
-        pong.players[1].position.y += 25
+        pong.players[1].position.y += 40
       } else if(e.keyCode === 38 && pong.players[1].position.y > 25) {
-          pong.players[1].position.y -= 25
+          pong.players[1].position.y -= 40
       } else if(e.keyCode === 83 && pong.players[0].position.y < (pong._canvas.height - 25) ) {
-          pong.players[0].position.y += 25
+          pong.players[0].position.y += 40
       } else if(e.keyCode === 87 && pong.players[0].position.y > 25) {
-          pong.players[0].position.y -= 25
+          pong.players[0].position.y -= 40
       } else if(e.keyCode === 32) {
         pong.start();
       } 

@@ -59,12 +59,12 @@ class FaultyBot(models.Model):
 
 class AndrejBot(models.Model):
     prev_x = None # used in computing the difference frame
-    model = pickle.load(open('pong/training/andrej_gold.p', 'rb'))
+    model = pickle.load(open('net_positive/pong/training/andrej_gold.p', 'rb'))
     count = 0
 
     def __init__(self):
       self.prev_x = None
-      self.model = pickle.load(open('pong/training/andrej_gold.p', 'rb'))
+      self.model = pickle.load(open('net_positive/pong/training/andrej_gold.p', 'rb'))
       self.count = 0
 
     @classmethod
@@ -145,12 +145,12 @@ class AndrejBot(models.Model):
 
 class AndrejBotBallOnly(models.Model):
     prev_x = None # used in computing the difference frame
-    model = pickle.load(open('pong/training/ball_only.p', 'rb'))
+    model = pickle.load(open('net_positive/pong/training/ball_only.p', 'rb'))
     count = 0
 
     def __init__(self):
       self.prev_x = None
-      self.model = pickle.load(open('pong/training/ball_only.p', 'rb'))
+      self.model = pickle.load(open('net_positive/pong/training/ball_only.p', 'rb'))
       self.count = 0
 
     @classmethod
@@ -245,13 +245,13 @@ class AndrejBotTraining(models.Model):
     drs = []
     episode_number = 0
     reward_sum = 0
-    my_file = Path("pong/training/episode_file.csv")
+    my_file = Path("net_positive/pong/training/episode_file.csv")
     resume = True if my_file.is_file() else False
     episode_number = 0
     if resume:
       data = []
       row_index = 0
-      with open('pong/training/episode_file.csv', "r", encoding="utf-8", errors="ignore") as scraped:
+      with open('net_positive/pong/training/episode_file.csv', "r", encoding="utf-8", errors="ignore") as scraped:
         reader = csv.reader(scraped, delimiter=',')
         for row in reader:
           data.append(row[0])
@@ -265,7 +265,7 @@ class AndrejBotTraining(models.Model):
     else:
       start_model['W1'] = np.random.randn(H,D) / np.sqrt(D) # "Xavier" initialization
       start_model['W2'] = np.random.randn(H) / np.sqrt(H)
-    model = pickle.load(open('pong/training/our_game_andrej.p', 'rb')) if resume == True else start_model
+    model = pickle.load(open('net_positive/pong/training/our_game_andrej.p', 'rb')) if resume == True else start_model
     grad_buffer = { k : np.zeros_like(v) for k,v in model.items() } # update buffers that add up gradients over a batch
     rmsprop_cache = { k : np.zeros_like(v) for k,v in model.items() } # rmsprop memory
     running_reward = None
@@ -287,13 +287,13 @@ class AndrejBotTraining(models.Model):
       self.dlogps = []
       self.drs = []
       self.reward = 0
-      self.my_file = Path("pong/training/episode_file.csv")
+      self.my_file = Path("net_positive/pong/training/episode_file.csv")
       self.resume = True if self.my_file.is_file() else False
       self.episode_number = 0
       if self.resume:
         data = []
         row_index = 0
-        with open('pong/training/episode_file.csv', "r", encoding="utf-8", errors="ignore") as scraped:
+        with open('net_positive/pong/training/episode_file.csv', "r", encoding="utf-8", errors="ignore") as scraped:
           reader = csv.reader(scraped, delimiter=',')
           for row in reader:
             data.append(row[0])
@@ -307,7 +307,7 @@ class AndrejBotTraining(models.Model):
       else:
         self.start_model['W1'] = np.random.randn(self.H,self.D) / np.sqrt(self.D) # "Xavier" initialization
         self.start_model['W2'] = np.random.randn(self.H) / np.sqrt(self.H)
-      self.model = pickle.load(open('pong/training/our_game_andrej.p', 'rb')) if self.resume == True else self.start_model
+      self.model = pickle.load(open('net_positive/pong/training/our_game_andrej.p', 'rb')) if self.resume == True else self.start_model
       self.grad_buffer = { k : np.zeros_like(v) for k,v in self.model.items() } # update buffers that add up gradients over a batch
       self.rmsprop_cache = { k : np.zeros_like(v) for k,v in self.model.items() } # rmsprop memory
       self.running_reward = None
@@ -381,13 +381,13 @@ class AndrejBotTraining(models.Model):
           #removed print for performance purposes
           
           if self.episode_number % self.batch_size == 0: 
-            pickle.dump(self.model, open('pong/training/our_game_andrej.p', 'wb'))
+            pickle.dump(self.model, open('net_positive/pong/training/our_game_andrej.p', 'wb'))
             #takes 15-20ms on macbook pro
           if self.episode_number % self.batch_size == 0: 
-            with open('pong/training/episode_file.csv', mode='w') as episode_file: #store the last episode
+            with open('net_positive/pong/training/episode_file.csv', mode='w') as episode_file: #store the last episode
               episode_writer = csv.writer(episode_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
               episode_writer.writerow([self.episode_number])
-            with open('pong/training/performance_file.csv', mode='a') as performance_file: #track performance over time
+            with open('net_positive/pong/training/performance_file.csv', mode='a') as performance_file: #track performance over time
               performance_writer = csv.writer(performance_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
               performance_writer.writerow([datetime.now(), self.episode_number, self.batch_average])
 
@@ -478,12 +478,12 @@ class AndrejBotTraining(models.Model):
 
 class Junior(models.Model):
   prev_x = None 
-  model = pickle.load(open('pong/training/junior.p', 'rb'))
+  model = pickle.load(open('net_positive/pong/training/junior.p', 'rb'))
   count = 0 
 
   def __init__(self):
     self.prev_x = None 
-    self.model = pickle.load(open('pong/training/junior.p', 'rb'))
+    self.model = pickle.load(open('net_positive/pong/training/junior.p', 'rb'))
     self.count = 0
 
   @classmethod 

@@ -2,6 +2,8 @@
 
 Makers final project - lets build a neural net that can play Pong and hook it up to our own JavaScript version of the game
 
+The team: Asia Ellis, Jake Phillips, David Papamichael, Nicolas Raffray, Tom Ratcliffe
+
 ## Initial setup
 
 * Clone this repository

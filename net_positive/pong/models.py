@@ -59,26 +59,17 @@ class FaultyBot(models.Model):
 
 class AndrejBot(models.Model):
     prev_x = None # used in computing the difference frame
-    model = pickle.load(open('net_positive/pong/training/andrej_gold.p', 'rb'))
+    model = pickle.load(open('pong/training/andrej_gold.p', 'rb'))
     count = 0
-
-    def __init__(self):
-      self.prev_x = None
-      self.model = pickle.load(open('net_positive/pong/training/andrej_gold.p', 'rb'))
-      self.count = 0
 
     @classmethod
     def andrej_bot(self, pixels):
       D = 80 * 80
+
       # preprocess the observation, set input to network to be difference image
       cur_x = AndrejBot.prepro(pixels)
     
       x = cur_x - self.prev_x if self.prev_x is not None else np.zeros(D)
-
-      # if self.count == 65:
-      #   with open('final_file.csv', mode='w') as final_file: #store the pixels
-      #       final_writer = csv.writer(final_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-      #       final_writer.writerow(x)
 
       self.prev_x = cur_x
 
@@ -98,39 +89,15 @@ class AndrejBot(models.Model):
      
       I = np.asarray(I)
 
-      # if np.count_nonzero(I==1) != 544 and np.count_nonzero(I==1) != 0:
-      #   with open('final_file.csv', mode='w') as final_file: #store the pixels
-      #       final_writer = csv.writer(final_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-      #       final_writer.writerow(I)
-    
-
       I = I.reshape(320, 320).astype('float32')
-
-
-      # print("number of ones", np.count_nonzero(I==1))
 
       I = cv2.resize(I,(80,80))
      
-
-      # a = cv2.cvtColor(cv2.resize(a,(80,80)), cv2.COLOR_BGR2GRAY)
-      # cv2.imwrite('color_img.jpg', a)
-      # print(frame[0][frame != 0])
-    
-      # ret, a = cv2.threshold(a, 127, 255, cv2.THRESH_BINARY) # et is useless
       I[I !=1] = 0
      
 
-      # print("number of ones", np.count_nonzero(I==1.0))
       I = I.ravel()
     
-      # if np.count_nonzero(I==1.0) != 34:
-  
-      # if self.count == 20:
-      #   with open('final_file.csv', mode='w') as final_file: #store the pixels
-      #       final_writer = csv.writer(final_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-      #       final_writer.writerow(I)
-     
-
       self.count += 1
       return I
 
@@ -140,18 +107,14 @@ class AndrejBot(models.Model):
       h[h<0] = 0 # ReLU nonlinearity
       logp = np.dot(self.model['W2'], h)
       p = AndrejBot.sigmoid(logp)
-      return p, h # return probability of taking action 2, and hidden state
+      return p, h # return probability of taking action, and hidden state
 
 
 class AndrejBotBallOnly(models.Model):
     prev_x = None # used in computing the difference frame
-    model = pickle.load(open('net_positive/pong/training/ball_only.p', 'rb'))
+    model = pickle.load(open('pong/training/ball_only.p', 'rb'))
     count = 0
 
-    def __init__(self):
-      self.prev_x = None
-      self.model = pickle.load(open('net_positive/pong/training/ball_only.p', 'rb'))
-      self.count = 0
 
     @classmethod
     def andrej_bot_ball_only(self, pixels):
@@ -160,11 +123,6 @@ class AndrejBotBallOnly(models.Model):
       cur_x = AndrejBotBallOnly.prepro(pixels)
     
       x = cur_x - self.prev_x if self.prev_x is not None else np.zeros(D)
-
-      # if self.count == 65:
-      #   with open('final_file.csv', mode='w') as final_file: #store the pixels
-      #       final_writer = csv.writer(final_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-      #       final_writer.writerow(x)
 
       self.prev_x = cur_x
 
@@ -184,37 +142,17 @@ class AndrejBotBallOnly(models.Model):
      
       I = np.asarray(I)
 
-      # if np.count_nonzero(I==1) != 544 and np.count_nonzero(I==1) != 0:
-      #   with open('final_file.csv', mode='w') as final_file: #store the pixels
-      #       final_writer = csv.writer(final_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-      #       final_writer.writerow(I)
       
       I = I.reshape(320, 320).astype('float32')
 
-      # print("number of ones", np.count_nonzero(I==1))
 
       I = cv2.resize(I,(80,80))
      
       I = I[:,10:]
 
-      # a = cv2.cvtColor(cv2.resize(a,(80,80)), cv2.COLOR_BGR2GRAY)
-      # cv2.imwrite('color_img.jpg', a)
-      # print(frame[0][frame != 0])
-    
-      # ret, a = cv2.threshold(a, 127, 255, cv2.THRESH_BINARY) # et is useless
       I[I !=1] = 0
-     
-
-      # print("number of ones", np.count_nonzero(I==1.0))
 
       I = I.ravel()
-    
-      # if np.count_nonzero(I==1.0) != 34:
-  
-      # if self.count == 20:
-      #   with open('final_file.csv', mode='w') as final_file: #store the pixels
-      #       final_writer = csv.writer(final_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-      #       final_writer.writerow(I)
      
       self.count += 1
       return I
@@ -225,7 +163,7 @@ class AndrejBotBallOnly(models.Model):
       h[h<0] = 0 # ReLU nonlinearity
       logp = np.dot(self.model['W2'], h)
       p = AndrejBotBallOnly.sigmoid(logp)
-      return p, h # return probability of taking action 2, and hidden state
+      return p, h # return probability of taking action, and hidden state
 
 
 
@@ -245,13 +183,13 @@ class AndrejBotTraining(models.Model):
     drs = []
     episode_number = 0
     reward_sum = 0
-    my_file = Path("net_positive/pong/training/episode_file.csv")
+    my_file = Path("pong/training/episode_file.csv")
     resume = True if my_file.is_file() else False
     episode_number = 0
     if resume:
       data = []
       row_index = 0
-      with open('net_positive/pong/training/episode_file.csv', "r", encoding="utf-8", errors="ignore") as scraped:
+      with open('pong/training/episode_file.csv', "r", encoding="utf-8", errors="ignore") as scraped:
         reader = csv.reader(scraped, delimiter=',')
         for row in reader:
           data.append(row[0])
@@ -265,60 +203,17 @@ class AndrejBotTraining(models.Model):
     else:
       start_model['W1'] = np.random.randn(H,D) / np.sqrt(D) # "Xavier" initialization
       start_model['W2'] = np.random.randn(H) / np.sqrt(H)
-    model = pickle.load(open('net_positive/pong/training/our_game_andrej.p', 'rb')) if resume == True else start_model
+    model = pickle.load(open('pong/training/our_game_andrej.p', 'rb')) if resume == True else start_model
     grad_buffer = { k : np.zeros_like(v) for k,v in model.items() } # update buffers that add up gradients over a batch
     rmsprop_cache = { k : np.zeros_like(v) for k,v in model.items() } # rmsprop memory
     running_reward = None
     cumulative_batch_rewards = 0
     batch_average = 0
     reward_sum = 0
-  
 
-    def __init__(self):
-      self.H = 200
-      self.batch_size = 10 # every how many episodes to do a param update?
-      self.learning_rate = 1e-4
-      self.gamma = 0.99 # discount factor for reward
-      self.decay_rate = 0.99
-      self.prev_x = None
-      self.count = 0
-      self.xs = []
-      self.hs = []
-      self.dlogps = []
-      self.drs = []
-      self.reward = 0
-      self.my_file = Path("net_positive/pong/training/episode_file.csv")
-      self.resume = True if self.my_file.is_file() else False
-      self.episode_number = 0
-      if self.resume:
-        data = []
-        row_index = 0
-        with open('net_positive/pong/training/episode_file.csv', "r", encoding="utf-8", errors="ignore") as scraped:
-          reader = csv.reader(scraped, delimiter=',')
-          for row in reader:
-            data.append(row[0])
-        self.episode_number = int(data[0])
-      self.benchmark = False
-      self.D = 80 * 80
-      self.start_model = {}
-      if self.benchmark:
-        np.random.seed(0) ; self.start_model['W1'] = np.random.randn(self.H,self.D) / np.sqrt(self.D) # "Xavier" initialization
-        np.random.seed(0) ; self.start_model['W2'] = np.random.randn(self.H) / np.sqrt(self.H)
-      else:
-        self.start_model['W1'] = np.random.randn(self.H,self.D) / np.sqrt(self.D) # "Xavier" initialization
-        self.start_model['W2'] = np.random.randn(self.H) / np.sqrt(self.H)
-      self.model = pickle.load(open('net_positive/pong/training/our_game_andrej.p', 'rb')) if self.resume == True else self.start_model
-      self.grad_buffer = { k : np.zeros_like(v) for k,v in self.model.items() } # update buffers that add up gradients over a batch
-      self.rmsprop_cache = { k : np.zeros_like(v) for k,v in self.model.items() } # rmsprop memory
-      self.running_reward = None
-      self.cumulative_batch_rewards = 0
-      self.batch_average = 0
-      self.reward_sum = 0
       
     @classmethod
     def andrej_training(self, pixels, reward, done):
-
-      # print(self.episode_number)
 
       if self.my_file.is_file():
         self.resume = True 
@@ -327,10 +222,6 @@ class AndrejBotTraining(models.Model):
         print('Resuming run')
       if not self.resume and self.count == 0:
         print('First run')
-
-      # if self.resume:
-      #   data = AndrejBotTraining.import_csv('pong/training/episode_file.csv')
-      #   self.episode_number = int(data[0])
       
       if self.count > 0:
         self.reward_sum += float(reward)
@@ -376,18 +267,15 @@ class AndrejBotTraining(models.Model):
           else:
             self.cumulative_batch_rewards += self.reward_sum
             self.batch_average = self.cumulative_batch_rewards/(self.episode_number % self.batch_size)
-
-          #print('resetting env. episode reward total was %f. running mean: %f' % (reward_sum, running_reward))
-          #removed print for performance purposes
           
           if self.episode_number % self.batch_size == 0: 
             pickle.dump(self.model, open('net_positive/pong/training/our_game_andrej.p', 'wb'))
-            #takes 15-20ms on macbook pro
+
           if self.episode_number % self.batch_size == 0: 
-            with open('net_positive/pong/training/episode_file.csv', mode='w') as episode_file: #store the last episode
+            with open('pong/training/episode_file.csv', mode='w') as episode_file: #store the last episode
               episode_writer = csv.writer(episode_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
               episode_writer.writerow([self.episode_number])
-            with open('net_positive/pong/training/performance_file.csv', mode='a') as performance_file: #track performance over time
+            with open('pong/training/performance_file.csv', mode='a') as performance_file: #track performance over time
               performance_writer = csv.writer(performance_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
               performance_writer.writerow([datetime.now(), self.episode_number, self.batch_average])
 
@@ -423,18 +311,8 @@ class AndrejBotTraining(models.Model):
       a = image_array.reshape(320, 320).astype('float32')
       a = cv2.resize(a,(80,80))
      
-      # cv2.imwrite('color_img.jpg', a)
-      # print(frame[0][frame != 0])
-      # print("this is the frame size", a.size)
-      # ret, a = cv2.threshold(a, 127, 255, cv2.THRESH_BINARY) # et is useless
       a[a >= 0.5] = 1
       a = a.ravel()
-      # print(len(a))
-
-      # if self.count == 20 :
-      #   with open('final_file.csv', mode='w') as final_file: #store the pixels
-      #         final_writer = csv.writer(final_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-      #         final_writer.writerow(a)
       
       return a
     
@@ -455,7 +333,7 @@ class AndrejBotTraining(models.Model):
       h[h<0] = 0 # ReLU nonlinearity
       logp = np.dot(self.model['W2'], h)
       p = AndrejBotTraining.sigmoid(logp)
-      return p, h # return probability of taking action 2, and hidden state
+      return p, h # return probability of taking action, and hidden state
 
     @classmethod
     def policy_backward(self, eph, epdlogp, epx):
@@ -478,13 +356,9 @@ class AndrejBotTraining(models.Model):
 
 class Junior(models.Model):
   prev_x = None 
-  model = pickle.load(open('net_positive/pong/training/junior.p', 'rb'))
+  model = pickle.load(open('pong/training/junior.p', 'rb'))
   count = 0 
 
-  def __init__(self):
-    self.prev_x = None 
-    self.model = pickle.load(open('net_positive/pong/training/junior.p', 'rb'))
-    self.count = 0
 
   @classmethod 
   def junior_bot(self, pixels):

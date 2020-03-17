@@ -1,20 +1,38 @@
-# Net-Positive-Makers
+# Net-Positive
 
-Makers final project - lets build a neural net that can play Pong and hook it up to our own JavaScript version of the game
+__Makers Final Project:__
 
-The team: Asia Ellis, Jake Phillips, David Papamichael, Nicolas Raffray, Tom Ratcliffe
+Our aim was to build a neural net that would learn to play the classic video game Pong! We then implemented this neural net in the backend of our program and connected it to our own version of Pong - built in Javascript!
+
+__The Team:__ [*Asia Ellis*](https://github.com/asiaellis5), [*David Papamichael*](https://github.com/davidpaps), [*Jake Phillips*](https://github.com/Jakephillips55), [*Nicolas Raffray*](https://github.com/nicolasraffray), [*Tom Ratcliffe*](https://github.com/ratcliffetj)
+
 
 ## Initial setup
 
-* Clone this repository
-* install pip3
-* pip3 install -r requirements.txt
+Clone this repository and in the command line type:
+
+```
+install pip3
+```
+
+```
+ pip3 install -r requirements.txt
+```
 
 ## How to run the app
 
-* From the terminal cd Net-Positive-Makers/net_positive
-* run python3 manage.py runserver
-* Go to your browser and navigate to localhost:8000
+From the terminal navigate to the directory:
+
+```
+cd Net-Positive-Makers/net_positive
+```
+And run:
+
+```
+run python3 manage.py runserver
+```
+
+Then open a browser and visit this link [*localhost::8000*](localhost:8000)
 
 ## Neural Networks
 
@@ -33,6 +51,22 @@ We also added the capability for the neural networks to be trained directly on o
 
 ## Testing
 
-To test all dirs do python3 -m pytest - if you do not want to see coverage
-To see each indiviual method test py.test --spec (similar to Rspec)
+To test all python directories, from the command line run:
+
+```
+ do python3 -m pytest 
+```
+ 
+For individual tests run from the command line:
+
+```
+py.test --spec
+```
+
+For Javascript tests, run from the command line:
+
+```
+jasmine server
+```
+
 

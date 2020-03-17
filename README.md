@@ -1,55 +1,38 @@
 # Net-Positive-Makers
-Makers final project - lets build a neural net
 
-## Setup
+Makers final project - lets build a neural net that can play Pong and hook it up to our own JavaScript version of the game
+
+The team: Asia Ellis, Jake Phillips, David Papamichael, Nicolas Raffray, Tom Ratcliffe
+
+## Initial setup
+
+* Clone this repository
 * install pip3
 * pip3 install -r requirements.txt
 
-## How to run
+## How to run the app
 
-* First Clone of fork this repo 
-* Run the setup section
 * From the terminal cd Net-Positive-Makers/net_positive
-* python3 manage.py runserver
-* Go to your browser and copy into the url localhost:8000
+* run python3 manage.py runserver
+* Go to your browser and navigate to localhost:8000
 
-## Networks
+## Neural Networks
 
-This project is tightly based on the work done by Andrej Karpathy in his [Reinforcement Learning Blog](http://karpathy.github.io/2016/05/31/rl/). We used his network as the bot which represents the hardest net to play against. His work also provided strong guidance for how a net should interact with the pong game and what values it should receive. The nets were trained on the OpenAI gym and then put onto our game which was made to mimic the AIgym as close as possible. Modifications to the code were done to fit with the new game.
+The neural networks we used were heavily based on the work done by Andrej Karpathy in his [Reinforcement Learning Blog](http://karpathy.github.io/2016/05/31/rl/). Using this neural network training approach we arrived at our most skilled neural net based Pong bot. His work also provided strong guidance for how a net should interact with the pong game and what values it should receive during training. We added additional logging and checkpointing capabilities to the training code to allow for better visibility during the training process.
 
-This team tried different methods of including biases in the net, making it deeper and using Adam optimization instead of RMSprop. We found that the simple single layer without biases yielded far superior results when compared to the combination of the aforementioned specifications. Nevertheless, our version of the neural net is represented in the game as Nodevak Djocokic and its code can be seen in the model's section of the project along with Andrej's.  
+This team tried different methods of including biases in the net, making it deeper and using Adam optimization instead of RMSprop. We found that the simple single layer without biases yielded far superior results when compared to the combination of the aforementioned specifications. Nevertheless, our version of the neural net is represented in the game as Bjorn Cyborg and its code can be seen in the models section of the project along with Andrej's.  
 
 ## Training 
 
-The networks were trained on AWS EC2 most of the training runs were done on the C5.2xlarge as we found it was the most cost effective for our runtime and the nature of the problem. 
+The nets were trained over around 15,000 games of Pong using the OpenAI Gym Python library. After this training their forward propagation code and final network weights were ported into our python backend. This allowed the nets to then play our version of the game which was made to mimic the OpenAI Gym version as far as possible.
 
-### Benchmarking of AWS instances for training a net
+Training runs were completed on AWS EC2 instances, we found a C5.2xlarge instance provided a good balance between training speed and cost.
 
-| EC2 instance type      | vCPU          | Memory       | Cost per hour  |
-| -----------------------|:-------------:|:------------:| --------------:|
-| t2.micro               | 2             | 1 GiB        | free tier      |
-| t3.2xlarge             | 8             | 32 GiB       | $0.3776        |
-| m5.24xlarge            | 96            | 384 GiB      | $5.328         |
-| c5.2xlarge             | 8             | 16 GiB       | $0.404         |
-| c5.4xlarge             | 16            | 32 GiB       | $0.404         |
-| c5.24xlarge            | 96            | 192 GiB      | $5.52          |
-| p3.2xlarge             | 8             | 61 GiB       | $3.589         |
+We also added the capability for the neural networks to be trained directly on our own JavaScript version of the game. Although this was found to be around 10 times slower due to the additional latency involved in the websocket communication between the frontend game and backend training code (compared to the approach where the Python training code directly invoked the OpenAI Gym Python library during training).
 
 
-Six neural nets were provisioned with different batch size parameters and allowed to train over the same number of episodes. The type of EC2 instance (t2.micro) and initial weights were kept the same. The result of batch size on average reward per episode can therefore be seen below.
-
-| Batch size   | Av. reward over final 10 episodes of run   |              
-| -------------|:------------------------------------------:|
-| 3            |                                            |
-| 5            |                                            |
-| 7            |                                            |
-| 10           |                                            |
-| 12           |                                            |
-| 15           |                                            |
-
+## Testing
 
 To test all dirs do python3 -m pytest - if you do not want to see coverage
 To see each indiviual method test py.test --spec (similar to Rspec)
 
-Given the fact that we have problems such as unstable data, underfitted models, overfitted models, and uncertain future resiliency, what should we do? There are some general guidelines and techniques, known as heuristics, that we can write into tests to mitigate the risk of these issues arising.
-We can test those two seams by unit testing our data inputs and outputs to make sure they are valid within our given tolerances.

@@ -69,7 +69,6 @@ class Vector
   {
     constructor(canvas)
     {
-      // var trainingSession = "{{ training_session|escapejs }}";
       var trainingSession = "training";
     
       this.BotSocket = new WebSocket(
@@ -78,10 +77,6 @@ class Vector
 
       var that = this
       this.BotSocket.onmessage = function(e) {
-          // console.log('new-message')
-          // var t2 = new Date
-          // console.log(t2.getSeconds())
-          // console.log(t2.getMilliseconds())
           var data = JSON.parse(e.data);
           that.repeatActionCount = 0;
           var move = data['move'];
@@ -110,8 +105,6 @@ class Vector
 
       this.training = false;
       this.bot = 'rl-federer';
-      
-
 
       this.isPointOver = false;
 
@@ -142,9 +135,7 @@ class Vector
           else {
             this.repeatActionCount = 0;
           }
-          // if (this.training === true) {
-          //   // this.players[0].position.y = this.ball.position.y
-          // }
+    
           if (this.isPointOver === true) {
             this.reset();
           }
@@ -164,13 +155,9 @@ class Vector
             this.getMoveWS()
             if( this.training === true ){
               this.getOpponentMove() 
-              //use line above to train against a backend bot
             }
-            // console.log(this.aggregateReward);
             if (this.isPointOver === true) {
               this.gameCount += 1;
-              // console.log('game count')
-              // console.log(this.gameCount);
               this.aggregateReward = 0;
               this.isPointOver = false;
             }
@@ -217,24 +204,17 @@ class Vector
       }
 
       var imageString = imageArray.join('')
-      // console.log('pre-regex')
-      // var t = new Date
-      // console.log(t.getSeconds())
-      // console.log(t.getMilliseconds())
+
+      // compress pixel data
       var regex80 = /00000000000000000000000000000000000000000000000000000000000000000000000000000000/gi
       var regex40 = /0000000000000000000000000000000000000000/gi
       var regex20 = /00000000000000000000/gi
       var regex10 = /0000000000/gi
-
-      // console.log('post-regex')
-      // var t = new Date
-      // console.log(t.getSeconds())
-      // console.log(t.getMilliseconds())
       imageString = imageString.replace(regex80, 'w');
       imageString = imageString.replace(regex40, 'x');
       imageString = imageString.replace(regex20, 'y');
       imageString = imageString.replace(regex10, 'z');
-      // console.log(imageString)
+      
       var bally = Math.round(this.ball.position.y);
       var paddley = this.players[1].position.y;
       var reward = this.aggregateReward;
@@ -268,22 +248,6 @@ class Vector
       court = '';
     }
 
-    // http GET interface to backend
-    // getMove(){
-    //   var that = this
-    //   var xmlhttp = new XMLHttpRequest()
-    //   xmlhttp.onreadystatechange = function() {
-    //     if (this.readyState == 4 && this.status == 200) {
-    //       var myArr = JSON.parse(this.responseText);
-    //       that._move = myArr['up'];
-    //       that.botUpdate(that._move);
-    //       that.responseReceived = true;
-    //     }
-    //   };
-    //   xmlhttp.open('GET', url, true);
-    //   xmlhttp.send();
-    // }
-
     collide(player, ball) {
       if (player.left <= ball.right && player.right >= ball.left && player.top <= ball.bottom && player.bottom >= ball.top) {
         const length = ball.velocity.length
@@ -297,23 +261,16 @@ class Vector
 
 
         ball.velocity.x = -ball.velocity.x;
-        
         ball.velocity.y += ball.velocity.y * (Math.random() - .5);
 
-        
+        // ball and paddle collision like the actual Atari Pong
         // var relativeIntersectY = player.position.y - ball.position.y;
         // var normalizedRelativeIntersectionY = relativeIntersectY/(32/2);
         // var bounceAngle = normalizedRelativeIntersectionY * 5 * Math.PI / 12;
         // ball.velocity.x = ball.velocity.length * Math.cos(bounceAngle);
         // ball.velocity.y = ball.velocity.length * - Math.sin(bounceAngle);
 
-     
-
         ball.velocity.length = length * 1.05; 
-
-
-        
-     
       }
     }
 
@@ -436,8 +393,6 @@ class Vector
         else {
           this.players[1].position.y = this.players[1].position.y
         }
-        // 12 works well for andrej ep-14000 with ball speed at 200
-        // 
       } 
       else {
         if (this.players[1].position.y + 12 <= 320) {
@@ -452,7 +407,7 @@ class Vector
     trainingOpponentMove(move) {
       if (move === false){
         this.players[0].position.y += 17
-        // 17 good for training at ball speed 200
+    
       }
       else {
         this.players[0].position.y -= 17
@@ -479,12 +434,10 @@ class Vector
       window.addEventListener('keydown', keyboardHandlerFunction); 
       function keyboardHandlerFunction(e) {
         if(e.keyCode === 40 && pong.players[0].position.y < (pong._canvas.height - 50) ) {
-          pong.players[0].position.y += 20
+          pong.players[0].position.y += 30
         } else if(e.keyCode === 38 && pong.players[0].position.y > 50) {
-            pong.players[0].position.y -= 20
-        } else if(e.keyCode === 32) {
-            // pong.start();
-        } 
+            pong.players[0].position.y -= 30
+        }
       }
     }
   }

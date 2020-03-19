@@ -241,7 +241,7 @@ class Vector
         "court": court,
         "done": "dummy",
         "image": "dummy",
-        "bot": "steffi-graph",
+        "bot": "nodevak-djokovic",
         "trainingopponent": "true"
         }));
 

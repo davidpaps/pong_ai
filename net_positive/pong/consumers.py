@@ -28,10 +28,12 @@ class PongConsumer(WebsocketConsumer):
         bot = json.loads(text_data)["bot"]
         trainingopponent = json.loads(text_data)["trainingopponent"]
         image = json.loads(text_data)["image"]
+        image = image.replace('v', 'wwwwwwwwwwwwwwwwwwww')
         image = image.replace('w', '00000000000000000000000000000000000000000000000000000000000000000000000000000000')
         image = image.replace('x', '0000000000000000000000000000000000000000')
         image = image.replace('y', '00000000000000000000')
         image = image.replace('z', '0000000000')
+        image = image.replace('a', '1111')
         image = list(image)
         
         if trainingopponent == "true":

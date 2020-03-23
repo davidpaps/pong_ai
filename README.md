@@ -19,7 +19,7 @@ install pip3
  pip3 install -r requirements.txt
 ```
 
-## How to run the app
+## How to run the app locally
 
 From the terminal navigate to the directory:
 

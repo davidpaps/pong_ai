@@ -24,12 +24,12 @@ install pip3
 From the terminal navigate to the directory:
 
 ```
-cd Net-Positive-Makers/net_positive
+cd Net-Positive-Makers
 ```
 And run:
 
 ```
-run python3 manage.py runserver
+run python3 net_positive/manage.py runserver
 ```
 
 Then open a browser and visit this link [*localhost::8000*](localhost:8000)

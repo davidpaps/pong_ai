@@ -44,11 +44,11 @@ class PongConsumer(WebsocketConsumer):
           }))
         else:
           if bot == "student":
-              move = AndrejBotTraining.andrej_training(image, reward, done)
-              self.send(text_data=json.dumps({
-              'move': move,
-              'trainingopponent': trainingopponent
-              }))
+            move = AndrejBotTraining.andrej_training(image, reward, done)
+            self.send(text_data=json.dumps({
+            'move': move,
+            'trainingopponent': trainingopponent
+            }))
 
           if bot == "steffi-graph":
             move = PerfectBot.perfect_bot_ws(bally, paddley)

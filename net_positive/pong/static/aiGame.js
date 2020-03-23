@@ -170,9 +170,11 @@ class Vector
     }
 
     getMoveWS(){
+
       var image = this._context.getImageData(0, 0, 320, 320);
       
       var imageArray = Array.from(image.data)
+    
       imageArray = imageArray.filter(function(_, i) {
         return (i + 1) % 4;
       })
@@ -183,7 +185,7 @@ class Vector
         return (i + 1) % 2;
       
       })
-
+      
       var everyOtherTime = 0
 
       for (var i = 0, len = imageArray.length; i < len; i++) {
@@ -210,11 +212,17 @@ class Vector
       var regex40 = /0000000000000000000000000000000000000000/gi
       var regex20 = /00000000000000000000/gi
       var regex10 = /0000000000/gi
+      var regex4 = /1111/gi
       imageString = imageString.replace(regex80, 'w');
       imageString = imageString.replace(regex40, 'x');
       imageString = imageString.replace(regex20, 'y');
       imageString = imageString.replace(regex10, 'z');
-      
+      imageString = imageString.replace(regex4, 'a');
+      // compress it some more
+      var regexW = /wwwwwwwwwwwwwwwwwwww/gi
+      imageString = imageString.replace(regexW, 'v');
+
+   
       var bally = Math.round(this.ball.position.y);
       var paddley = this.players[1].position.y;
       var reward = this.aggregateReward;

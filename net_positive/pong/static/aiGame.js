@@ -78,39 +78,40 @@ class Vector
       var that = this
       this.BotSocket.onmessage = function(e) {
           var data = JSON.parse(e.data);
-          that.repeatActionCount = 0;
+          that.repeatActionCountBot = 0;
           var move = data['move'];
-          var trainingopponent = data['trainingopponent']
-          if (trainingopponent === "false"){
-            that._moveup = move;
-            that.responseReceived = true;}
+          var trainingOpponent = data['trainingopponent']
+          if (trainingOpponent === "false"){
+            that._moveUpBot = move;
+            that.responseReceivedBot = true;
+            that.repeatActionCountBot = 0;
+          }
           else { 
-            that.trainingOpponentMove(move) }
+            that._moveUpTrainingOpponent = move;
+            that.responseReceivedTrainingOpponent = true;
+            that.repeatActionCountTrainingOpponent = 0;
+          }
       };
 
       this.BotSocket.onclose = function(e) {
           console.error('Chat socket closed unexpectedly');
       };
 
-      this._moveup = '';
+      this._moveUpBot = '';
+      this._movUpTrainingOpponent = '';
       this._canvas = canvas;
       this._context = canvas.getContext('2d');
-      this.repeatActionCount = 0;
-
+      this.repeatActionCountBot = 0;
+      this.repeatActionCountTrainingOpponent = 0;
       this.ball = new Ball;
-      this.throttle = 1;
       this.gameCount = 0;
-
       this.done = false;
-
       this.training = false;
       this.bot = 'rl-federer';
-
       this.isPointOver = false;
-
       this.aggregateReward = 0;
-
-      this.responseReceived = true;
+      this.responseReceivedBot = true;
+      this.responseReceivedTrainingOpponent = true;
 
     
       this.players = [
@@ -123,19 +124,18 @@ class Vector
       this.players.forEach( player => { player.position.y = this._canvas.height / 2 });
 
       let lastTime;
-      this.count = 99;
       const callback = (milliseconds) => {
         if (lastTime) {
           this.update((milliseconds - lastTime) / 1000);
           this.updateReward();
-          if (this.repeatActionCount<3){
-            this.botUpdate(this._moveup);
-            this.repeatActionCount += 1;
+          if (this.repeatActionCountBot<3){
+            this.botUpdate(this._moveUpBot);
+            this.repeatActionCountBot += 1;
           }
-          else {
-            this.repeatActionCount = 0;
+          if (this.repeatActionCountTrainingOpponent<3){
+            this.trainingOpponentMove(this._moveUpTrainingOpponent);
+            this.repeatActionCountTrainingOpponent += 1;
           }
-    
           if (this.isPointOver === true) {
             this.reset();
           }
@@ -145,26 +145,25 @@ class Vector
         lastTime = milliseconds;
         requestAnimationFrame(callback);
         
-        this.count += 1;
-        
+        if (this.isPointOver === true) {
+          this.gameCount += 1;
+          this.aggregateReward = 0;
+          this.isPointOver = false;
+        }
         if (this.BotSocket.readyState === 1) {
-          if ((this.responseReceived === true) && (this.count % this.throttle === 0)) {
+          if (this.responseReceivedBot === true) {
             // this.draw();
             // uncomment the above line to see what the bot is seeing
-            this.responseReceived = false;
-            this.getMoveWS()
-            if( this.training === true ){
-              this.getOpponentMove() 
-            }
-            if (this.isPointOver === true) {
-              this.gameCount += 1;
-              this.aggregateReward = 0;
-              this.isPointOver = false;
-            }
+            this.responseReceivedBot = false;
+            this.getMoveWS();
           }
-        }
-        
+          if ((this.training === true ) && (this.responseReceivedTrainingOpponent === true)) {
+            this.responseReceivedTrainingOpponent = false;
+            this.getOpponentMove();
+          }
+        }   
       }
+      
       callback();
       this.reset();
     }
@@ -414,11 +413,11 @@ class Vector
 
     trainingOpponentMove(move) {
       if (move === false){
-        this.players[0].position.y += 17
+        this.players[0].position.y += 10
     
       }
       else {
-        this.players[0].position.y -= 17
+        this.players[0].position.y -= 10
       }
     }
 

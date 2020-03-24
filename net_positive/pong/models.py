@@ -45,21 +45,22 @@ class FaultyBot(models.Model):
 class AndrejBot(models.Model):
     prev_x = None # used in computing the difference frame
     model = pickle.load(open('net_positive/pong/training/andrej_gold.p', 'rb'))
-    count = 0
 
     @classmethod
     def andrej_bot(self, pixels):
       D = 80 * 80
 
       # preprocess the observation, set input to network to be difference image
+     
       cur_x = AndrejBot.prepro(pixels)
-    
+     
       x = cur_x - self.prev_x if self.prev_x is not None else np.zeros(D)
-
+     
       self.prev_x = cur_x
 
       # forward the policy network and sample an action from the returned probability
       aprob, h = AndrejBot.policy_forward(x)
+
       move_up = True if 0.5 < aprob else False #take the action most likely to yield the best result
       
       return move_up
@@ -70,20 +71,13 @@ class AndrejBot(models.Model):
       
     @classmethod
     def prepro(self, I):
-      """ prepro 210x160x3 uint8 frame into 6400 (80x80) 1D float vector """
-     
+      """ prepro 320x320 frame into 6400 (80x80) 1D float vector """
+      I = list(map(float, I))
       I = np.asarray(I)
-
-      I = I.reshape(320, 320).astype('float32')
-
+      I = I.reshape(320,320)
       I = cv2.resize(I,(80,80))
-     
       I[I !=1] = 0
-     
-
       I = I.ravel()
-    
-      self.count += 1
       return I
 
     @classmethod
@@ -98,7 +92,6 @@ class AndrejBot(models.Model):
 class AndrejBotBallOnly(models.Model):
     prev_x = None # used in computing the difference frame
     model = pickle.load(open('net_positive/pong/training/ball_only.p', 'rb'))
-    count = 0
 
 
     @classmethod
@@ -123,23 +116,14 @@ class AndrejBotBallOnly(models.Model):
       
     @classmethod
     def prepro(self, I):
-      """ prepro 210x160x3 uint8 frame into 6400 (80x80) 1D float vector """
-     
+      """ prepro 320x320 frame into 80x70 1D float vector """
+      I = list(map(float, I))
       I = np.asarray(I)
-
-      
-      I = I.reshape(320, 320).astype('float32')
-
-
+      I = I.reshape(320, 320)
       I = cv2.resize(I,(80,80))
-     
       I = I[:,10:]
-
       I[I !=1] = 0
-
       I = I.ravel()
-     
-      self.count += 1
       return I
 
     @classmethod
@@ -291,14 +275,13 @@ class AndrejBotTraining(models.Model):
 
     @classmethod
     def prepro(self, I):
-      """ prepro 210x160x3 uint8 frame into 6400 (80x80) 1D float vector """
+      """ prepro 320x320 frame into 6400 (80x80) 1D float vector """
+      I = list(map(float, I))
       image_array = np.asarray(I)
-      a = image_array.reshape(320, 320).astype('float32')
+      a = image_array.reshape(320, 320)
       a = cv2.resize(a,(80,80))
-     
       a[a >= 0.5] = 1
       a = a.ravel()
-      
       return a
     
     @classmethod
@@ -342,7 +325,6 @@ class AndrejBotTraining(models.Model):
 class Junior(models.Model):
   prev_x = None 
   model = pickle.load(open('net_positive/pong/training/junior.p', 'rb'))
-  count = 0 
 
 
   @classmethod 
@@ -363,13 +345,13 @@ class Junior(models.Model):
 
   @classmethod
   def prepro(self, I): 
-    """ prepro 210x160x3 uint8 frame into 6000 (80x80) 1D float vector """
+    """ prepro 320x320 frame into 6400 (80x80) 1D float vector """
+    I = list(map(float, I))
     I = np.asarray(I)
-    I = I.reshape(320, 320).astype('float32')
+    I = I.reshape(320, 320)
     I = cv2.resize(I,(80,80))
     I[I !=1] = 0
     I = I.ravel()
-    self.count += 1
     return I
 
   @classmethod 

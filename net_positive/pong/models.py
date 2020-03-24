@@ -7,7 +7,6 @@ import csv
 from pathlib import Path
 import cv2
 
-
 class PerfectBot(models.Model):
     @classmethod
     def perfect_bot_ws(request, bally, paddley):
@@ -16,7 +15,6 @@ class PerfectBot(models.Model):
       else:
         move_up = False 
       return move_up
-
 
 class NonPerfectBot(models.Model):
     @classmethod
@@ -49,20 +47,13 @@ class AndrejBot(models.Model):
     @classmethod
     def andrej_bot(self, pixels):
       D = 80 * 80
-
       # preprocess the observation, set input to network to be difference image
-     
       cur_x = AndrejBot.prepro(pixels)
-     
       x = cur_x - self.prev_x if self.prev_x is not None else np.zeros(D)
-     
       self.prev_x = cur_x
-
       # forward the policy network and sample an action from the returned probability
       aprob, h = AndrejBot.policy_forward(x)
-
       move_up = True if 0.5 < aprob else False #take the action most likely to yield the best result
-      
       return move_up
 
     @classmethod
@@ -88,26 +79,20 @@ class AndrejBot(models.Model):
       p = AndrejBot.sigmoid(logp)
       return p, h # return probability of taking action, and hidden state
 
-
 class AndrejBotBallOnly(models.Model):
     prev_x = None # used in computing the difference frame
     model = pickle.load(open('net_positive/pong/training/ball_only.p', 'rb'))
-
 
     @classmethod
     def andrej_bot_ball_only(self, pixels):
       D = 80 * 70
       # preprocess the observation, set input to network to be difference image
       cur_x = AndrejBotBallOnly.prepro(pixels)
-    
       x = cur_x - self.prev_x if self.prev_x is not None else np.zeros(D)
-
       self.prev_x = cur_x
-
       # forward the policy network and sample an action from the returned probability
       aprob, h = AndrejBotBallOnly.policy_forward(x)
       move_up = True if 0.5 < aprob else False #take the action most likely to yield the best result
-      
       return move_up
 
     @classmethod
@@ -133,8 +118,6 @@ class AndrejBotBallOnly(models.Model):
       logp = np.dot(self.model['W2'], h)
       p = AndrejBotBallOnly.sigmoid(logp)
       return p, h # return probability of taking action, and hidden state
-
-
 
 class AndrejBotTraining(models.Model):
 
@@ -179,16 +162,15 @@ class AndrejBotTraining(models.Model):
     cumulative_batch_rewards = 0
     batch_average = 0
     reward_sum = 0
-
       
     @classmethod
     def andrej_training(self, pixels, reward, done):
-
       if self.my_file.is_file():
         self.resume = True 
 
       if self.resume and self.count == 0:
         print('Resuming run')
+
       if not self.resume and self.count == 0:
         print('First run')
       
@@ -330,17 +312,11 @@ class Junior(models.Model):
   @classmethod 
   def junior_bot(self, pixels):
     D = 80 * 80
-
     cur_x = Junior.prepro(pixels)
-
     x = cur_x - self.prev_x if self.prev_x is not None else np.zeros(D)
-
     self.prev_x = cur_x
-
     forward_output = Junior.forward_prop(x, self.model)
-
     move = Junior.make_move(forward_output["A3"])
-
     return move
 
   @classmethod

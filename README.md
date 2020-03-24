@@ -85,4 +85,4 @@ jasmine server
 <img src="./images/multiplayer.png">
 
 
-See it live on [*Heroku*](http://net-positive.herokuapp.com/)
+See it live on [*Heroku*](http://net-positive-pong-ai.herokuapp.com/)

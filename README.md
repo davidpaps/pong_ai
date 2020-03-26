@@ -83,3 +83,7 @@ jasmine server
 ## Training Mode
 
 <img src="./images/training.png">
+
+## Multiplayer Mode
+
+<img src="./images/multiplayer.png">

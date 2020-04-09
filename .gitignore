@@ -2,3 +2,5 @@
 /net_positive/db.sqlite3
 **/__pycache__
 **/.coverage
+.DS_Store
+.gitignore_global

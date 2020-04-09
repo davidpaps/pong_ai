@@ -24,6 +24,14 @@ We also added the capability for the neural networks to be trained directly on o
 
 ---
 
+### Sequence Diagram
+
+Shows the interaction between application components on 'Arcade Mode'
+
+<img src="./images/sequence_diagram.png">
+
+---
+
 ## How to Run
 
 Make sure you have a version of Python > 3.4 Then clone this repository, navigate to the directory `Net-Positive-Makers`, and in the command line type:
@@ -56,16 +64,10 @@ See it live on [_Heroku_](http://net-positive-pong-ai.herokuapp.com/training/)
 
 ## Testing
 
-To test all python directories, from the command line run:
+To test all python directories, navigate to the directory `Net-Positive-Makers` and type in the command line:
 
 ```
- do python3 -m pytest
-```
-
-For individual tests run from the command line:
-
-```
-py.test --spec
+PYTHONPATH=net_positive/ pytest --ds=net_positive.settings
 ```
 
 For Javascript tests, run from the command line:
@@ -73,6 +75,8 @@ For Javascript tests, run from the command line:
 ```
 jasmine server
 ```
+
+Visit [_localhost_](http://localhost:8888/) to view the test output.
 
 ---
 

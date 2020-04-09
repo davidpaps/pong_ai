@@ -1,0 +1,36 @@
+src_files:
+    - ./net_positive/pong/static/vector.js
+    - ./net_positive/pong/static/rectangle.js
+    - ./net_positive/pong/static/ball.js
+    - ./net_positive/pong/static/player.js
+    - ./net_positive/pong/static/imageProcessor.js
+    - ./net_positive/pong/static/botSocket.js
+    - ./net_positive/pong/static/pong.js
+    - ./net_positive/pong/static/game.js
+
+stylesheets:
+
+helpers:
+    - "helpers/**/*.js"
+
+spec_files:
+    - "**/*[Ss]pec.js"
+
+# Source directory path. Your src_files must be returned relative to this path. Will use root if left blank.
+src_dir:
+
+spec_dir: spec/javascripts
+
+# Stop executing each spec on the first expectation failure.
+# Default: false
+stop_spec_on_expectation_failure:
+
+
+# Stop executing Jasmine after the first spec fails
+# Default: false
+stop_on_spec_failure:
+
+
+# Run specs in semi-random order.
+# Default: true
+random: false 

@@ -7,8 +7,6 @@ from pong.models import AndrejBotBallOnly
 from pong.models import AndrejBotTraining
 from pong.models import FaultyBot
 from pong.models import Junior
-from datetime import datetime
-import numpy as np
 
 class PongConsumer(WebsocketConsumer):
     def connect(self):
@@ -17,73 +15,109 @@ class PongConsumer(WebsocketConsumer):
     def disconnect(self, close_code):
         pass
 
-
     def receive(self, text_data):
-        
         court_json = json.loads(text_data)["court"]
-        bally = json.loads(court_json)["bally"]
-        paddley = json.loads(court_json)["paddley"]
-        reward = json.loads(court_json)["reward"]
-        done = json.loads(text_data)["done"]
         bot = json.loads(text_data)["bot"]
-        trainingopponent = json.loads(text_data)["trainingopponent"]
+        training_opponent = json.loads(text_data)["trainingopponent"]
+        
+        if training_opponent == "true":
+            self.training_opponent(court_json)
+        else:
+            if bot == "student":
+                self.student(text_data)
+
+            if bot == "steffi-graph":
+                self.steffi_graph(court_json)
+            
+            if bot == "nodevak-djokovic":
+                self.nodevak_djokovic(court_json)
+
+            if bot == "rl-federer":
+                self.rl_federer(text_data)
+            
+            if bot == "andrai-agassi":
+                self.andrai_agassi(court_json)
+
+            if bot == "bjorn-cyborg":
+                self.bjorn_cyborg(text_data)
+        
+    def training_opponent(self, court_json):
+        ball_y = json.loads(court_json)["bally"]
+        paddle_y = json.loads(court_json)["paddley"]
+        move_up = NonPerfectBot.get_move(ball_y, paddle_y)
+        self.send(text_data=json.dumps({
+            'moveup': move_up,
+            'playerID': 0
+        }))
+
+    def student(self, text_data):
+        done = json.loads(text_data)["done"]
+        reward = json.loads(text_data)["reward"]
         image = json.loads(text_data)["image"]
+        image = self.reverse_string_compression(image)
+        image = list(image)
+        move_up = AndrejBotTraining.get_move(image, reward, done)
+        self.send(text_data=json.dumps({
+            'moveup': move_up,
+            'playerID': 1
+        }))
+
+    def steffi_graph(self, court_json):
+        ball_y = json.loads(court_json)["bally"]
+        paddle_y = json.loads(court_json)["paddley"]
+        move_up = PerfectBot.get_move(ball_y, paddle_y)
+        self.send(text_data=json.dumps({
+            'moveup': move_up,
+            'playerID': 1
+        }))
+
+    def nodevak_djokovic(self, court_json):
+        ball_y = json.loads(court_json)["bally"]
+        paddle_y = json.loads(court_json)["paddley"]
+        move_up = NonPerfectBot.get_move(ball_y, paddle_y)
+        self.send(text_data=json.dumps({
+            'moveup': move_up,
+            'playerID': 1
+        }))
+
+    def rl_federer(self, text_data):
+        image = json.loads(text_data)["image"]
+        image = self.reverse_string_compression(image)
+        image = list(image)
+        move_up = AndrejBot.get_move(image)
+        self.send(text_data=json.dumps({
+            'moveup': move_up,
+            'playerID': 1 
+        }))
+
+    def andrai_agassi(self, court_json):
+        ball_y = json.loads(court_json)["bally"]
+        paddle_y = json.loads(court_json)["paddley"]
+        move_up = FaultyBot.get_move(ball_y, paddle_y)
+        self.send(text_data=json.dumps({
+            'moveup': move_up,
+            'playerID': 1 
+        }))
+
+    def bjorn_cyborg(self, text_data):
+        image = json.loads(text_data)["image"]
+        image = self.reverse_string_compression(image)
+        image = list(image)
+        move_up = Junior.get_move(image)
+        self.send(text_data=json.dumps({
+            'moveup': move_up,
+            'playerID': 1 
+        }))
+
+    def reverse_string_compression (self, image):
         image = image.replace('v', 'wwwwwwwwwwwwwwwwwwww')
         image = image.replace('w', '00000000000000000000000000000000000000000000000000000000000000000000000000000000')
         image = image.replace('x', '0000000000000000000000000000000000000000')
         image = image.replace('y', '00000000000000000000')
         image = image.replace('z', '0000000000')
         image = image.replace('a', '1111')
-        image = list(image)
-        
-        if trainingopponent == "true":
-          move = NonPerfectBot.non_perfect_bot_ws(bally, paddley)
-          self.send(text_data=json.dumps({
-          'move': move,
-          'trainingopponent': trainingopponent
-          }))
-        else:
-          if bot == "student":
-            move = AndrejBotTraining.andrej_training(image, reward, done)
-            self.send(text_data=json.dumps({
-            'move': move,
-            'trainingopponent': trainingopponent
-            }))
+        return image
 
-          if bot == "steffi-graph":
-            move = PerfectBot.perfect_bot_ws(bally, paddley)
-            self.send(text_data=json.dumps({
-            'move': move,
-            'trainingopponent': trainingopponent
-            }))
-          
-          if bot == "nodevak-djokovic":
-            move = NonPerfectBot.non_perfect_bot_ws(bally, paddley)
-            self.send(text_data=json.dumps({
-            'move': move,
-            'trainingopponent': trainingopponent
-          }))
-
-          if bot == "rl-federer":
-            move = AndrejBot.andrej_bot(image)
-            self.send(text_data=json.dumps({
-            'move': move,
-            'trainingopponent': trainingopponent 
-            }))
-          
-          if bot == "andrai-agassi":
-            move = FaultyBot.faulty_bot_ws(bally, paddley)
-            self.send(text_data=json.dumps({
-            'move': move,
-            'trainingopponent': trainingopponent 
-            }))
-
-          if bot == "bjorn-cyborg":
-            move = Junior.junior_bot(image)
-            self.send(text_data=json.dumps({
-            'move': move,
-            'trainingopponent': trainingopponent 
-          }))
 
 
         

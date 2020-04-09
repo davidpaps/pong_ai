@@ -64,37 +64,50 @@
             </div> 
           </div>
         </section>
+        <script src={% static "vector.js" %}></script>
+        <script src={% static "rectangle.js" %}></script>
+        <script src={% static "ball.js" %}></script>
+        <script src={% static "player.js" %}></script>
+        <script src={% static "imageProcessor.js" %}></script>
+        <script src={% static "botSocket.js" %}></script>
+        <script src={% static "pong.js" %}></script>
+        <script src={% static "keyboardInput.js" %}></script>
+        <script src={% static "setupMultiplayerGame.js" %}></script>
         
         <script>
           $(document).ready(function(){
-              $('#easy').on('click', function(){
-                pong.ballSpeed = 300;
-                pong.reboundSpeed = 1.00;
-                pong.players[0].score = 0;
-                pong.players[1].score = 0;
-              })
-    
-              $('#medium').on('click', function(){
-                pong.ballSpeed = 400;
-                pong.reboundSpeed = 1.10;
-                pong.players[0].score = 0;
-                pong.players[1].score = 0;
-              })
-    
-              $('#hard').on('click', function(){
-                pong.ballSpeed = 500;
-                pong.reboundSpeed = 1.20;
-                pong.players[0].score = 0;
-                pong.players[1].score = 0;
-              })
-            }) 
+            $('#easy').on('click', function(){
+              ball.serveSpeed = 300;
+              ball.reboundSpeed = 1.00;
+              pong.players[0].score = 0;
+              pong.players[1].score = 0;
+            })
+  
+            $('#medium').on('click', function(){
+              ball.serveSpeed = 400;
+              ball.reboundSpeed = 1.10;
+              pong.players[0].score = 0;
+              pong.players[1].score = 0;
+            })
+  
+            $('#hard').on('click', function(){
+              ball.serveSpeed = 500;
+              ball.reboundSpeed = 1.20;
+              pong.players[0].score = 0;
+              pong.players[1].score = 0;
+            })
+            
+            pong.training = false;
+            pong.multiplayer = true;
+            pong.run(botSocket);
+            keyboardInput.multiplayerMode();
+          }) 
         </script>
  
 
    </body>
    <br>
    <center><h4>Spacebar to Serve!<h4></center>
-   <script src={% static "multiplayer.js" %}></script>
    <audio id ="music" controls autoplay>
     <source src={% static "public/fight_music.mp3" %} type="audio/mpeg">
   </audio>
